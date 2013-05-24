@@ -1,0 +1,25 @@
+.. _jumpto:
+
+How To change Jump-To (Zoom To)
+=====================================
+
+
+Here is an example of the zoom to from the default demo::
+
+        <param name="zoomto"><![CDATA[
+        {
+
+                "Jump To:" : {
+                'World' : [-20614760.777156,1751325.1919492,-1927436.1053437,7915207.1517617],
+                'Parcel Data' : [-10384069.859924,5538318.529767,-10356632.423788,5563580.927174],
+                'Full State of MN' : [-10742765,5398288,-9920914,6310641]
+                }
+
+        }
+        ]]></param>
+
+Notice that they are seperated with commas and there is no trailing comma after the last entry.  An additional zoomto paramater could be added before the 'Full State of MN' line as follows::
+
+'Farmington' : [-10376231, 5563517, -10367384, 5572942],
+
+Remember to include appropriate punctuation. If this is wrong the application may not start correctly as configuration parameters are very important. 

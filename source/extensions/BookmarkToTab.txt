@@ -1,0 +1,25 @@
+Bookmark To Tab
+===============
+
+Description
+-----------
+This extension extends the built-in bookmarking functionality by placing the generated bookmark in a tab instead of updating the URL in the address bar.  It does this by overriding `GeoMOOSE.bookmark() <http://www.geomoose.org/trunk/api/files/geomoose-js.html#GeoMOOSE.bookmark>`_ with a custom function.
+
+Adding to Application
+---------------------
+1. The default GeoMOOSE configuration does not provide an interface to trigger ``GeoMOOSE.bookmark()``.  To take full advantage of this functionality, you will probably want to add the following to the ``<toolbar>`` section in your ``mapbook.xml``::
+
+	<tool name="bookmark" title="Bookmark this page" type="javascript">GeoMOOSE.bookmark();</tool>
+
+2. To enable this extension, add the folowing line to the ``<head>`` section of ``geomoose.html``::
+
+	<script type="text/javascript" src="extensions/BookmarkToTab.js"></script>
+
+The bookmark tool should then display in a new tab.  If you would like to change the layout of the tab you can do so by overriding ``window.BOOKMARK_TEMPLATE``::
+
+	<script type="text/javascript">
+		window.BOOKMARK_TEMPLATE = "<a href='%url%'>Bookmark Me</a>";
+	</script>
+
+	<script type="text/javascript" src="extensions/Disclaimer.js"></script>
+

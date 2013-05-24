@@ -1,0 +1,114 @@
+.. _configure_search:
+
+.. role:: highlight
+
+
+How To Configure Search Capablility For A Layer
+====================================================
+
+GeoMoose includes a search service to search for features by attribute value and display the results for a specific layer.  Configuring the search capability for a layer in GeoMoose 2 is a multistep proces.  
+
+Step 1: Create the search results HTML file
+-------------------------------------------
+
+The searh results HTML file will be used to format how information is displayed in the search results tab.  The file follows standard HTML formats and references fields that exist for the serch layer. Below is an example of the HTML for parcels in the demo search_result.html file located in ..maps/demo/parcels/templates. :: 
+
+	<!-- MapServer Template -->
+	<a id="gm-parcel-[PIN]" class='sprite-control sprite-control-find-selected' style="padding-left: 22px" parcel-shape="[shpxy]" href="javascript:GeoMOOSE.zoomToPointsList(dojo.byId('gm-parcel-[PIN]').getAttribute('parcel-shape'), 'EPSG:26915');">[PIN]</a><br/>
+	[OWNER_NAME]<br/>
+	<br/>
+
+Please note that this HTML can be used to link to other sites or services using standard HTML like <A HREF=> tags as illustrated in the example above. 
+
+
+Step 2: Reference the HTML file in MapServer map file
+-------------------------------------------------------------------------------------------------
+
+The search HTML files must then be referenced in the metadata section in the map file within the layer.  The following is an example of how this is done from the parcels.map file in the demo located in ..maps/demo/parcels. ::
+
+	LAYER
+	NAME parcels
+	DATA './parcels.shp'
+	...
+	...
+		METADATA 
+			...
+			itemquery'	'templates/search_result.html'
+			'itemquery-filter'	'/.*[qstring].*/i' 
+			'qstring_validation_pattern' '.'
+			...
+		END 
+	...
+	END
+
+
+		
+The itemquery-filter and qstring_validataion_pattern must also be set for search to work. Remember when referencing the HTML's to make sure the correct relative paths are set. 
+
+
+
+Step 3: Create a new search service in mapbook.xml 
+--------------------------------------------------
+
+The third step will be to create a new search service for a layer in the mapbook.xml.  This is most easily done by copying the search service and pasting it in and then modifying it. The following is what the search service looks like for the parcel layer. ::
+
+	<service name="search_parcels" title="Search">                                  <-- create a new service name 
+		<url>php/query.php</url>					
+		<step type="input">
+			<input type="hidden" name="highlight" value="true"/>
+			<input type="hidden" name="mode" value="search"/>
+
+			<input type="hidden" name="layer0" value="parcels/parcels"/>    <--- source and layer name for your layer
+			<input type="hidden" name="template0" value="itemquery"/>
+
+			<input type="select" name="fieldname0" title="Search By:">
+				<option value="OWNER_NAME">Owner</option>               <--- fields you want to search on 
+				<option value="PIN">Parcel ID</option>                                from your layer 
+			</input>
+			<input type="select" name="comparitor0" title="That: ">         <--- comparitors for searching 
+				<option value="like-icase">Contains</option>
+				<option value="right-like-icase">Begins With</option>
+				<option value="eq-str">Matches Exactly</option>
+			</input>
+			<input type="user" name="value0" title=""/>                      <--- value you will enter 
+
+			<input type="hidden" name="fieldname1" value="FIN_SQ_FT"/>       <--- additional value search 
+			<input type="select" name="operator1">
+				<option value="or">OR</option>
+				<option value="and">AND</option>
+			</input>
+			<input type="select" name="comparitor1" title="Having Fin. Sq. Ft. ">
+				<option value="gt">Greater Than</option>
+				<option value="eq">Equal To</option>
+				<option value="lt">Less Than</option>
+			</input>
+			<input type="user" name="value1" title=""/>
+		</step>
+	</service>
+
+Below are highlights of the marked code above:
+ * :highlight:`<service name="search_parcels" title="Search">                                  <-- create a new service name`
+ * :highlight:`<input type="hidden" name="layer0" value="parcels/parcels"/>    <--- source and layer name for your layer`
+ * :highlight:`<option value="OWNER_NAME">Owner</option>               <--- fields you want to search on`
+ * :highlight:`<option value="PIN">Parcel ID</option>                            <--   from your layer`
+ * :highlight:`<input type="select" name="comparitor0" title="That: ">         <--- comparitors for searching`
+ * :highlight:`<input type="user" name="value0" title=""/>                      <--- value you will enter`
+ * :highlight:`<input type="hidden" name="fieldname1" value="FIN_SQ_FT"/>       <--- additional value search`
+
+
+Additional information about the search service and adding services in the mapbook can be found in the  mapbook reference.  See also, :ref:`Mapbook services reference <mapbook_services>` and :ref:`Query documentation in Services <query>`.
+
+Step 4: Add the service to the toolbar
+--------------------------------------
+
+Now that the service has been added the user must be able to select it as a tool.  This is done by adding the new service to the toolbar section of the mapbook.xml file.  The following is an example of what the search parcel service::
+
+
+	<tool name="search_parcels" title="Search Parcels" type="service" service="search_parcels" selectable="false" show-label="true"/>
+	
+
+To add the new service copy this line and paste it below the existing search tool.  Change the serivce name to match the new service. The following is a simple example that illustrates how this could be done for a new service to search for taxlots::
+
+
+	<tool name="search_taxlots" title="Search taxlots" type="service" service="search_taxlots" selectable="false" show-label="true"/>
+

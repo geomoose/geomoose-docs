@@ -1,0 +1,10 @@
+GeoMOOSE Demo
+=============
+
+This demo is the standard bearer for the vast majority of GeoMOOSE applications.  It features all of the common features being used and gives the user a good feel for the functionalities delivered by GeoMOOSE.
+
+`View the Demo Here <http://www.geomoose.org/demo/geomoose.html>`_
+
+Here is a short user quickstart.  This quickly presents the various aspects of GeoMOOSE available in the demo.  
+
+:doc:`View the GeoMOOSE user quickstart <../docs/geomoose_quickstart>`

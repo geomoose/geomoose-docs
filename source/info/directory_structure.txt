@@ -1,0 +1,12 @@
+.. _structure:
+
+
+GeoMOOSE Structure
+================================================================================
+
+Once GeoMoose has been installed it will have six subdirectories. Files are discussed in more detail in documentation.
+
+.. toctree::
+   :maxdepth: 2
+
+   directory_structure_details

@@ -1,0 +1,28 @@
+.. Note: This file only controls the HTML index page the real TOC is contents.txt
+
+GeoMOOSE
+********
+
+.. include:: welcome.txt
+
+GeoMOOSE Documentation
+======================
+.. toctree::
+	:maxdepth: 1
+
+	getting_started
+	docs/index
+	developer/index
+	info/license	
+
+.. include:: support.txt
+
+.. include:: news.txt
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

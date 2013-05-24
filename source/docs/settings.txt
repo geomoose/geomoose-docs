@@ -1,0 +1,107 @@
+..  role:: strikethrough
+
+Local_settings.ini Reference Guide
+======================================
+The ``settings.ini`` file found in the conf folder is a text document used as the general configuration file for a GeoMOOSE application.  It configures things such as projection, paths, mailing labels. For an example of a settings.ini file, please refer to the GeoMOOSE demo and the file in the conf folder.  This reference guide explains the optional settings.
+
+You should never, ever modify ``settings.ini``
+----------------------------------------------
+
+*This is very important.* ``settings.ini`` is managed by GeoMOOSE.  If you upgrade the application in the same tree as your current application you will lose all of your changes.  This can get annoying because replacing the new ``setttings.ini`` with your old one could substantially break the application because some of its defaults will be missing.  GeoMOOSE is configured to override ``settings.ini`` with ``local_settings.ini``.  There are two example files that you might want to use for `local_settings.ini``; either ``ms4w_local_settings.ini`` or ``unix_local_settings.ini``.  If you want to change these settings, leave ``settings.ini`` alone and change them in ``local_settings.ini``.
+
+[defaults]
+----------
+* mapbook – location of default mapbook
+
+[map]
+-----
+
+* projection – EPSG code of coordinate system for the map
+
+[paths]
+-------
+
+* root – root for the map (only configured through local_settings.ini)
+* temp – web accessible location of the temp files relative to the root of the domain (only configured through local_settings.ini)
+
+[identify]
+----------
+
+This setting specifies which metadata parameters in the mapfiles are used for the identify service output templates.
+
+* identify_header=identify/header.html
+* identify_footer=identify/footer.html
+* wms_header=identify/wms_header.html
+* wms_record=identify/wms_record.html
+* wms_footer=identify/wms_footer.html
+
+[select]
+--------
+
+* highlight_map – this setting specifies which mapfile should be used to symbolize the selected or highlight feature on the map
+
+[itemquery]
+-----------
+
+This setting specifies which metadata parameters in the mapfiles are used for the itemquery service output templates.
+
+* itemquery_header=itemquery/header.html
+* itemquery_footer=itemquery/footer.html
+* itemquery_miss=itemquery/miss.html
+
+[query]
+--------------
+
+This setting specifies the output of a query with no results returned.
+
+* query_miss=itemquery/miss.html
+
+[mailing_labels]
+----------------
+
+These setting specify formatting options for the labels generated from the mailing labels service.
+Specifies how many rows/columns to print per page:
+
+* label_rows=10
+* label_columns=3
+
+Specifies page layout information (only applies to PDF Format):
+
+* label_origin_x=.25
+* label_origin_y=.5
+* label_width=2.5
+* label_height=1
+
+Specifies Font for the label output (only applies to PDF Format):
+
+* label_font=Arial
+* label_font_size=8
+
+Specifies the settings for the actual lines of the label.  The items in parentheses relate to the data source in the mailing labels service.  Items must be enter with parentheses and case sensitive field name. 
+
+* label_lines=3
+* label_line_1=%OWNER_NAME%
+* label_line_2=%BLDG_NUM% %STREETNAME% %SUFFIX_DIR% %STREETTYPE%
+* label_line_3=%CITY%, MN %ZIP%
+
+If this is set to "true" then any blank lines in the labels will be "collapsed" in the PDF output.
+
+* label_lines_collapse=true
+
+[print_formats]
+-------------------------------
+
+Sets if print format will appear in the print formats tab. The format will appear if "1" and will not appear if "0"
+
+* print_image=1
+* print_html=1
+* print_pdf=1
+
+[html_printing]
+-------------------------
+
+Sets the template to use, image width and height for map when selecting the html format for printing output.
+
+* html_template=./print/default_template.html
+* html_image_width=800
+* html_image_height=700

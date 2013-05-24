@@ -1,0 +1,28 @@
+How to use a WMS Service in a Different Projection
+==================================================
+
+Not all WMS services use the projection that a GeoMOOSE application may use natively.  In this case, it is necessary to reproject the request to display properly.
+
+Step 1: Prerequisites
+---------------------
+
+Before we can do the reprojection both projections must be defined!  GeoMOOSE has EPSG:4326 predefined so if the WMS service uses EPSG:4326 you will not need to define this projection.  Please review :doc:`Adding Projections </docs/projections>` for instructions on creating projections and adding them to the interface.
+
+Step 2: Configure the WMS map-source
+------------------------------------
+
+To define a WMS map-source in a different projection the ``projection`` attribute needs to get set to the projection code::
+
+        <map-source name='nasa' type='wms' tiled='false' projection='EPSG:4326'>
+                <url>http://onearth.jpl.nasa.gov/wms.cgi</url>
+                <layer name="global_mosaic"/>
+                <param name="format" value="image/jpeg"/>
+        </map-source>
+
+Step 3: Add the Layer to the Catalog
+------------------------------------
+
+This is just like any other layer::
+
+	<layer title='NASA Global Mosiac' src='nasa/global_mosaic'/>
+

@@ -1,0 +1,74 @@
+.. _testing_reporting_ticketing:
+
+
+How to Test, Report, and Ticket (in detail)
+==================================================
+
+Background
+---------------------
+GeoMOOSE uses `Trac <http://trac.osgeo.org/geomoose/>`_ to keep track of documentation, tasks, bugs, enhancements, and most other details of the project.  Trac is also the system for feedback about testing, particularlly around a release.  
+See also general faq :ref:`How_should_I_report_a_bug?`
+
+Where to test?
+---------------------
+
+Testing should be done on the `stable demo <http://gmtrunk.houstoneng.net/>`_ or `trunk demo <http://www.geomoose.org/demo/geomoose.html>`_ depending on which you are reporting on.  Another publically accesible instance can also be used if the demo is not configured with that specfic functionality.  
+
+What to test?
+------------------------------------
+
+Generally try to give the site a thorough check of the main functionality (search, identify, print, zoom, measure, layer tools, select) and specifically the issue that concerns you.  This helps find any issues that may have been introduced as part of the change for your issue of concern.  
+
+Oops, there is an error.  How to report this?
+-----------------------------------------------------
+#. See also general faq :ref:`How_should_I_report_a_bug?`
+#. Login to `Trac <http://trac.osgeo.org/geomoose/>`_ which requires an OSGeo userid
+#. `Open a ticket <http://trac.osgeo.org/geomoose/newticket/>`_
+#. Document your browser(s) and GeoMOOSE version 
+#. Document the steps you could use to replicate the error
+#. Document the error behavior
+#. Make an effort to assign the correct Component, Type, Priority, Version, and useful keywords.  For things you don't know, a guess or the default are ok.  The Type for bugs is 'defect'
+
+That works, but...  How to request an enhancement?
+-----------------------------------------------------
+#. See also, general faq :ref:`How_should_I_request_an_enhancement?`
+#. Login to `Trac <http://trac.osgeo.org/geomoose/>`_ which requires an OSGeo userid
+#. `Open a ticket <http://trac.osgeo.org/geomoose/newticket/>`_
+#. Identify start state
+#. Document behavior your enhancement needs to do
+#. Document end state
+#. Make an effort to assign the correct Component, Type, Priority, Version, and useful keywords.  For things you don't know, a guess or the default are ok.  The Type for enhancements  is 'enhancement'
+#. Consider providing a patch, funding, testing, documentation or other efforts to make this a more likely enhancement
+
+What happens now that there is a ticket?
+---------------------------------------------
+#. Developer will ascertain that the work needs to be completed. If not the developer will add to notes
+#. Developer will work and mark assigned status to "accepted"
+#. Developer will document and comment on the programming completed 
+#. Developer will change status to "testing"
+#. Trunk demo version will be updated
+
+How do I follow up?
+------------------------------
+
+1. Pay attention and respond promptly when you get notification of activity on the ticket
+2. Follow the steps identified in the original ticket to replicate the problem this time testing on the `trunk demo <http://www.geomoose.org/demo/geomoose.html>`_
+3. If problem has been addressed
+
+ i. Enter what steps you did to verify the problem has been addressed
+ ii. Identify what browser and version of GeoMoose you tested this on (if relevant)
+ iii. Resolve problem as "fixed" in status
+
+4. If problem still exists or causes additional problems
+
+ i. Enter what steps you did to that still causes problem
+ ii. Identify what browser and version of GeoMoose you tested this on (if relevant)
+ iii. Convert action to: "reassign to" programmer that did the work
+
+5. If you find a new problem then start this process again with the new problem.  
+
+
+Note: follow through with your reported tickets
+--------------------------------------------------------
+
+Please note if you open a ticket you are responsible to ensure that when development is completed you will test to ensure that the work addresses the documented problem. When you open a ticket you are also committing to following this operating procedure. 

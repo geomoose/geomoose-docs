@@ -1,0 +1,52 @@
+How To Change the Tabs
+======================
+
+As of GeoMOOSE 2.6, the tabs system uses the Dojo conventions.
+
+To add a custom tab follow and extend the example in `extensions/CustomTab.js`::
+
+	/* 
+	 * GeoMOOSE Custom Tab Example.
+	 *
+	 * This creates a customized tab for the user interface
+	 * and then adds it to the control panel.
+	 *
+	 * TODO: This works, but we should really refactor it to use the 
+	 * standard extension framework.
+	 * 
+	 */
+
+	dojo.declare('MyTab', [GeoMOOSE.Tab], {
+		title: 'My Custom Tab',
+
+		startup: function() {
+			this.inherited(arguments);
+			this.set('content', "This is an example of a <b>custom tab.</b>");
+		}
+	});
+
+	dojo.addOnLoad(function() {
+		GeoMOOSE.addTab('my_custom_tab', new MyTab());
+	});
+
+But, I have a lot of text.
+--------------------------
+
+Sometimes it is not convenient to use JavaScript to populate a lot of text into a tab.  We have an easy way to do this::
+
+	dojo.declare('MyTab', [GeoMOOSE.Tab], {
+		title: 'My Custom Tab',
+
+		startup: function() {
+			this.inherited(arguments);
+			this.set('href', 'custom_data.html');
+		}
+	});
+
+	dojo.addOnLoad(function() {
+		GeoMOOSE.addTab('my_custom_tab', new MyTab());
+	});
+
+Instead of setting the HTML directly, it can be loaded from an external URL.  The first method (DHTML) should be used when adding additional Dojo/Dijit objects to the tab, using the HTML will not work as the Dojo-tagged-elements will not be properly parsed.
+
+

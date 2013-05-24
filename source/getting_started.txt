@@ -1,0 +1,60 @@
+.. _getting_started:
+
+Getting Started with GeoMOOSE
+=============================
+
+.. toctree::
+	:maxdepth: 1
+
+	../docs/geomoose_overview
+	../docs/geomoose_quickstart
+
+Try the online Demo
+-------------------
+
+If you have not already, looking through the :doc:`GeoMOOSE Demo <info/demo>` can give you a good idea of how GeoMOOSE looks.
+
+
+Install It!
+-----------
+
+GeoMOOSE is very easy to install on just about any platform.  Just follow any of these guides:
+
+.. toctree::
+	:maxdepth: 1
+
+	../docs/install_unix
+	../docs/install_ms4w
+
+GeoMOOSE is proud to be free software.  Our :ref:`license <license>` reflects that.
+
+Instructional Materials
+-----------------------
+.. toctree::
+	:maxdepth: 1
+	
+	../docs/foss4g2011
+
+Contact the Mailing Lists
+-------------------------
+
+.. include:: info/mailing_list_info.txt
+
+Documentation
+-------------
+
+We have detailed customization documentation.  Please visit the :doc:`/docs/index` to see more of GeoMOOSE's capabilities.
+
+
+Developer Specific Documentation
+--------------------------------
+
+Those really hungry for customization can visit our :doc:`Developer Documentation </developer/index>`.  You can also find links to our RFC's, API documentation, and release notes.
+
+FAQ
+-------
+.. toctree::
+        :maxdepth: 1
+
+        ../docs/faq
+

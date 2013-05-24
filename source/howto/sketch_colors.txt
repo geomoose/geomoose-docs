@@ -1,0 +1,10 @@
+How To Change Default Drawing Colors
+====================================
+
+GeoMOOSE 2 features client side red-lining/drawing/sketching tools.  These tools allow the user to place their own markup on the map and edit that markup.  Currently, the shapes drawn can have their shape, fill color, and stroke color adjusted after creation. Default values can be changed within the draw service section in the mapbook::
+
+    <attribute name="line_color" type="color" default-value="#ff0000" label="Stroke Color:"/>
+    <attribute name="fill_color" type="color" default-value="#ff0000" label="Fill Color:"/>
+    <attribute name="label_only" type="checkbox" default-value="false" label="Only show label in print?"/>
+
+These colors can be any one of the 16 supported W3C colors (red, yellow, etc), a six digit RGB color code (ex., #00FF00), or a three digit RGB color code (ex., #0F0).

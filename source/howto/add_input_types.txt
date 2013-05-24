@@ -1,0 +1,42 @@
+How to Create Custom "Input" Types
+==================================
+
+From time to time is may be necessary to create a custom "input" type for a service with GeoMOOSE.  This happens when you cannot get information about the map or from the user in a way that GeoMOOSE supports by default.
+
+Step 1: Create an Input Type
+----------------------------
+
+Create the file, this one I called "MapWidth.js"::
+
+	GeoMOOSE.Services.InputType.MapWidth = OpenLayers.Class(GeoMOOSE.Services.InputType, {
+		MAPBOOK_NAME: "map_width",
+
+		getValue: function() {
+			var extent = Map.getExtent();
+			return extent.right - extent.left;
+		}
+	});
+
+Step 2: Add it to the "geomoose.html"
+-------------------------------------
+
+* Open "geomoose.html" in a text editor.
+* Find `</head>` in the file.
+* Add the following line::
+
+	<script type="text/javascript" src="MapWidth.js"></script>
+
+Step 3: Add the input type to a Service
+---------------------------------------
+
+Find the service to add the type to and add the input definition::
+
+	<service ... >
+		<input type="map_width" name="mw"/>
+	</service>
+
+Step 4: Enjoy
+-------------
+
+This is the easiest part!
+

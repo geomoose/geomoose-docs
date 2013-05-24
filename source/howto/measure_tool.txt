@@ -1,0 +1,37 @@
+How to set the Defaults for the Measure Tools
+=============================================
+
+Units
+-----
+
+The measure tool units are defined using configuration parameters.  There is a parameter for line measuring units and area measuring units:
+
+ * measure_tool.line_units = mi,ft,m 
+ * measure_tool.area_units = mi,ft,m,yd,acre
+
+Translations:
+ * mi = Miles
+ * ft = Feet
+ * m = Meters
+ * km = kilometers
+ * yd = Yards
+ * acre = Acres
+
+All of the area_units specifications are assumed to be square units (for example, mi = Square Miles, for area measurement).  This example sets the default units to square Miles::
+
+	<param name="measure_tool.area_units">mi</param>
+
+
+Precision
+---------
+
+By default the measure tool will display three digits of precision.  This can be changed via the ``measure_tool.precision`` configuration variable::
+
+	<param name="measure_tool.precision">4</param> <!-- measure tool will now display four digits of precision -->
+
+
+Segments
+----------
+By default the measure area tool will display "segment" areas.  This can be changed via the ``measure_tool.show_area_segments`` configuration variable::
+
+	<param name="measure_tool.show_area_segments">false</param><!-- measure area tool will not display "segment" areas-->

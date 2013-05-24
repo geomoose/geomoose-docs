@@ -1,0 +1,14 @@
+.. _menubar:
+
+How To Put Content in the Menubar
+=================================
+
+The menubar's content can be specified by using simply HTML in the Mapbook.
+
+In the ``<configuration>`` section you can add::
+
+	<param name="links_bar_html"><![CDATA[
+		<b>THIS IS MY HTML!!!</b>
+	]]></param>
+
+Clear the browser cache and reload the interface! The HTML should appear where the menubar once existed!

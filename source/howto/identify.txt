@@ -1,0 +1,92 @@
+.. _identify:
+
+How To Configure Identify for a Layer
+=====================================
+
+GeoMoose contains an identify service that allows you to identify and display attributes for a map layer.  Adding the identify ability to identify features for a layer in GeoMoose 2 is a 3 step procedure.  The first step is to create an HTML file that controls which fields and format those fields for display of attributes.  The second step is to reference the HTML file in the map file.  The third optional step is to change the header and footer.  
+
+Step 1: Creating the Identify HTML file 
+-------------------------------------------------------------------------------
+The IDENTIFY HTML file will be used to format how information is displayed in the identify results tab.  This file follows standard HTML formats and will reference fields that exist in the layer attribute table. Below is an example of the identify html for parcels in the demo:: 
+
+	<!-- MapServer Template -->
+	<tr bgcolor="#DEE5EB"><td colspan="2"><b><u>Parcels</u></b></tr>
+	<tr>
+	<td align="right"><b>PIN:</b></td>
+	<td>[PIN] <a href="javascript:GeoMOOSE.startService('feature_report', {'PIN' : '[PIN]', 'src' : 'parcels/parcels'})">Report</a></td>
+	</tr>
+	<tr>
+	<td align="right"><b>Owner Name:</b></td>
+	<td>[OWNER_NAME]</td>
+	</tr>
+	<tr>
+	<td align="right"><b>Est. Market Value:</b></td>
+	<td>[EMV_TOTAL]</td>
+	</tr>
+	<tr>
+	<td align="right"><b>Acres:</b></td>
+	<td>[ACRES_POLY]</td>
+	</tr>
+	<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	</tr>
+
+Please note that this form can be used to link to other sites or services using standard HTML like <A HREF=> tags as illustrated in the example above. 
+
+
+Step 2: Reference the Identify HTML in MapServer map file
+-----------------------------------------------------------------------------------------------------------------
+
+The Identify HTML must then be referenced in your map file within your layer.  The following is an example of how this is done from the parcels.map file in the demo. :: 
+
+	LAYER
+	NAME parcels
+	DATA './parcels.shp'
+	...
+	...
+		METADATA 
+			# drill-down identify service record.
+			'identify_record'	'templates/identify.html'
+			...
+			...
+		END 
+	...
+	END
+
+
+Remember when referencing the identify.html to make sure the correct relative paths are set. 
+
+Step 3: Optionally changing the identify header and footer
+---------------------------------------------------------------------------------------------------
+
+You may want to change the header and footer for the identify service.  This can easily be done by modifying the footer.html and header.html file in the htdocs\php\identify directory or changing the path to a different location as the identify header and footer in the [identify] section of the settings.ini file in the conf directory. 
+
+
+Tips and Advice
+---------------
+
+Forcing Identify to always identify a specific layer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can force identify to always identify a specific layer by editing the mapbook.xml file in the conf directory and adding the following parameters to the identify service section::
+
+	<service name="identify" title="Identify" display="true">
+		<url>php/identify.php</url>
+		<step type="spatial" name="shape" line="false" polygon="false" jump-start="true" default="point" box="true" pan="false">
+			...
+			...
+			<input type="hidden" name="layers" value="parcels/parcels"/>
+			...
+			...
+		</step>
+	</service>
+
+	
+You can add multiple layers to this as well by adding additional source/layer names to the value parameter separated by a ":" ::
+
+	<input type="hidden" name="layers" value="parcels/parcels:mysource1/layername1:mysource2/layername2"/>
+
+Why no results with point or line layers?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You need to set a TOLERANCE in the mapfile, see also :ref:`FAQ - Why no results?  <Why_no_results>`

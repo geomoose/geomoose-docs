@@ -1,0 +1,8 @@
+What happened to the Menubar?
+=============================
+
+For the most part it is gone.  There is still a place for the menubar to exist, however, there is no longer an elaborate separate code base to make a javascript powered menu function.  If you would like to do this, the ability is still there.  We removed this functionality for a few reasons.
+
+1. We were maintaining the code.  The menubar.js and related configuration was maintained by the GeoMOOSE authors and like much of the Javascript code base, minor browser changes could effect the function and break it.  Even worse, when it did break, there were very few people who noticed.  This gave us an indication that the feature was under utilized.
+
+2. A secondary configuration file was slow to load.  To have two configuration files at startup was causing two Ajax requests to be made at startup.  This noticibly slowed the loading time and would cause skews in how the interface rendered.

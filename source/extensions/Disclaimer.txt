@@ -1,0 +1,22 @@
+Disclaimer
+==========
+
+Description
+-----------
+
+Some users wish to put a disclaimer at the beginning of their application.  Disclaimer.js provides this by prompting the user with an alert box when the application starts.
+
+Adding to Application
+---------------------
+
+To add the Disclaimer to your application add the following lines::
+
+	<script type="text/javascript">
+		window.DISCLAIMER_MESSAGE = "This is my disclaimer.";
+	</script>
+
+	<script type="text/javascript" src="extensions/Disclaimer.js"></script>
+
+Setting `DISCLAIMER_MESSAGE` sets what disclaimer is show at startup.  Without it the user will see "Hello, world."
+
+

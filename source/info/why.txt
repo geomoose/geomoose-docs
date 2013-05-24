@@ -1,0 +1,10 @@
+Why GeoMOOSE?
+-------------
+
+.. include:: why_text.txt
+
+Learn More
+----------
+
+Check out our :doc:`Getting Started Guide</getting_started>` to learn more.
+

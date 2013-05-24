@@ -1,0 +1,481 @@
+.. _mapbook:
+
+
+Mapbook Reference Guide
+=======================
+
+The mapbook document is an XML file that is used as the configuration file for a GeoMOOSE application.  It configures things such as map sources, layers, services and tools in the application. For an example of a mapbook, please refer to the GeoMOOSE demo and the mapbook.xml file in the conf folder.
+
+This reference guide explains the structure, elements, and attributes of the Mapbook XML tags, and how they effect the user interface.   GeoMOOSE version 2.0 looks to extend the capabilities and ease of configuration from GeoMOOSE 1.x series and therefore a new version of the mapbook format was required to support all of those features.
+
+<mapbook>
+---------
+
+All version 2.0 mapbooks should express themselves by using the 'version' tag.  GeoMOOSE will check the version attribute at startup and if the minimum version requirement is not met, GeoMOOSE will alert the user with an error.  This makes the version attribute required.
+
+The <mapbook> tag contains 6 child elements.  Each of these child elements can have their own child elements and are described below.
+
+* <configuration> : The <configuration> tag is used to specify user interface startup settings.
+* <map-source> : The <map-source> tag is used to specify a single or collection of layers in GeoMOOSE. 
+* <layer-controls> : The <layer-control> tag is used to link a layer control to a service.  As of GM2 the only layer control available are popups. 
+* <service> : The <service> tag is used to define a service such as select, printing and identify.
+* <catalog> : The <catalog> tag is the layers listing found in the information panel.
+* <toolbar> : The <toolbar> tag is the tools that are displayed on the user interface toolbar.
+
+<configuration>
+---------------
+
+The configuration tag is used to specify user interface startup settings and other application settings.  This is done within the <configuration> ... </configuration> section of the mapbook.xml.  The configuration tag has <param> children.  
+<param> elements have a simple format, a "name" attribute which specifies the interface setting to change and then CDATA that specifies the values.  The following are valid parameters for the configuration children.  All configuration parameters are documented in :ref:`configuration`.
+Here is an example from the GeoMOOSE Demo::
+
+	<configuration>
+		<param name="links_bar_html"><![CDATA[
+			<b>Our Stack:</b>
+			<a target="_blank" href="http://www.geomoose.org">GeoMOOSE.org</a> |
+			<a target="_blank" href="http://www.mapserver.org">MapServer</a> |
+			<a target="_blank" href="http://www.openlayers.org">OpenLayers</a> |
+			<a target="_blank" href="http://www.dojotoolkit.org">Dojo</a> 
+		]]></param>
+		<param name="projection">EPSG:3857</param>
+
+		<param name="zoomto"><![CDATA[
+		{
+			"Jump To:" : {
+				"World" : [-20614760.777156,1751325.1919492,-1927436.1053437,7915207.1517617],
+				"Parcel Data" : [-10384069.859924,5538318.529767,-10356632.423788,5563580.927174],
+				"Full State of MN" : [-10742765,5398288,-9920914,6310641]
+			}
+		}
+		]]></param>
+		<param name="max_extent">-20037508.342789,-20037508.342789,20037508.342789,20037508.342789</param>
+		<param name="initial_extent">-10384069.859924,5538318.529767,-10356632.423788,5563580.927174</param>
+		<param name="measure_tool.show_area_segments">false</param>
+
+		<param name="layer_controls.legend.on">false</param>
+		<param name="layer_controls.up.on">false</param>
+		<param name="layer_controls.down.on">false</param>		
+		<param name="layer_controls.metadata.on">false</param>		
+		<param name="layer_controls.legend.on">true</param>	
+
+		<param name="group_checkboxes">false</param>
+
+		<param name="default_tab">Catalog</param>
+	      
+		<param name="ground_units">m</param>
+		<param name="maxResolution">156543.03390625</param>
+		<param name="numZoomLevels">20</param>
+
+		<param name="reference_map.enabled">true</param>
+		<param name="coordinate_display.usng">true</param>
+		<param name="jumpto_scales"><![CDATA[
+		{
+			"1:100000" : 100000,
+			"1:50000" : 50000,
+			"1:24000" : 24000,
+			"1:10000" : 10000,
+			"1:5000" : 5000
+		}
+	]]></param>	
+
+	</configuration>
+
+
+<map-source>
+------------
+
+The map-source tag is used to specify a single or collection of layers in GeoMOOSE.  These are all in the ``<map-source> .... </map-source>`` section and later referenced in the ``<catalog> .... </catalog>`` section.  All map-sources have two required attributes:
+
+* name – The name that GeoMOOSE will use to reference this mapsource.
+	
+* type – The type of layer.  This attribute determines what other children are required (or available) and tells GeoMOOSE what type of mapping service with which to communicate.  Valid types include: Mapserver, WMS, WFS, and others (described below).
+
+* ``map-source``'s also support an optional ``opacity`` attribute that is a number between 0 and 1 specifying how transparent the image will be displayed.  For example ``opacity=".5"`` will display the image from the map-source as half-transparent.
+
+* ``buffer`` attribute.  Boolean, defaults to true, also optional.  When set to "false" the image does not "buffer" around the map, it is trimmed to the exact size of the map display.  Useful for MapServer scalebars.
+
+All map-source types support two children:
+
+* <param> – The 'param' child will add or change parameters sent over the URL to a <map-source>. This can be necessary to change mime-types for WMS services or pass various miscellaneous settings to a mapserver mapfile.  All 'param' children have two required attributes:
+	* *name* – This is the name that will be used in the URL.
+	* *value* – This is the value the name will be set to in the URL. 
+* <layer> (required) – At least one layer child is required for each map-source.  Even if a mapserver-type layer is used where all the layers are set to 'default' in the mapfile, it is necessary to create a layer child representing all of the layers.  All Layer children (elements) have one required attribute, name.  
+	* *name*  – For a WMS map-source, this refers to a layer as specified in the GetCapabilities document.  For a Mapserver map-source, this refers to the name of a layer in the Mapfile.  If a Mapfile has all of the layers set to default or all of the layers should be on or off as a whole, then the 'name' should be set to 'all.' <layer>'s also have a "visible" attribute which defaults to false.  To set a layer to default visibility, set "visible" to true.
+
+AGS
+^^^^^^^^^^^^
+
+ESRI provides access to ArcGIS data through a standard services.  For more information about ESRI services go to http://www.esri.com.  The basic *additional* parameters referenced to use an ArcGIS service are:
+
+	* *<url>* – Url for location of service. 
+	
+	* *<layer>* – This is the name used internally, by GeoMOOSE to refer to the layer.
+	
+	* *<param>* – name=FORMAT.  Parameter to identify format of the service.  Values for the format used in the example is "png".
+
+Example::
+
+	<map-source name="ags" type="ags">
+		<url>http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/export</url>
+		<layer name="NatGeo_World_Map"/>
+		<param name="FORMAT" value="png"/>
+	</map-source>
+
+Google 
+^^^^^^^^^^^^
+
+Google provides a variety of map services and API's that GeoMoose can consume. For more information about specifics and licensing please go to  https://developers.google.com/maps/.  The basic *additional* parameters referenced to use a Google service are:
+
+	* *<layer>*  – This is the name used internally, by GeoMOOSE to refer to the layer.  "all" recommended for Google map-source types.  
+	* *google-type* – This is the type of Google layer that will be provided. This can include: satellite, physical, streets, and  hybrid.
+
+Example:: 
+
+	<map-source name="google_streets" type="google" google-type="streets">
+		<layer name="all"/>
+	</map-source>
+
+Mapserver
+^^^^^^^^^^^^
+This type of layer is meant to communicate with the default mapserver as specified in config.js.  The basic *additional* parameters reference to use a Mapserver layer are:
+
+	* *<layer>* – The name of layers to be referenced by the map source. This name must referenced in the mapserver file. The layer name could also be "all" and all layers within the mapserver file will be used. 
+	* *<file>* – Layers of type 'mapserver' require a value <file> child specifying the location of the mapfile on disk.  Mapfiles can be specified with relative paths in <file> tags.
+
+Examples::
+
+	<map-source name="usgs" type="mapserver">
+		<file>./demo/wms/usgs.map</file>
+		<layer name="DOQ"/>
+		<layer name="DRG"/>
+	</map-source>
+
+	<map-source name="borders" type="mapserver" reference="true">
+		<file>./demo/statedata/basemap.map</file>
+		<layer name="city_labels" status="on"/>
+		<layer name="county_labels" status="on"/>
+		<layer name="city_poly" status="on"/>
+		<layer name="county_borders" status="on"/>
+	</map-source>
+
+Vector
+^^^^^^^^^^^^
+
+Available 2.6+.  Vector layers provide the basis for additional GeoMOOSE functionality.
+
+
+Example::
+
+	<map-source name="sketch" type="vector" active="true" status="on">
+		<style type="stylemap"><![CDATA[
+		{
+			"label" : "${title}",
+			"strokeColor" : "${line_color}",
+			"fillColor" : "${fill_color}"
+		}
+		]]></style>
+		<attribute name="title" type="user" default-value="" label="Feature Label:"/>
+		<attribute name="line_color" type="color" default-value="#ff0000" label="Stroke Color:"/>
+		<attribute name="fill_color" type="color" default-value="#ff0000" label="Fill Color:"/>
+		<!--
+		<attribute name="opacity" type="select" default-value="100" label="Opacity (%):"/>
+		<attribute name="line_opacity" type="select" default-value="100" label="Stroke Opacity (%):"/>
+		-->
+		<attribute name="label_only" type="checkbox" default-value="false" label="Only show label in print?"/>
+	</map-source>
+
+WFS 
+^^^^^^^^^^^^
+
+This type of layer is meant to communicate with Web Feature Service servers.  The Web Feature Service is a geospatial data manipulate interface based on HTTP protocol provided by OGC. It belongs to Data Service according to OGC web service architecture and it is the development of OGC Web Map Service. Web Feature Service allows a client to retrieve geospatial data encoded in Geography Markup Language (GML) from multiple Web Feature Services. It also supports INSERT, UPDATE, DELETE, QUERY and DISCOVERY operations on geographic features using HTTP as the distributed computing platform.
+
+	* *<Style>* – Allows you to reference a stall map for display. 
+	* *<url>* – URL location of services 
+	* *<attributename>* –
+	* *<feature-namespace>* –
+	* *<feature-type>* –
+	* *<geometry-name>* –
+	* *<schema>* –
+
+Example::
+
+	<map-source name="census_cities" type="wfs">
+		<style type="stylemap"><![CDATA[
+		{
+			"strokeColor" : "#00ff00",
+			"label" : "${namelsad}"
+		}
+		]]></style>
+
+		<url>/geoserver/GeoMOOSE_Testing/ows</url>
+
+		<attribute name="geoid10" type="text" label="ID:" default-value="27999"/>
+		<attribute name="namelsad10" type="text" label="Name:"/>
+
+		<feature-namespace>geomoose</feature-namespace>
+		<feature-type>census_cities</feature-type>
+		<geometry-name>wkb_geometry</geometry-name>
+		<schema> <![CDATA[http://localhost:8080/geoserver/GeoMOOSE_Testing/wfs?service=WFS&version=1.1.0&request=DescribeFeatureType&typeName=GeoMOOSE_Testing:census_cities]]></schema>
+	</map-source>
+
+WMS
+^^^^^^^^^^^^
+
+This type of layer is meant to communicate with Web Mapping Service servers. This is the OGC standard for serving raster images over the web.  Many sites deliver WMS services that can be consumed by a GeoMOOSE application. If the type is a WMS data source an optional attribute can also be specified to request the images as tiles.  This attribute is tiled=true.
+
+	* *<layer>* – The name of layers to be referenced by the map source. This name must referenced in the mapserver file. The layer name could also be "all" and all layers within the mapserver file will be used. 
+	* *name* – This is the name used internally, by GeoMOOSE to refer to the layer.  Unlike GeoMOOSE 1.0, the title of the layer displayed in the Catalog is not a one-to-one relationship with the entry in the mapbook.  This allows greater flexibility in divorcing the display-order of layers in the map and display order in the catalog.
+	* *queryable* – This is an optional attribute the tells GeoMoose whether a WMS map-source type is queryable. This attribute is only need for WMS map-source types.  Valid options are queryable='true/false'.
+	* *<url>* – Layers of type 'wms' require a <url> child specifying the URL of the WMS.
+	* *<param>* – name=FORMAT.  The format of the WMS be delivered.  The value for this parameter is typically "image/png" or "image/gif". 
+	* *<param>* – name=TRANSPARENT.  Configure if transparency is used.
+
+Example::
+
+	<map-source name="metro" type="wms">
+		<url>http://www.datafinder.org:80/wmsconnector/com.esri.wms.Esrimap/MN_MetroGIS_DataFinder_WMS_Water_Resources</url>
+		<layer name="stream_net_l"/>
+		<param name="TRANSPARENT" value="TRUE"/>
+		<param name="FORMAT" value="image/png"/>
+	</map-source>
+
+	<map-source name="test" type="wms" queryable="true">
+		<url>http://maps.co.lincoln.or.us/fcgi-bin/mapserv.exe?</url>
+		<param name="map" value="/ms4w/apps/lincoln/04/queryLincoln2.map"/>
+		<layer name="taxlots" queryable="true" />
+		<param name="TRANSPARENT" value="TRUE"/>
+		<param name="FORMAT" value="image/gif"/>
+	</map-source>
+
+XYZ
+^^^^^^^^^^
+Many TMS-like tiles are accessible in this format.
+
+Example::
+
+	<map-source name="mapquest" type="xyz">
+		<layer name="osm" />
+		<url>http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png</url>
+		<url>http://otile2.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png</url>
+		<url>http://otile3.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png</url>
+		<url>http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png</url>
+	</map-source>
+
+Yahoo
+^^^^^^^^^^
+
+Note: As of GeoMoose 2.6.2 the Yahoo MapSource type is no longer available.  This is because GeoMoose 2.6.2 updated to OpenLayers 2.12 which has `dropped support <http://trac.osgeo.org/openlayers/ticket/3380>`_ for the Yahoo layer types.
+
+Yahoo provides a variety of map services that GeoMoose can consume. For more information about specifics and licensing please go to http://developer.yahoo.com/maps/.  The basic parameters as referenced to use a Yahoo service are: 
+
+	* *<layer>*  – This is the name used internally, by GeoMOOSE to refer to the layer.  "all" recommended for Yahoo map-source types.  
+	* *yahoo-type* – This is the type of yahoo layer that will be provided. This can include: map, satellite, and  hybrid.  
+
+Example::
+
+	<map-source name="yahoo_map" type="yahoo" yahoo-type="map">
+		<layer name="all"/>
+	</map-source>
+
+.. _mapbook_services:
+
+<service>
+---------
+
+There is a lot of service documentation.  See also, :ref:`services_understanding`, :ref:`services_protocol`, and :ref:`Standard Services <services_general>`.
+
+The service element is the key to GeoMOOSE's interoperability.  All functions are a type of service (identify, select, Birdseye view, etc.). Services have attributes to define some of it's behaviour:
+* `name` - This is the internal name of the service.
+* `display` - Sets whether the the service will be displayed while "launching." It is useful to set this to false if there is no text-entry required for the service.
+* `title` - This title will be displayed automatically in the input tab.
+* `target` - If set then this attribute will display the results in a different window.
+
+Service have one `<url>` child.  The `<url>` child specifys the URL for of the service for GeoMOOSE to call::
+
+	<url>php/idnetify.php</url>
+
+Services each have `<step>` children.  There are two types of steps:
+
+* `type=spatial` - This type of step allows the layer to.  Spatial steps have additional inputs that are used to define additional information about the spatial data:
+	* `name` - This attribute specifys the CGI/form variable name in which the representation of the shape will be stored.
+	* `default` - Sets the default tool used for drawing the shape.  Valid values: point, line, polygon.
+	* `point` | `line` | `polygon` | `edit-polygon` - Turns on/off the various drawing tools.  Valid values: true, false.  The default behaviour for these are stored in Configuration.
+	* `format` - This specifys the format of the shape:
+		* `=WKT` - Use well-known text.
+		* `=delim` - Use a text delimited format.
+	* `jump-start` - When true then the service will attempt to start after the shape has been finished.
+	* `reproject` - This can be used to specify a shape projection other than the default map projection.
+	
+* `type=input` - This step only allows for the standard inputs.
+
+Steps can have many `<input>` children.  `<input>` s are very similar to the ones used in HTML forms.  All `<input>` s require a `name` attribute and a `type` attribute. The following documents the various `type` s of inputs:
+
+* `type=extent` - Sends the current extent to the service.
+* `type=hidden` - Hidden inputs are not displayed to the user but the value set in the `value` attribute is sent to the service.
+* `type=select` - Creates a drop down box.  The `title` attribute sets the label for the drop down.  These have the same `<option>` children as the HTML `<select>` elements.
+* `type=sketches` - Sends JSON describing all of the user sketches to a service.
+* `type=user` - These are basic user input text fields.  Their default value can be set using the `value` attribute.  The `title` attribute sets the label for the text field.
+* `type=visiblelayers` - Sends the list of visible layers.
+* `type=ajax_select` - Creates a drop down box populated by a remote server script.  These inputs types feature a `<url>` child which references the script to call.  The script should return HTML-style `<option>` elements, a sample return may look like this::
+
+	<options>
+		<option value="a">A</option>
+		<option value="b">B</option>
+	</options>
+* `type=precision` - Sends the precision of the map to the service.
+
+
+<layer-controls>
+----------------
+
+As of GM2 the only layer control available are popups.
+
+.. _catalog:
+
+<catalog>
+---------
+
+The GeoMOOSE Catalog, or Catalog, is the layers listing found in the table of contents on the user interface.  The catalog is represented by the <catalog> child inside of the mapbook.  The catalog has two types of children:
+
+* group – The 'group' child creates folders in the catalog.  Groups contain layer children and can also contain other groups. Groups have optional attributes:
+	* *title* – This is the text that will be shown in the Catalog to represent the layers specified in the name attribute.
+	* *expand* – A group can be started as 'open' where the contents of the group are listed.  The 'expand' attribute can either be 'true' or 'false'. This defaults to 'false'.
+	* *multiple* – While most layers are stacked, there may be a set of layers that should not be stacked on top of each other.  The most common example is background layers.  In the case of background layers, only one should be selected at a time.  To do this in GeoMOOSE, set the group's 'multiple' attribute to 'false'.   This defaults to 'true'.
+
+Group example (with sub group)::
+
+	<group title="Overlays">
+		<group title="County Layers" expand="false">
+			<layer title="Parcels" src="parcels/parcels" metadata="true" legend="true" tip="this a parcel layer, y'all" show-legend="true">
+				<metadata>http://www.geomoose.org/docs/</metadata>
+				<!--
+				<legend>images/logo_mini.gif</legend>
+				-->
+			</layer>
+			<layer title="City and County Boundaries" src="borders/city_labels:borders/county_labels:borders/county_borders:borders/city_poly"/>
+		</group>
+		<layer title="Weather Radar" src="iastate/nexrad-n0r" />
+	</group>
+
+* <layer> – This is the other possible child of the catalog.  It may optionally be a child of a group as well.  The layer child creates an entry in the catalog for the user to turn on and off layers. The layer child can have additional attributes:
+
+	* *title* – This required attribute is the text that will be shown in the Catalog to represent the layers specified in the src attribute.
+
+	* *src* – This required attribute tells GeoMOOSE where to find the source for the layer by specifying the path.  The source of the layer is the 'name' attribute specified in the <map-source> plus a '/' combined with the name attribute of the layer as specified in the <map-source>'s <layer> child.  
+
+
+	Recall this previous <map-source> example::
+
+		<map-source name="borders" type="mapserver" reference="true">
+			<file>./demo/statedata/basemap.map</file>
+			<layer name="city_labels" status="on"/>
+			<layer name="county_labels" status="on"/>
+			<layer name="city_poly" status="on"/>
+			<layer name="county_borders" status="on"/>
+		</map-source>
+
+	there are five possible values of src if using only the above <map-source>::
+
+		"borders/all"
+		"borders/city_labels"
+		"borders/county_labels"
+		"borders/city_poly"
+		"borders/county_borders"
+
+	Of course listing borders/all is redundant with listing each individually.  Multiple values can also be specified to turn on/off multiple layers with a single control.  To do this, the values need to be divided with colons.  If some of the layers in the example above were to be turned on simultaneously the src attribute would be set to multiple values as follows::
+
+		<layer title="City and County Boundaries" src="borders/city_labels:borders/city_poly"/>
+
+* <layer>s can also have optional attributes:
+
+	* *status* – Layers can be turned on by default by setting 'status' to 'on'. This defaults to 'off'.
+
+.. _legend:
+
+	* *legend* – When set to 'true', the legend control (a small '+' icon to expand and collapse the legend) will show. This defaults to 'false'.  The configuration paramter :ref:`layer_controls.legend.on <layer_controls_legend_on>` impacts the default value.  
+
+	* *show-legend* – When set to "true" the legend will display by default.  
+
+	* *fade* – Allows the layer to be incrementally made more transparent.  Fades the layer out.
+
+	* *unfade* – Allows the layer to be incrementally made less transparent.  Unfades the layer (makes it opaque again).
+
+	* *metadata* – When set to 'true', the <metadata> tag will be included as described below.  This defaults to 'false'.
+
+		* *<metadata>* - URL that refers to the location of the metadata for this catalog item.
+
+		<metadata> example::
+
+				<layer title...>
+					<metadata>http://www.geomoose.org/docs/</metadata>
+				</layer>
+
+
+<toolbar>
+---------
+
+GeoMOOSE now has a better defined toolbar.  Just as the catalog and layer definitions have become more separated, so too has the toolbar and service definitions. The toolbar is specified using the <toolbar> child.  The <toolbar> child has no attributes and two kind of child, the ``<tool>`` child and the ``<drawer>`` child. 
+
+``<tool>`` children define the tool in the toolbar and tells geomoose what to do when the tool is clicked. <Tool> children have a number of attributes:
+
+* name – The name is the name for the tool.
+* title -  This is the title displayed in the tool bar if the text is shown and in the mouseover popup.
+* selectable - This is a boolean attribute.  Examples of "selectable" tools: Identify, Select, Zoom.  Examples of tools that are not usually "selectable": Print, Search Parcels.
+* type – This attribute determines whether the tool calls an internal function or a service as defined in a 'service' child.  There are three valid types, 'internal', 'javascript', and 'service.'
+	* type = 'service' adds an additional required attribute, 'service' which is the name of the service specified in the <service> tag.
+	* type = 'javascript' has no additional required attributes but the node's value should contain javascript to be executed when the tool is selected.
+	* type = 'internal' adds an additional required attribute, 'action' which is the type of action to be taken current valid values are:
+		* zoomin – start the zoomin tool
+		* zoomout – start the zoom-out tool
+		* pan – start the pan tool
+		* previous – step back to the previous extent
+		* next – step forward to the next extent if jumped back using the 'previous' tool.
+		* measure – start the measure length tool.
+		* measurearea – start the measure area tool.
+		* fullextent – zoom to the predefined initial extent of the map.
+		* draw_polygon - start the polygon drawing tool for the sketch layer.
+		* draw_line - start the line drawing tool for the sketch layer.
+		* draw_point - start the point drawing tool for the sketch layer.
+		* draw_remove - start the tool for removing shapes from teh sketch layer.
+		* draw_edit - start the sketch layer shape editing tool
+		* draw_edit_attributes - start the edit attribute tool.  This is the tool that allows the user to change the shape colors and opacity.
+
+``<drawer>`` children contain tools and create a small "drop down menu" in the toolbar to compress the space required for related tools.  For example the drawing tools can easily be combined into a ``<drawer>``::
+
+                <drawer>
+                        <tool name="draw_polygon" title="Draw Polygon" type="internal" action="draw_polygon"/>
+                        <tool name="draw_line" title="Draw Line" type="internal" action="draw_line"/>
+                        <tool name="draw_point" title="Draw Point" type="internal" action="draw_point"/>
+                        <tool name="draw_remove" title="Remove Drawing" type="internal" action="draw_remove"/>
+                        <tool name="draw_edit" title="Edit Drawing" type="internal" action="draw_edit"/>
+                </drawer>
+
+
+Specifying Icons for a Tool in the Toolbar
+------------------------------------------
+
+Every tool in the toolbar is given a unique ID that allows it to be referenced in CSS.  The icons are all specified as backgrounds in the htdocs/css/user_tools.css file.  Editing that will show examples of how to specify the icons for a new tool.  This change was made to support the use of CSS sprites to increase the load time of GeoMOOSE.
+
+Here is an example featuring the "Print" tool::
+
+	#tool-print {
+		width: auto;
+		background-position: 2 2;
+		background-image: url('../images/toolbar/printer.png');
+	}
+
+	#tool-print .ToolContent {
+		display: -moz-inline-box;
+		display: inline-block;
+		width: auto;
+	}
+
+	#tool-print .ToolText {
+		display: block;
+		padding-top: 3px;
+		padding-right: 3px;
+
+		display: -moz-inline-box;
+		display: inline-block;
+	}
+

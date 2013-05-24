@@ -1,0 +1,113 @@
+.. _wfst_feature_editor:
+
+Using GeoServer with GeoMOOSE
+=============================
+
+This is a basic walk-through using to use GeoMOOSE with GeoServer and PostGIS.  This is not meant to be comprehensive and the reader should have some knowledge of GeoServer and PostGIS.  GeoMOOSE comes configured with a WFS-T example, using the U.S. Census Bureau's Places layer.
+
+Setup GeoServer
+---------------
+
+The best documentation on setting up GeoServer comes from GeoServer itself.
+
+And here is the `GeoServer Documentation <http://docs.geoserver.org/stable/en/user/>`_.
+
+Install and startup a fresh GeoServer instance.
+
+Download the Places Layer from the Census Bureau
+------------------------------------------------
+
+Download the file `here <ftp://anonymous@ftp2.census.gov/geo/tiger/TIGER2010/PLACE/2010/tl_2010_27_place10.zip>`_.  This is the "place" file for the state of Minnesota.  "Places" are a Census terminology for incorporated cities, townships, and equivalents.
+
+Install the Places Shapefile into PostGIS
+-----------------------------------------
+
+There are a few good methods for doing this, `ogr2ogr` and `shp2pgsql`.   Whichever method is used, the layer should be named `census_cities` for the purposes of this exmaple.
+
+A typical `ogr2ogr` string will look similar to this::
+
+	ogr2ogr -f PostgreSQL 'PG:dbname=gis2 user=gis password=super_gis' tl_2010_27_place10.shp tl_2010_27_place10 -nln census_cities -nlt GEOMETRY -lco DIM=2
+
+Configure GeoServer
+-------------------
+
+Create a `GeoMOOSE_Testing` Workspace
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. In the left control-panel column of GeoServer, under the "Data" header, click on "Workspaces".
+2. Click the green "+" button.
+3. Name the work space "GeoMOOSE_Testing" with the namespace "geomoose".
+
+Add a `census_plc` Store
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. In the left control-panel column of GeoServer, under the "Data" header, click on "Stores".
+2. Click the green "+" button. Create a new PostGIS Database store.
+3. Use the following settings:
+
+ * Workspace: GeoMOOSE_Testing
+ * Data Source Name: census_data
+ * Description: Census Cities for Testing
+ * Enabled: Should be checked to indicate "true".
+ * The rest of the settings are for PostgreSQL, please fill them out to match the information you used to load the shapefile. If they do not match the next step will end in a miserable disaster.
+
+Add the Layer
+^^^^^^^^^^^^^
+
+1. In the left control-panel column of GeoServer, under the "Data" header, click on "Layers".
+2. Click the green "+" button. 
+3. Select "GeoMOOSE_Testing:census_data"
+4. A list should appear, next to `census_cities` click the "Publish" button.
+5. The information should fill in automatically.  Click "Save" at the bottom.
+
+Setup the Layer to be Served Transactionally
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. In the left control-panel column of GeoServer, under the "Data" header, click on "Layers".
+2. You should now see a list featureing the "census_cities" layer.  Click on the layer name to view the settings.
+3. The basic information for the layer should now be shown.  Click on the "Publishing" tab.  Ensure that "enabled" is checked.
+
+Set GeoServer to Server Transactionally
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. In the left control-panel column of GeoServer, under the "Services" header, click on "WFS".
+2. Scroll to the section labelled "Service Level".
+3. Set the "Service Level" radio button to "Complete".
+4. Scroll to the bottom and click "Submit".
+
+Setting up a WFS-T alias for Testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is probably the largest amount of witchcraft and wizardry required to complete a WFS-T server.  Because the WFS-T server requires AJAX it is critical that the WFS-T server is on the exact same domain as the GeoMOOSE application.  By default GeoServer will attach to port 8080, while Apache attached to port 80.  This is normal and really does not need to be changed for testing purposes.  The GeoMOOSE demo assumes that GeoServer is being proxied by Apache using the following configuration::
+
+ ProxyPass /geoserver http://localhost:8080/geoserver
+ ProxyPassReverse /geoserver http://localhost:8080/geoserver
+
+There are other methods for doing this using Nginx or IIS but that is out of the scope of this document.  The author offers the Apache configuration as a sample and only out of kindness since he is using the aforementioned configuration. 
+
+Mapbook Setup
+-------------
+
+The Mapbook currently features a fragment which supports the above configuration of GeoServer. Here is that fragement::
+
+	<map-source name="census_cities" type="wfs" status="on">
+		<style type="stylemap"><![CDATA[
+		{
+			"strokeColor" : "#00ff00",
+			"label" : "${namelsad}"
+		}
+		]]></style>
+
+		<url>/geoserver/GeoMOOSE_Testing/ows</url>
+
+		<attribute name="geoid10" type="text" label="ID:" default-value="27999"/>
+		<attribute name="namelsad10" type="text" label="Name:"/>
+
+
+		<feature-namespace>geomoose</feature-namespace>
+		<feature-type>census_cities</feature-type>
+		<geometry-name>wkb_geometry</geometry-name>
+		<schema><![CDATA[http://localhost:8080/geoserver/GeoMOOSE_Testing/wfs?service=WFS&version=1.1.0&request=DescribeFeatureType&typeName=GeoMOOSE_Testing:census_cities]]></schema>
+	</map-source>
+
+

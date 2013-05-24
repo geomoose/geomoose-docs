@@ -1,0 +1,94 @@
+.. _select:
+
+..  role:: highlight
+
+How To Configure Select Capablility For A Layer
+====================================================
+
+GeoMoose includes a select service that allows you to graphically select features and display attributes for a map layer.  COnfiguring the select capability for a layer in GeoMoose 2 is a multistep proces.  
+
+Step 1: Create the HTML files 
+---------------------------------------
+The HTML files will be used to format how information is displayed in the select results tab.  The files follow standard HTML formats and will reference fields that exist for the select layer. Below is an example of the header HTML for parcels in the demo select_header.html file located in ..maps/demo/parcels/templates:: 
+
+	<!-- MapServer Template -->
+	<a target="_blank" href="php/mailing_labels.php?queryid=[QUERYID]&output=pdf">PDF Mailing Labels</a><br/>
+	<a target="_blank" href="php/mailing_labels.php?queryid=[QUERYID]&output=html">HTML Mailing Labels</a><br/>
+	<a target="_blank" href="php/mailing_labels.php?queryid=[QUERYID]&output=csv">CSV Mailing Labels</a><br/>
+	<br/>
+	<div style="display: [SHOW_FOLLOWUP]"/>
+	<a href="javascript:GeoMOOSE.startService('buffered_select_followup', {shape: '[SHAPE_WKT]', select_layer: '[SELECT_LAYER]', query_layer: '[SELECT_LAYER]', selection_buffer: [SELECTION_BUFFER]})">Buffer these results</a>
+	<br/><br/>
+	</div>
+
+Please note that this HTML can be used to link to other sites or services using standard HTML like <A HREF=> tags as illustrated in the example above. The header is diplayed one time at the top of the results tab.  Following the header will be the results which will display for each selected feature.  Below is an example of the results HTML for parcels in the demo select_results.html file located in ..maps/demo/parcels/templates:: 
+
+	<!-- MapServer Template -->
+	<table>
+	<tr>
+	<td><b>PIN:</b></td>
+	<td>[PIN]</td>
+	</tr>
+	<tr>
+	<td><b>Owner Name:</b></td>
+	<td>[OWNER_NAME]</td>
+	</tr>
+	<tr>
+	<td><b>Est. Market Value:</b></td>
+	<td>[EMV_TOTAL]</td>
+	</tr>
+	<tr>
+	<td><b>Acres:</b></td>
+	<td>[ACRES_POLY]</td>
+	</tr>
+	<tr>
+	<td colspan="2"><hr/></td>
+	</tr>
+	</table>
+
+You can also have a footer file.  Remember the first line of your file must be "<!-- MapServer Template -->" followed by the appropriate HTML tags and it must be referenced in your map file correctly as discussed in the following section. 
+
+
+Step 2: Reference the HTML files in your MapServer map file
+-----------------------------------------------------------------
+
+The select HTML files must then be referenced in the metadata section in your map file within your layer.  The following is an example of how this is done from the parcels.map file in the demo located in ..maps/demo/parcels. ::
+
+	LAYER
+	NAME parcels
+	DATA './parcels.shp'
+	...
+	...
+		METADATA 
+		    ...
+		    'select_record'	'templates/select_result.html'
+		    'select_header'	'templates/select_header.html'
+		    ...
+		END 
+	...
+	END
+
+
+Remember when referencing the HTML's to make sure you have the correct relative paths set. 
+
+
+Step 3: Add the layer to the Select Service in mapbook.xml
+----------------------------------------------------------
+
+The third step is to add the layer to the select.php reference in the mapbook.xml.  You can have multiple layers available for selection in the select service.  To add a layer locate the select service called ``<service name="buffered_select" title="Select Features">`` in the mapbook.xml.  Locate the line for parcels in the section and add your line so it appears as follows::
+
+	<input type="select" name="select_layer" title="Select features from:">
+		<option value="parcels/parcels">Parcels</option>
+		<option value="source/name">MyNewSearch Layer</option>
+	</input>
+
+:highlight:`<option value="source/name">MyNewSearch Layer</option>` is the added line
+
+Your new select layer must be referenced by its source and layer name. 
+
+Tips and Advice
+---------------
+
+Why no results with point or line layers?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You need to set a TOLERANCE in the mapfile, see also :ref:`FAQ - Why no results? <Why_no_results>`

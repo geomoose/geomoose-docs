@@ -1,0 +1,25 @@
+.. _run_trunk:
+
+
+How to Run Trunk
+==================================================
+
+Background
+---------------------
+To stay up to date as GeoMOOSE development happens, you may want to track trunk.  To run the most current GeoMOOSE code you will need to svn checkout or svn export `<http://svn.osgeo.org/geomoose/geomoose2/trunk/>`_.  If reading yesterday's newspaper will suffice, you may want to consider running the nightly builds since it is slightly less effort, see also :ref:`download`.  Everytime you download and run that, you will have yesterday's status.  
+
+How to
+---------------------
+
+
+Windows (MS4W)
+^^^^^^^^^^^^^^^^^^^^^^^^
+#. Have MS4W (MS4W version 3.0.4+ for GeoMoose 2.6) properly installed on your computer, see also :doc:`install MS4W, </docs/install_ms4w>`
+#. Create /ms4w/apps/geomoose2/ if you don't already have it (if you already have it, back it up or delete it)
+#. Explore to /ms4w/apps/geomoose2/ and svn checkout http://svn.osgeo.org/geomoose/geomoose2/trunk/.  Also consider svn export.  (Note: you will need an svn client to do that, `TortoiseSVN <http://tortoisesvn.tigris.org/>`_ works well on Windows.  Access it by right clicking in a window.)
+#. Rename /ms4w/apps/geomoose2/conf/ms4w_local_settings.ini to local_settings.ini
+#. If you don't already have /ms4w/httpd.d/httpd_geomoose2_ms4w.conf, copy it from /ms4w/apps/geomoose2/ms4w/httpd.d/
+#. If you don't already have /ms4w/Apache/htdocs/geomoose2.pkg.html, copy it from /ms4w/apps/geomoose2/ms4w/Apache/htdocs/
+#. Restart apache (/ms4w/apache-restart.bat)
+#. Point browser to `<http://localhost/geomoose2/geomoose.html>`_
+#. To stay current with trunk: if you did svn checkout, then svn update in /ms4w/apps/geomoose2/  (if you did svn export do it again.)

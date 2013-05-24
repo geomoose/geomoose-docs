@@ -1,0 +1,220 @@
+.. _services_understanding:
+
+
+Understanding GeoMOOSE Services
+===============================
+
+Introduction
+------------
+
+GeoMOOSE expects services to return a special HTML format that allows it to display information and manipulate the user interface.  Learning how to craft custom services enables developers and administrators to extend GeoMOOSE past the capabilities provided in the demos.
+
+
+Our First Service
+-----------------
+
+To create our first service we are going to focus on a very basic GeoMOOSE PHP-Service. Save these contents to `php/myservice.php`: ::
+
+ <?php 
+ header('Content-type: application/xml')
+ ?>
+
+ <results>
+  <script>
+  </script>
+  <html>
+   This is my first service.
+  </html>
+ </results>
+
+
+The following is a commented version of the code explaining all of the components. ::
+
+ <?php
+ # Switch PHP to return XML instead of HTML
+ header('Content-type: application/xml')
+ ?>
+
+ <results> <!-- opening return tag -->
+  <script>
+   <!-- this is where we can put javascript to be executed by GeoMOOSE, we leave it blank 
+  </script>
+  <!-- HTML sections are displayed in the tab when data is returned by the service -->
+  <html>
+   <!-- this is the html we are returning -->
+   This is my first service
+  </html> <!-- close the html section -->
+ </results> <!-- close the results -->
+
+
+Defining the Service in the Mapbook
+-------------------------------------
+
+Integrating a service with GeoMOOSE requires two parts.  First, defining how to communicate with the service.  This is done with a `<service>` tag.  Second, we need to define a tool in the toolbar that calls the the service we have defined.
+
+To use our example, we need to find an open place in the Mapbook to add the text.  For our purposes, find the `</configuration>` tag, and insert the following text afterwards. ::
+
+ <service name="newservice"  title="My New Service">
+  <url>php/myservice.php</url>
+ </service>
+
+The contextual meaning of the different attributes and children are listed here. ::
+
+ <!-- 
+  The "name" attribute is used to refer to the service from here after.
+  The "title" attribute is used to label the service later.
+ -->
+ <service name="newservice"  title="My New Service">
+  <!-- url defines the path to the service -->
+  <url>php/myservice.php</url>
+ </service>
+
+The `<service>` entry above defines how the application should communicate with the service.  Now, we need to add the service to the user interface.  To do this we need to add a `<tool>` entry to the `<toolbar>`.  There are a number of types of `<tool>`s found in the `<toolbar>`.  They are:
+ * `internal` - These are built-in javascript type tools that trigger different behaviors in the UI.
+ * `javascript` - These can be used to add arbitrary javascript code to the "onclick" event to a tool.
+ * `service` - These call services defined by `<service>` tags and is the type we will use in our example.
+ * `layer` - These call layer editing tools.
+
+The easiest spot to add this entry is before the `</toolbar>` line. ::
+
+ <tool name="my_tool" title="My service" type="service" selectable="false" service="newservice"/>
+
+The other attributes for a tool are.
+ * `name` - This is the name of the tool. It can be used to hook to different styling elements.
+ * `title` - This is the label for the tool.  By default the label is only shown when hovering over the tool.
+ * `selectable` - Tools that are `selectable` cannot be used when other tools are being used.  If tool has `selectable` set to false then it will not prevent other tools from operating at the same time.
+ * `service` - This is the service to call when this tool is clicked.  This is only valid for `tool`s with `type="service"`.
+
+Testing out the new Service
+---------------------------
+
+To test the new service, clear the browser cache and reload GeoMOOSE.  A small binoculars should appear at the end of the list of tools.
+
+Clicking on the binoculars will make the text "This is my first service." appear in the Results tab.
+
+Adding User Input
+-----------------
+
+From time to time, it is necessary to allow users to enter parameters to the service.  GeoMOOSE supports a number of different inputs types that can be found in :doc:`this reference </docs/mapbook>`. 
+
+First, we will modify the service to output some requests. ::
+
+ <?php 
+ header('Content-type: application/xml')
+ ?>
+
+ <results>
+  <script>
+  </script>
+  <html>
+   This is my first service, 
+   	<?php echo $_REQUEST['username']; ?>, 
+   and you drew the shape 
+   	<?php echo urldecode($_REQUEST['wkt']); ?>.
+  </html>
+ </results>
+
+Second, we will add an input "step" to the service.  GeoMOOSE allows services to have a number of input steps.  Each input step is like a slide in a presentation, or pages of a book, where the user is prompted to enter information.  A special type of step is the `type="spatial"`, these will prompt the user to draw a shape on the map.  This lets services have both multiple pages of inputs and multiple spatial inputs.  In this example, we will add both a spatial and an input step. ::
+
+ <service name="newservice" title="My Service">
+  <url>php/myservice.php</url> <!-- The URL to our service -->
+  <!-- 
+   This will prompt the user to create a shape.  The shape
+   will be stored in WKT and sent to the script in a field named wkt
+  -->
+  <step type="spatial" name="wkt"> 
+  </step>
+  <!--
+    This will ask the user to enter a user name.
+  -->
+  <step type="input">
+   <input name="username" type="user" title="Username:"/>
+  </step>
+ </service>
+
+Annoying the User
+-----------------
+
+Up to this point we have explored the `<html>` section of a GeoMOOSE service results.  The `<script>` tag is the much more powerful and useful of these directives.  While we do allow for completely dangerous and arbitrary Javascript to be included in these sections it is worth taking heed of a few key ideas:
+ 1. Underlying API's and DOM ID's can change.  Try not to use Javascript that is dependent on the back-end code's internal API structure.  Many of the DOM ID's used by GeoMOOSE and OpenLayers are automatically generated and even small changes can change those ID's.
+ 2. The file `geomoose.js` contains the `GeoMOOSE` API which we strive to maintain compatibility between revisions.
+
+Our first demonstration will be to annoy the user.  We will once again modify `myservice.php`. ::
+
+ <?php
+ header('Content-type: application/xml')
+ ?>
+
+ <results>
+  <script><![CDATA[
+   alert('Hello, <?php echo $_REQUEST['username'] ?>, this is probably annoying.');
+  ]]></script>
+  <html>
+   This is my first service,
+        <?php echo $_REQUEST['username']; ?>,
+   and you drew the shape
+        <?php echo urldecode($_REQUEST['wkt']); ?>.
+  </html>
+ </results>
+
+Doing something Useful
+----------------------
+
+While it can be fun to simply annoy users, it is probably more practical to do something useful with the information we are given.  This example parses the WKT of the user's input and zooms to that location on the map. ::
+
+ <?php
+ header('Content-type: application/xml')
+ ?>
+
+ <results>
+  <script><![CDATA[
+   var wkt_parser = new OpenLayers.Format.WKT();
+   var feature = wkt_parser.read("<?php echo urldecode($_REQUEST['wkt']); ?>");
+   Map.zoomToExtent(feature.geometry.getBounds());
+  ]]></script>
+  <html>
+   This is my first service,
+        <?php echo $_REQUEST['username']; ?>,
+   and you drew the shape
+        <?php echo urldecode($_REQUEST['wkt']); ?>.
+  </html>
+ </results>
+
+Stylizing Your Toolbar Icon
+---------------------------
+
+Showing the Label
+^^^^^^^^^^^^^^^^^
+
+Changing the label is very simple.  Set the `show-label` attribute to `true`. ::
+
+ <tool name="my_tool" title="My service" type="service" selectable="false" service="newservice" show-label="true"/>
+
+Changing the Icon
+^^^^^^^^^^^^^^^^^
+ 
+GeoMOOSE contains icons for the various default icons but changing the default icon for a custom service does require two steps.
+
+First, we need to add a snippet of CSS either as a `<style>` block in the HTML or in an included CSS file. ::
+
+ .my_tool_icon {
+   background-image: url("images/toolbar/bell.png");
+   background-repeat: no-repeat;
+   width: 18px;
+   height: 18px;
+ }
+
+*Ensure the path to the image is correct.  If this snippet is added to a subdirectory like `css` then the path will be `../images/toolbar/bell.png`.* 
+
+Second, we need to set the `icon-class` attribute.::
+
+ <tool name="my_tool" title="My service" type="service" selectable="false" service="newservice" show-label="true" icon-class="my_tool_icon"/>
+
+Going Further
+-------------
+
+This combination of Javascript and HTML can be used to add any number of new features to GeoMOOSE.  Taking the time to write a well crafted services allows GeoMOOSE to integrate and extend existing architecture.  Also, while these examples use PHP, there is nothing limiting it to that language.  Other installs have used Perl, Python, and Ruby to power GeoMOOSE.
+
+The services included with GeoMOOSE's demo cover a wide range of queries.  They are very powerful and mature being in use in production environments.  They can serve as exceptional reference material.
+
+See also, :ref:`mapbook_services`.

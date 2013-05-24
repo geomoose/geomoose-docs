@@ -1,0 +1,147 @@
+.. _layer:
+
+How To Add Layers
+==========================
+
+Adding a new layer in GeoMOOSE 2 is a two step procedure.  The first step is to define how GeoMOOSE should communicate with the layer (whether it is MapServer or a WMS source) and the second step defines the layer in the catalog.
+
+Step 1: Adding a Layer
+----------------------
+
+All requests start with a ``<map-source>`` tag with a ``name`` and ``type`` attribute.  The name is the name of the source that will be used with GeoMOOSE.  This name does not need to relate to the source that is going to be read.  The type attribute determines what type of service will be read.  The children of the ``<map-source>`` are determined by the ``type`` attribute.  Currently ``mapserver`` and ``wms`` types are the two that are supported.
+
+All ``<map-source>`` types have ``<layer>`` children.  ``<layer>`` children have only one attribute ``name``.   The ``name`` attribute for ``<layer>`` children reflects the name of the layer in the MapServer Mapfile or the name of the layer served by the WMS Service.  Some MapServer mapfiles will have all layers set to "default" in which case there should still be one ``<layer>`` entry in the ``<map-source>`` with the name of "all."
+
+A Mapserver Layer
+^^^^^^^^^^^^^^^^^
+
+Mapserver Layers need to have the ``<file>`` tag filled out specifying the location of the mapfile.  This path can be relative to the ``root=`` value in the ``[paths]`` section of local_settings.ini or an absolute path on the file system.
+
+Here is an example of the parcels layer from the default demo::
+
+        <map-source name="parcels" type="mapserver">
+                <file>./demo/landrecords/parcels.map</file>
+                <layer name="all"/>
+        </map-source>
+
+Here is an example of the borders including multiple layers from the default demo::
+
+        <map-source name="borders" type="mapserver" reference="true">
+                <file>./demo/statedata/basemap.map</file>
+                <layer name="city_labels" status="on"/>
+                <layer name="county_labels" status="on"/>
+                <layer name="city_poly" status="on"/>
+                <layer name="county_borders" status="on"/>
+        </map-source>
+
+A WMS Layer
+^^^^^^^^^^^
+
+WMS Layers have a ``<url>`` child that defines the root URL of the WMS service.
+
+This is an example using the LMIC FSA Photography::
+
+        <map-source name="lmic" type="wms" tiled="false">
+                <url>http://geoint.lmic.state.mn.us/cgi-bin/wms</url>
+                <layer name="fsa"/>
+        </map-source>
+
+Step 2: Adding the Layer to the Catalog
+---------------------------------------
+
+After defining how to talk to the layer we need to define how to display the layer in the interface.
+
+
+Layers are defined in the ``<catalog>`` section of the mapbook.  To add the LMIC FSA photography the ``<layer>`` entry would look like this::
+
+        <layer title="LMIC 2003 FSA Aerials" src="lmic/fsa" status="on"/>
+
+To add the borders including multiple layers the ``<layer>`` entry would look like this::
+
+        <layer title="City and County Boundaries" src="borders/city_labels:borders/county_labels:borders/county_borders:borders/city_poly"/>
+
+The individual parts:
+
+* ``title=`` - Sets the title in the mapbook to be displayed
+* ``src=`` - This is the layer name, it is a combination of the ``map-source``'s name combined with the ``layer``'s name from the definitions above.
+* ``status=`` - This determines whether the layer is either on or off by when the map loads.  Omitting ``status=`` will leave the layer off.
+* ``legend=`` - (true of false) This determines whether to show the legend control (a small '+' icon to expand and collapse the legend) or not.  See also, :ref:`mapbook catalog section <legend>` and :ref:`layer_controls.legend.on <layer_controls_legend_on>` configuration paramter.
+* ``show-legend=`` - (true of false) This determines whether to show the legend or not by default (i.e. show-legend="false" and legend="true" lets the user expand and see the legend).  See also, :ref:`mapbook catalog section <legend>` and :ref:`layer_controls.legend.on <layer_controls_legend_on>` configuration paramter.
+* ``fade=`` - (true of false) This determines whether to allow fading for the layer or not.
+* ``unfade=`` - (true of false) This determines whether to allow unfading for the layer or not.
+* ``metadata=`` - (true of false) When set to 'true', the metadata tag is also included.  See also, :ref:`catalog` in the Mapbook Reference.
+
+
+Tips and Advice
+----------------------------
+
+Using MapSever 
+^^^^^^^^^^^^^^
+
+GeoMoose fully utilizes MapServer mapfiles.  The MapServer files and data are located in the \maps directory in the demo.   Extensive documentation regarding Mapserver is located at `MapServer <http://mapserver.org>`_.  A few important issues should be remembered when using MapServer from within the GeoMoose environment: 
+
+1. GeoMoose 2.6+ now uses MapServer only as a published  WMS (for display).  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+GeoMoose 2.6 is now configured to only consume MapServer spatial maps as a WMS.  This means the map file needs to contain the code to publish a WMS.  At a minimum the map file should have the metadata code to name the service, identifiy the projection, and enable a request as illustrated in the following code taken from the parcel.map file in the demo. ::
+
+	WEB
+		METADATA
+			'ows_title' 'County'
+			'ows_srs' 'EPSG:26915 EPSG:4326 EPSG:900913 EPSG:3857'
+			'ows_enable_request' '*'
+		END
+	END
+
+MapServer contains many other options for configuring the WMS which are dicussed in detail on the MapServer web site.  As an added benefit the WMS now produced can also be consumed by other applications that can consume a WMS. 
+
+
+2. Usinging geomoose_globals.map file 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+GeoMoose map files typically reference the "geomoose_globals.map" file as included in the parcel.map file on the demo. ::
+
+	INCLUDE "../../geomoose_globals.map"
+
+The "geomoose_globals.map" file is located in the maps directory and contains basic map parameters that GeoMoose relies on such as the calls to the symbol and fontset files as well as predefined output parameters.  The demo has been setup based on relative paths to call the global file which in turn uses the relative path to call the fonset and symbol files.  **It is important that if you change the general path structure that is used in the demo that you change the relative path calls in the geomoose_globals file.**
+
+
+3. Symbols and Fonts 
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+Symbols and Fonts that are referenced by MapServer are stored in the maps/fonts and maps/symbols directory.  Remember to check that any fonts or symbols referenced in a mapfile exist.  MapServer has great documentation on changing symbols and fonts. 
+
+
+4. Expanding map layer functionality 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The functionality of your map layers can be increased to support queries, identify, selects and reports from within the mapfile as illustrated in the parcel.map file in the demo. ::
+
+
+	LAYER
+	NAME parcels
+	DATA './parcels.shp'
+	...
+	...
+		METADATA
+			# drill-down identify service record.
+			'identify_record'	'templates/identify.html'
+
+			# query.php / "Search Parcels" functionality.
+			'itemquery'	'templates/search_result.html'
+			'itemquery-filter'	'/.*[qstring].*/i' 
+			'qstring_validation_pattern' '.'
+			
+			# Feature reports are stored in the conf/feature_report directory.
+			'feature_report' 'parcel.xml'
+
+			'select_record'	'templates/select_result.html'
+			'select_header' 'templates/select_header.html'
+			'popups' 'parcels_popup.html'
+
+		END
+	...
+	END
+
+
+This functionality is discussed in more detail in other sections of the documentation.

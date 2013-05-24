@@ -1,0 +1,40 @@
+GeoMOOSE Sprite Generator, Toolbar and Catalog Styles
+=====================================================
+
+To make GeoMOOSE more efficient all toolbar and layer controls have been combined into a single image.  All of the tool images are changed by manipulating CSS settings.
+
+The GeoMOOSE Sprite
+-------------------
+
+A “sprite” is a combined image that contains many smaller “sub images.”  In older versions of GeoMOOSE every image was stored in its own file.  For every image used, the web-browser needed to make a request to the web-server.  On an average site this could mean downloading over 100 images files.  It was also problematic as some browsers would download the same image multiple times.
+	To decrease this load we have created a method for creating a sprite and a CSS file that ties together the combined image and the differing tools.
+
+Explaining the Sprite Layout
+----------------------------
+
+The sprite has two columns.  The left column is the tool in its “normal” state and the right column contains the tool in its “selected” state.  Each row represents a different tool.  
+
+Generating the Sprite
+---------------------
+
+The sprite is generated with the “createSprite.py” script located in the “tools” directory.  The “createSprite.py” script also generates the CSS.  The CSS outputs to the standard output.  The general operation for generating the sprite is as follows:
+
+1. .cd tools
+2. ./createSprite.py > ../htdocs/css/sprite.css
+3. Open htdocs/images/all.png in GIMP
+4. Save the PNG as a GIF for IE6 support. *If steps 3 and 4 are neglected IE users will see very strange sprites.*
+
+To specify an image for a “selected” tool add an image in the images/toolbar directory with “-selected” included at the end of the name.  For example, the popups tool has two images in the toolbar directory: “popups.png”, “popups-selected.png”.  When createSprite.py runs it searches the directory for the “selected” images and places them in the right-column of the sprite as appropriate.
+
+Toolbar Styling
+---------------
+
+The toolbar styling has two components:
+
+1. The sprite imaging layout explained above.
+2. .Tool and .selected.
+
+	1. .Tool – defines the basic CSS for laying out the tool.
+	2. .selected – defines additional information when the tool is selected.  In the default installation this makes the toolbar tool background grey.
+
+..note:: You will need to have Python installed on your computer to run this script.  If you are running Windows, you probably need to get PIL library for Python.  See http://www.pythonware.com/products/pil/

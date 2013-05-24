@@ -1,0 +1,41 @@
+How To Avoid getmapbook.php
+===========================
+
+There are installations that do not use the PHP services provided with GeoMOOSE.  If the reader is truly intereted in this document then they are probably one of those exact users.  This how to is written assuming you have a strong sense of how your server is configured and how the GeoMOOSE services system functions in your environment.
+
+Why This is a Bad Idea
+----------------------
+The mapbook is the all-knowing configuration file for GeoMOOSE.  All of the built-in services use this file as the center definition for the application.  There are also a few non-philosophical reasons why getmapbook.php exists:
+
+* Central Configration.  Using the default configuration, to change the current mapbook, only one line in conf/settings.ini needs to change and all of the services and the main HTML/JS application switch to using that mapbook.
+* Future Security.  While GeoMOOSE 2.0 has not implemented the feature yet, we are actively building a security model that uses the getMapbook() function as the central marschall for authorization.  This security feature will allow a single GeoMOOSE installation to be used for either internal or external use.  It also promises to allow an organization to prevent differing options to users based on a login.
+
+``[/soapbox]``
+
+Why It's Okay
+-------------
+As stated in the introduction, if you're doing this, you should know what you're doing.
+
+Here are a couple of reasons to override the mapbook setting:
+
+* If you are having difficulty getting PHP working on your server and want to experiment with GeoMOOSE 
+* You want to use a different server-side scripting language (such as Python or ASP) and are not interested in using the other GeoMOOSE PHP services.
+
+Step 1: Override the 'mapbook' Setting
+--------------------------------------
+The 'mapbook' attribute of CONFIGURAITON is the only one that cannot be overriden after the mapbook is loaded.  Thus, some small changes need to be made to the geomoose.html file.  Find the line that includes "compiled.js" and add the URL to your mapbook afterwards::
+
+	<script type="text/javascript" src="compiled.js"></script>
+	<script type="text/javascript">
+		CONFIGURATION['mapbook'] = 'mapbook.xml';
+	</script>
+
+Step 2: Change the settings.ini File (PHP Only)
+-----------------------------------------------
+It is possible to use the other PHP services with a mapbook over-ride present but they still need to know the location of that mapbook.  The ``settings.ini`` file in the ``conf/`` director contains such information.
+
+conf/settings.ini::
+	[defaults]
+	; Location of the default mapbook
+	mapbook=../htdocs/mapbook_demo.xml
+

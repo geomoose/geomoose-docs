@@ -1,0 +1,14 @@
+How To Add Text to a Tool
+=========================
+
+Some tools should have text.  While an Icon is nice, sometimes you may only have a single icon that is used repetetively for a number of searches.  As is often the case, it's simply easier to read, "Search Assets" instead of filing through the four or five relatively obscure looking 16 x 16 pixel icons. Tools on the toolbar are defined in the ``<toolbar>`` section of the mapbook.
+
+Simply add show-label="true" to the tool in the mapbook.xml to show text. To not display text remove the show-label="true" as the default is to not display text.
+
+To Show Text For ZoomIn::
+
+    <tool name="zoomin" title="Zoom In" type="internal" action="zoomin" show-label="true"/>
+
+To Not Show Text For ZoomIn::
+
+    <tool name="zoomin" title="Zoom In" type="internal" action="zoomin"/>

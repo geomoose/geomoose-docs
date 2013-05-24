@@ -1,0 +1,45 @@
+How To Call a Service at Startup
+================================
+
+GeoMOOSE is centered around its services.  Services are defined in the mapbook by the ``<service>`` tag and they define how GeoMOOSE should communicate with external scripts.  There are a number of scenarios in which it is neccessary to call a service on startup.  The primary example of this functionality is the ability to zoom to and highlight a feature upon opening the interface.
+
+Given the item query service provided with the demo::
+
+        <service name="search_parcels">
+		<!-- The URL of the service to call -->
+                <url>php/itemquery.php</url>
+	
+		<!-- most service have one or two "steps" this one is a non-spatial input -->
+                <step type="input">
+
+			<!-- the field to search against -->
+                        <input type="select" name="qitem" title="Search By:">
+                                <option value="OWNER_NAME">Owner</option>
+                                <option value="PID">Parcel ID</option>
+                        </input>
+	
+			<!-- this is the actual search string -->
+                        <input type="user" name="qstring" title=""/>
+
+			<!-- these are the rest of the settings for the service -->
+                        <input type="hidden" name="layer" value="parcels/all"/>
+                        <input type="hidden" name="zoom_to_first" value="false"/>
+                        <input type="hidden" name="highlight" value="true"/>
+                </step>
+        </service>
+
+Using this service there are two important things to note:
+
+1. The name of the service, "search_parcels"
+2. The inputs of type "user", these are the inputs that would require the user to enter text.  We need to bypass that with parameters for the URL.  In this example, the only "user" input is "qstring".  
+
+Calling the URL
+---------------
+
+To call the service, the url must specify the "call" parameter and the appropriate user-inputs::
+
+	geomoose.html?call=search_parcels&qstring=Johnson
+
+* The "call" parameter specifies the name of the service to call
+* The "qstring" parameter is the same name of the input of type "user" and its value is set to "Johnson"
+

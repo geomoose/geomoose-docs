@@ -1,0 +1,29 @@
+Using Vector Layers
+===================
+
+Configuring Vector Layers For Users
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Configuration of vector layer is covered elsewhere.  This is about how to use them.
+
+
+1. Turn on the Layer of Interest
+--------------------------------
+
+In the catalog, click on the check box to turn on the layer to be viewed or edited.  If this is a layer fed by a server, such as WFS, there may be a small delay while the feature definitions are downloaded and rendered.
+
+
+2. Activating the Layer
+-----------------------
+
+For vector layers to be used, they need to be "activated" by the user.  By default GeoMOOSE uses a small green circular button with a white check-mark embedded within it.  Click on this button.  If using the default styling the background of this layer will be highlighted with a gold gradient. 
+
+3. Using the Layer Tools
+------------------------
+
+Once a layer is activated, then the Layer Tools can be used to manipulate that layer.  Layers may or may not support specific tool.  If a tool is not supported by a layer, when selected, it will throw an error with an appropriate alter message.
+
+4. Saving Changes
+-----------------
+
+If a layer supports saving changes made to it then use the "Save Changes" menu under the "Layer Tools" menu to save those changes.

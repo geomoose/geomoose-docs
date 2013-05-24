@@ -1,0 +1,60 @@
+.. _services_protocol:
+
+
+Service Communication Protocol Reference
+========================================
+
+GeoMOOSE service's 'talk back' to GeoMOOSE using either pure HTML or by using the GeoMOOSE 2.0 Service XML format.   If a service returns content of type text/html then GeoMOOSE will simply display such content in the 'Results' tab.  This type of return has very limited potential as it does not provide a way to control functions in the GeoMOOSE interface.   In GeoMOOSE 1.0 we addressed this by using an alternate GeoMOOSE namespace embeded in the HTML.  While this was a very technical and generally 'neat' solution it was very difficult to explain and XML was quite under powered as a way to allow services to properly manipulate the user interface.  GeoMOOSE 2.0 fixes this by using a new XML format that allows the services to specify Javascript to be run upon loading and HTML to display in the interface.  This communication protocol is useful for developers writing their own services.
+
+<results>
+---------
+
+The document element is mainly ignored for now. But it has three children:
+
+* <script>
+* <popup>
+* <html>
+
+<script>
+^^^^^^^^^
+
+Contains a single CDATA section that contains Javascript to be executed upon loading the interface.  Javascripts in the <script> tag SHOULD NOT call methods or depend on attributes in GeoMOOSE objects.  GeoMOOSE changes all of the time and calling specific methods (like those in the Catalog) may change calling format or even names.   There is a limited set of functions that will be supported and whose API will not change without significant notice to users and developers.  Those are contained in the single “GeoMOOSE” object.  Other examples using this protocol can be found in the layer query templates such as /maps/landrecords/parcels_popup.html in the GeoMOOSE demo.
+
+<popup>
+^^^^^^^^^
+
+Popups contain a single CDATA section that contians HTML to be displayed in a popup.   Popups have four attributes:
+
+* x – The “east/west” position of the popup in ground units.
+* y -  The “north/south” potion of the popup in ground units.
+* width – The pixel width of the popup.
+* height – The pixel height of the popup.
+
+Example::
+
+	<popup x="-93.129" y="42.111" w="200" h="200">
+		This is a cool popup!
+	</popup>
+
+<html>
+^^^^^^^^^
+
+Contains a single CDATA section that contains HTML to be displayed in the Results Tab.
+
+Example::
+
+	Content-type: application/xml
+	<results>
+		<script><![CDATA[
+			GeoMOOSE.refreshLayers('/wms/metro/stream_net_1');
+			alert('I also made an alert!');
+		]]></script>
+
+		<html><![CDATA[
+			I refreshed a layer!
+		]]></html>
+	</results> 
+
+Additional resources
+------------------------------------------
+See also, :ref:`mapbook_services`.

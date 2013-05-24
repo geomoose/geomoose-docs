@@ -1,0 +1,119 @@
+.. _details:
+
+
+art
+============================
+The art directory is used to store standard GeoMoose icons and logos.  Tpyically not used by user.
+
+desktop_icons
+-------------------------------------------
+Original GeoMoose icons.
+
+logo_2011
+-------------------------------------------
+New logos from 2011 in a variety of formats.
+
+attic
+============================
+Like all attics, this hold old stuff that isn't used very often.  Tpyically not used by user.
+
+conf
+============================
+The conf directory contains various configuration controls and templates for GeoMoose. Frequently used by user.
+
+	* Files:
+		* mapbook.xml - The map control XML file.
+		* local_settings.ini - Several ini file exist for control file paths for unix, ms4w,svn.
+		* settings.ini - Initial file for control.
+
+editor
+-------------------------------------------
+Diretory containing editor support files.
+
+feature-report
+-------------------------------------------
+Directory containing feature report templates. 
+
+print
+-------------------------------------------
+Directory containing printing templates.  Rarely used by user.  
+
+htdocs
+============================
+
+	* Files:
+		* geomoose.html - starting HTML for GeoMoose.
+
+build
+-------------------------------------------
+The compiled java script for GeoMOOSE.
+
+css
+-------------------------------------------
+css files for GeoMoose.
+
+cursors
+-------------------------------------------
+Standard cursors used by GeoMoose.
+
+extensions
+-------------------------------------------
+Javascript extension location.
+
+geomoose
+-------------------------------------------
+The GeoMoose javascript library.
+
+images
+-------------------------------------------
+Library of standard images used by GeoMoose.
+
+lib
+-------------------------------------------
+Basic libraries used by GeoMoose (dojo, openlayers).
+
+php
+-------------------------------------------
+Php services library.
+
+projections
+-------------------------------------------
+Projection files used by GeoMoose.
+
+skins
+-------------------------------------------
+Standard skins (colors etc) used by GeoMoose.
+
+maps
+============================
+
+Directory of data, mapserver control files, symbol library and display html templates for layers.  Frequently used by user.
+
+	* Files: 
+		* geomoose_globals.map - global map files for mapserver layers
+		* temp_directory.map - locates temporary directories for Mapserver Mapfile
+
+demo
+-------------------------------------------
+Directory containing data map files and templates for demo.
+
+development
+-------------------------------------------
+Directory used in assisting team with development. Typically not accessed by user.
+
+fonts
+-------------------------------------------
+Font library for GeoMoose mapserver maps.  Rarely used by user. 
+
+symbols
+-------------------------------------------
+Symbol.sym file used for mapserver feature layers and graphic images for road symbols.  Rarely used by user. 
+
+sphinx-docs
+============================
+This documenation and tools to make it (sphinx).  Tpyically not used by user. 
+
+tools 
+============================
+Python scripts (tools) used to build the GeoMOOSE packaging. Tpyically not used by user. 
+

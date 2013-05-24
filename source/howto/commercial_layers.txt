@@ -1,0 +1,55 @@
+How to Add Google, MapQuest or Bing Layers
+==========================================
+
+Notes on All Layers
+-------------------
+
+* Commercial layers can only be used as basemap layers.  You cannot elevate them any higher in the list.
+* Commercial layers cannot be printed.  The licensing agreements for these layers do not allow them to be printed.
+* You must shift your map into Web Mercator (aka "the Google Projection").  Please read :doc:`../docs/projections`
+
+How to Add Google Layers
+------------------------
+
+Step 1: Add the Google API to geomoose.html
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Open "geomoose.html" in a text editor.
+* Find the `<script..` tag that contains 'OpenLayers.js' in the 'src' attribute.
+* Then add the Google API, the code should look like this::
+
+	<script type="text/javascript" src="http://maps.google.com/maps?file=api&v=2&key=ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA"></script>
+	<script type="text/javascript" src="OpenLayers-2.8/OpenLayers.js"></script>
+
+Step 2: Add the Google map-source Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now it is necessary to put the map-source definitions into the Mapbook::
+
+        <map-source name="google_physical" type="google" google-type="physical">
+                <layer name="all"/>
+        </map-source>
+
+        <map-source name="google_streets" type="google" google-type="streets">
+                <layer name="all"/>
+        </map-source>
+
+        <map-source name="google_hybrid" type="google" google-type="hybrid">
+                <layer name="all"/>
+        </map-source>
+
+        <map-source name="google_satellite" type="google" google-type="satellite">
+                <layer name="all"/>
+        </map-source>
+
+Step 3: Add the Definitions to the Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Google layers can only be used as basemap layers.  So when using them as a background it is usually wise to simply create a backgrounds group and allow the user to toggle between the various layers::
+
+	<group title="Backgrounds" expand="true" multiple="false">
+		<layer title="Streets" src="google_streets/all" status="on"/>
+		<layer title="Physical" src="google_physical/all" status="off"/>
+		<layer title="Hybrid" src="google_hybrid/all" status="off"/>
+		<layer title="Satellite" src="google_satellite/all" status="off"/>
+	</group>
+

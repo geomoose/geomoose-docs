@@ -1,0 +1,10 @@
+How To Customize Your Waiting Message
+=====================================
+
+Some services can take serious time to load.  This is especially true of the printing service which needs to assemble many high resolution images.  To help the user understand the application is running it is often useful to have a waiting message.  To customize the waiting message simply change the waiting_html configuration parameter in your mapbook::
+
+	<param name="waiting_html"><![CDATA[
+		<center>
+			<b>Please wait while this loads...</b>
+		</center>
+	]]></param>

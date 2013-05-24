@@ -1,0 +1,221 @@
+Writing a GeoMOOSE (JavaScript) Extension
+=========================================
+
+This tutorial is another description of how to write an extension.  This one works with interacting with the Map and uses more JavaScript.  The more simple Disclaimer example can be found :doc:`here </docs/user_extensions>`.
+
+For Review
+----------
+
+GeoMOOSE User Extensions allow developers and installers to retool, enhance, or replace parts of the user interface.  This example enhances the user interface by allowing it to remember the last location of the user using a cookie.
+
+The Basic Layout of an Extension
+--------------------------------
+
+This is the Disclaimer extension, fully commented to describe what each line means::
+
+	/* Class Declaration, this uses the OpenLayers.Class method 
+	 * with the base class of GeoMOOSE.UX.Extension
+	 */
+	DisclaimerExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+		/* disclaim will be our member function that 
+		 * actually takes action */
+		disclaim: function() {
+			/* disclaim first checks to see if there is a 
+			 * disclaimer message set by the user, 
+			 * if not, it simply prompts, "Hello, World." */
+			if(window.DISCLAIMER_MESSAGE) {
+				alert(window.DISCLAIMER_MESSAGE);
+			} else {
+				alert("Hello, World!");
+			}
+		},
+
+		/* Load is the function called when the extension 
+		 * is loaded by GeoMOOSE. */
+		load: function() {
+			/* Here we register our extension with 
+			 * the onMapbookLoaded event.  
+			 * This is called once the Mapbook 
+			 * has been read by the client. */
+			GeoMOOSE.register('onMapbookLoaded', this, this.disclaim);
+		},
+
+		/* To fit the OpenLayers class definition 
+		 * convention we set the CLASS_NAME property to the 
+		 * name of our extension */
+		CLASS_NAME: "DisclaimerExtension"
+	});
+
+	/* Now we register the extension with the 
+	 * GeoMOOSE User Extension handler */
+	GeoMOOSE.UX.register('DisclaimerExtension');
+
+Starting Simple: Hello World
+----------------------------
+
+As is traditional is computer science lessons, we will start with a basic "Hello, World" example.  This will be somewhat similar to what we have done above, however, we will start it as the basis for our new extension.
+
+This basic code will create an alert when the extension is loaded, we'll put the contents into `extensions/RememberWhere.js`::
+
+ RememberWhere = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+  load: function() {
+   alert('Hello, World.');
+  },
+
+  CLASS_NAME: "RememberWhere"
+ });
+
+ GeoMOOSE.UX.register('RememberWhere');
+
+Adding the Extension to GeoMOOSE
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+While the above code creates the extension, it still needs to be included in the HTML to work.  The best place to add the code is before the `</head>` entry in `geomoose.html`, it should look like this when finished ::
+
+ 	<script type="text/javascript" src="extensions/RememberWhere.js"></script>
+ </head>
+
+Adding Hooks: With Events!
+--------------------------
+
+In both the Disclaimer example and others, it is best to wait for the Mapbook is loaded to manipulate the map.  The Mapbook is used to configure many configuration parameters and it is best to allow that to happen first. Now we will add two event hooks:
+ 1. We will wait for the Mapbook to load.
+ 2. Once it has loaded we will list to the Map to move, then tell the client the bounds.
+
+These hooks look like this::
+ 
+ RememberWhere = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+  load: function() {
+   GeoMOOSE.register('onMapbookLoaded', this, this.gotMapbook);
+  },
+
+  gotMapbook: function() {
+   Map.events.register('moveend', this, this.newExtent);
+  },
+
+  newExtent: function() {
+   alert(Map.getExtent().toArray().join(','));
+  },
+
+  CLASS_NAME: "RememberWhere"
+ });
+
+ GeoMOOSE.UX.register('RememberWhere');
+
+Giving the Map a Memory
+-----------------------
+
+The example thus far will only really serve to bother a user as they are subjected to seeing their new extents every time they navigate.  It would be far more useful for them to actually have the map remember where they were. To do this, we will use cookies.
+
+Adding Cookie Functions
+^^^^^^^^^^^^^^^^^^^^^^^
+
+GeoMOOSE 2.4 and older do not come with cookie manipulation functions.  GeoMOOSE 2.6 includes dojo, which has cookie manipulation functions.  Since we are using GeoMOOSE 2.4 for this example, we will be manually parsing cookies.  This example would still work in 2.6 but using proper cookie function this would be much shorter code. ::
+
+ RememberWhere = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+  load: function() {
+   GeoMOOSE.register('onMapbookLoaded', this, this.gotMapbook);
+  },
+
+  gotMapbook: function() {
+   Map.events.register('moveend', this, this.newExtent);
+  },
+
+  newExtent: function() {
+   this.setCookie('gm_remember_extent', Map.getExtent().toArray().join(','));
+  },
+
+  setCookie: function(name, value) {
+   var cookies = this.getCookies();
+   cookies[name] = value;
+   var all_cookies = [];
+   for(var c_name in cookies) {
+    if(c_name) {
+     all_cookies.push(c_name+'='+escape(cookies[c_name]));
+    }
+   }
+   document.cookie = all_cookies.join(';');
+  },
+
+  getCookies: function() {
+   var cookies = document.cookie.split(';');
+   var all_cookies = {};
+   for(var i = 0, ii = cookies.length; i < ii; i++) {
+    var split_on = cookies[i].indexOf('=');
+    /* get the name and clean it up */
+    var name = cookies[i].substr(0, split_on).replace(/^\s+|\s+$/g,"");
+    all_cookies[name] = unescape(cookies[i].substr(split_on+1));
+   }
+   return all_cookies;
+  },
+
+  getCookie: function(name) {
+   var cookies = this.getCookies();
+   return cookies[name];
+  },
+
+  CLASS_NAME: "RememberWhere"
+ });
+
+ GeoMOOSE.UX.register('RememberWhere');
+
+
+Now recalling the Extent on Startup
+-----------------------------------
+
+This adds the last bit of code to have the extension recall the extent on startup. ::
+
+	RememberWhere = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+	 load: function() {
+	  GeoMOOSE.register('onMapbookLoaded', this, this.gotMapbook);
+	 },
+
+	 gotMapbook: function() {
+	  if(this.getCookie('gm_remember_extent')) {
+	    Map.zoomToExtent(OpenLayers.Bounds.fromString(this.getCookie('gm_remember_extent')));
+	  }
+	  Map.events.register('moveend', this, this.newExtent);
+	 },
+
+	 newExtent: function() {
+	  this.setCookie('gm_remember_extent', Map.getExtent().toArray().join(','));
+	 },
+
+	 setCookie: function(name, value) {
+	  var cookies = this.getCookies();
+	  cookies[name] = value;
+	  var all_cookies = [];
+	  for(var c_name in cookies) {
+	   if(c_name) {
+		   all_cookies.push(c_name+'='+escape(cookies[c_name]));
+	   }
+	  }
+	  document.cookie = all_cookies.join(';');
+	 },
+
+	 getCookies: function() {
+	  var cookies = document.cookie.split(';');
+	  var all_cookies = {};
+	  for(var i = 0, ii = cookies.length; i < ii; i++) {
+	   var split_on = cookies[i].indexOf('=');
+	   /* get the name and clean it up */
+	   var name = cookies[i].substr(0, split_on).replace(/^\s+|\s+$/g,"");
+	   all_cookies[name] = unescape(cookies[i].substr(split_on+1));
+	  }
+	  return all_cookies;
+	 },
+
+	 getCookie: function(name) {
+	  var cookies = this.getCookies();
+	  return cookies[name];
+	 },
+
+	 CLASS_NAME: "RememberWhere"
+	});
+
+	GeoMOOSE.UX.register('RememberWhere');
+
+Unlimited Potential
+-------------------
+
+Due to the very run-time replacement happy nature of Javascript applications nearly any part of the GeoMOOSE User Interface can be supplemented with extensions. Interacting with services and the Map allows most behaviors to be changed by the customizer.

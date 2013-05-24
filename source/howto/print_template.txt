@@ -1,0 +1,114 @@
+How To Create a Custom Printing Template
+========================================
+
+GeoMOOSE 2 uses a page-templating method for generating PDFs.  Any printed map in GeoMOOSE starts as a pre-existing PDF that does not feature a map.  This PDF can have inline fonts, J
+PEGs, watermarks, etc.  In GeoMOOSE 1.X it was necessary to write PHP to change the output format of the printing utility with 2.X that is no longer needed.  Creating PDF files have b
+ecome commonplace and can be done with almost any software with the avilability of PDF printers.  
+
+Step 1: Make Your Template PDF
+------------------------------
+
+The first step is to create a PDF that you wish to use as a printing template.  This can be done with any software that can output to a PDF. If none of your software has an "Export PD
+F" option then a PDF printer may be an option on your operating system:
+
+* Mac OS/X - A PDF Printer is built-in. See Apple's Documentation. http://docs.info.apple.com/article.html?path=Mac/10.4/en/mh1035.html
+* Windows - I've had good luck with CutePDF. http://www.cutepdf.com/
+* Linux - Use CUPS. http://www.linux.com/articles/61826
+
+For purposes of this document the PDF file generated here will be referred to as "my_template.pdf".  "my_template.pdf" should be saved/copied into ``conf/print``.
+
+Step 2: Define the Template for GeoMOOSE
+----------------------------------------
+
+GeoMOOSE is smart, but not that smart, it does need to be told more information about the template created in Step 1.  To do this we need to create an XML template definition file. 
+It is easiest to copy a pre-existing template and modify it.   For convenience, it makes sense to name the XML file the same as the PDF file.  Copy letter_landscape.xml to my_template.pdf.  You should now have a file that contains::
+
+	<print-template>
+		<!-- This is the template -->
+		<template>default_template.pdf</template>
+
+		<!-- page dimensions -->
+		<page w='11' h='8.5'/>
+
+		<!-- this is the location of the map in the template -->
+		<map x="0.43" y="1.43" w="10.15" h="6.42"/>
+
+	</print-template>
+
+The important element to change is the name of the PDF template file to "my_template.pdf"::
+
+	<print-template>
+		<!-- This is the template -->
+		<template>my_template.pdf</template>
+
+		<!-- page dimensions -->
+		<page w='11' h='8.5'/>
+
+		<!-- this is the location of the map in the template -->
+		<map x="0.43" y="1.43" w="10.15" h="6.42"/>
+
+	</print-template>
+
+It is best to have a good guess for the ``<page>`` and ``<map>`` attributes but they can be adjusted later to fine tune the template.
+
+Step 3: Add the Template to the Print Options
+---------------------------------------------
+
+In the mapbook, the print utility has an ``<input>`` that allows the user to select a template.  To make the template selectable it is necessary to add it to the mapbook definition.
+
+The print service will initially have the following options::
+
+	<service name="print" title="Print Map">
+		<url>php/print.php</url>
+		<input type="print_info" name="layers"/>
+		<input type="extent" name="extent"/>
+
+		<input type="select" name="template" title="Output Template: ">
+			<option value="letter_landscape">Letter - Landscape</option>
+			<option value="letter_portrait">Letter - Portrait</option>
+			<option value="poster_landscape">Poster - Landscape</option>
+			<option value="poster_portrait">Poster - Portrait</option>
+		</input>
+	(snip)
+	</service>
+
+In order to make "my_template" available it just needs added to the list::
+
+	<service name="print" title="Print Map">
+		<url>php/print.php</url>
+		<input type="print_info" name="layers"/>
+		<input type="extent" name="extent"/>
+
+		<input type="select" name="template" title="Output Template: ">
+			<option value="my_template">MY TEMPLATE!!!!</option>
+			<option value="letter_landscape">Letter - Landscape</option>
+			<option value="letter_portrait">Letter - Portrait</option>
+			<option value="poster_landscape">Poster - Landscape</option>
+			<option value="poster_portrait">Poster - Portrait</option>
+		</input>
+	(snip)
+	</service>
+
+Reloading GeoMOOSE should show the new template as available and users should now be able to print using that template.
+
+Other Notes
+-----------
+
+It is possible to add dynamic text to a map.  This is done by specifying a ``<text>`` tag.  The text tells the printing service to place text on the page and it supports some basic string substitution.  Strings featuring a variable like '%abc%' will be substituted with URL values.  For example if the string is::
+	
+	Hello %name%!
+
+And "name=Dave" is passed into the print script via the CGI parameters, the string will become::
+
+	Hello Dave!
+
+An example can be found in the demo's printing templates::
+
+	<text x=".5" y=".75" size="48" content="%title%"/>
+
+The attributes breakdown like this:
+
+* x - The x-position in inches on the page.
+* y - The y-position in inches on the page.
+* size - The font-size in points.
+* content - The string to place on the page.

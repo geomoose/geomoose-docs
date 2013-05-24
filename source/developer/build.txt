@@ -1,0 +1,66 @@
+How To Build GeoMOOSE from source
+=================================
+
+These instructions apply to the GeoMOOSE 2.6 series. 
+
+You will need to rebuild GeoMOOSE from source if you make any changes
+to the core code.  This is because the core code is optimized and minified
+using the Dojo build system and the output is placed in the htdocs/build
+directory.  geomoose.html is set to use this optimized build because it
+allow for much faster application load times than using the raw source.
+While developing, you may find it more convenient to use geomoose_dev.html
+which bypasses the build system and uses the raw JavaScript sources.
+
+Note: These instructions require you to run the Dojo build system.
+For now, this means you will need access to a Linux like command line
+(bash) and have Java or OpenJDK installed in your path.  This works
+trivially on Linux and OS X, and probably works from within Cygwin
+on Windows, but this has not been tested.
+
+The GeoMOOSE documentation is maintained using reStructured text
+(http://sphinx.pocoo.org/rest.html) and built into HTML or PDF using
+Sphinx.  Thus, to build the GeoMOOSE documentation from source, you 
+will also need Sphinx installed (http://sphinx.pocoo.org).
+
+Step 0: Obtain a copy of GeoMOOSE
+---------------------------------
+
+In can use whatever method you prefer, check out from svn::
+
+	svn co https://svn.osgeo.org/geomoose/geomoose2/trunk geomoose-trunk
+
+Or extract from a tarball.
+
+Step 1: Extract the libraries in libs
+-------------------------------------
+
+From the GeoMOOSE base directory (e.g. ``geomoose-trunk``)::
+
+	cd htdocs/libs
+	tar xzf OpenLayers-*.tar.gz
+	tar xzf dojo-*.tar.gz
+	unzip proj4js-1.0.2.zip
+
+Next, run patch_dojo.sh to setup the Dojo build system for GeoMOOSE.
+
+	./patch_dojo.sh
+
+Step 2: Building GeoMOOSE
+-------------------------
+
+Again, from the GeoMOOSE base directory, change directories to where the Dojo
+build system lives.  Then, run the build.  This will rebuild the files in htdocs/build.::
+
+	cd htdocs/libs/dojo-1.6.1/util/buildscripts
+	./build_geomoose2.sh
+
+Step 3: Building the GeoMOOSE documentation
+-------------------------------------------
+
+Again, from the GeoMOOSE base directory, change directories to where the Sphinx 
+source lives.  Next, build the source using the supplied Makefile (or make.bat 
+on Windows)::
+
+	cd sphinx-docs
+	make html
+

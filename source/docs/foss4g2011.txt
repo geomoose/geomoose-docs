@@ -1,0 +1,7 @@
+FOSS4G 2011 Instructional Materials
+===================================
+
+* :download:`Exercises PDF <../_downloads/foss4g_2011_exercises.pdf>`
+* :doc:`/developer/extensions`
+* :doc:`/developer/services`
+* :download:`Exercises ZIP <../_downloads/foss4g_2011_exercises.zip>`

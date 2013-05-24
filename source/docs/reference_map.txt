@@ -1,0 +1,51 @@
+Using the Reference Map
+=======================
+
+The display in the reference map is done on a service-by-service basis.  This document attempts to cover the implementation of various reference map tasks.
+
+Reference Layers Display with the Main Map
+------------------------------------------
+
+This is the common GeoMOOSE reference map.  Under this scenario a source is included in both the main map and the reference map.  To do this simply add set the ``reference`` attribute to true in the ``map-source``::
+
+        <map-source name="basemap" type="mapserver" reference="true">
+                <file>./demo/statedata/basemap.map</file>
+                <layer name="county_borders"/>
+                <layer name="county_labels"/>
+                <layer name="city_poly"/>
+                <layer name="city_labels"/>
+                <layer name="USGSGagingStations"/>
+        </map-source>
+
+Now whenever one of these layers is made visible, it will also be made visible in the reference map.  These layers would be controlled in catalog just as they would if they were not included in the reference map.
+
+A Fixed Reference Map set of Layers
+-----------------------------------
+
+There are situations in which having an extremely dynamic reference map is wasteful.  In this case, it's desirable to setup the reference map to have a fixed set of reference layers.  To make a source display all of it's layers in the reference map by default the ``reference`` attribute must be set to true at both the source *and* layer level::
+
+        <map-source name="states" type="mapserver" reference="true">
+                <file>./demo/statedata/statesUTM15N.map</file>
+                <layer name="all" reference="true"/>
+        </map-source>
+
+To prevent this layer from changing DO NOT include it in the catalog.  If you would like to have this layer in the main map and fixed in the reference map you should create TWO ``map-source`` entries.  One entry should be configured similar to above, for the reference map, and another should be configured with a different name and without any of the ``reference`` attributes set to true.  This second ``map-source`` will be used in the main map (and consequently in the catalog).
+
+Mixing and Matching Layers
+--------------------------
+
+The two setups above involved only a single layer in their demonstrations.  The Reference Map could have a mix of fixed and dynamic layers.  The configurations above just show small examples of how the maps can be setup.
+
+Starting up the Reference Map Collapsed
+---------------------------------------
+
+By default the reference map starts open, this can be changed with the "reference_map.maximized" parameter::
+
+	<param name="reference_map.maximized">false</param>
+
+Getting Rid of the Reference Map
+--------------------------------
+
+In the case that a reference map is undesirable::
+
+       <param name="reference_map.enabled">false</param>

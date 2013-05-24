@@ -1,0 +1,131 @@
+.. _install_unix:
+
+Installation UNIX 
+=======================
+
+Preparation
+-----------
+
+MapServer
+^^^^^^^^^
+GeoMOOSE requires a pretty full feature MapServer build.  The following options are used by the development team on UN*X based systems to build MapServer::
+
+	--with-php=[path to php includes] 
+	--with-agg=[path to agg libs]
+	--with-gd=[path to gd libs]
+	--with-wfs 
+	--with-wmsclient 
+	--with-wfsclient 
+	--with-postgis 
+	--with-proj=[path to proj]
+	--with-geos=[path to geos-config]/geos-config
+	--with-freetype=[path to freetype]
+	--with-gdal=[path to gdal-config]/gdal-config
+	--with-ogr
+ 
+MapServer's PHP/Mapscript must also be installed.  Please see the MapServer website for additional details on how to install and compile MapServer.  You will also find information about the MapServer mailing lists which are very helpful for trouble shooting and additional instructions.
+
+The current code has been tested against PHP version 5.3.3.
+
+**VERY IMPORTANT NOTE**: Some Linux distributions come pre-packaged with a version of MapServer.  This version of MapServer can be extremely out-dated and can be missing critical functionality (AGG rendering for example).
+
+PHP Packages 
+^^^^^^^^^^^^
+
+GeoMOOSE requires a few PHP packages.  As of PHP 5.3, PDO has been integrated into PHP's core and the PECL versions are out dated.  On Debian/Ubuntu instances you'll need to add the following PHP packages to your system.::
+
+	apt-get install php5 php5-dev php5-gd php5-pgsql php5-sqlite php-pear php5-curl
+
+Then add the following to your php.ini. ::
+
+	extension=php_mapscript.so
+	extension=gd.so
+	extension=curl.so
+	extension=pdo.so
+	extension=pdo_sqlite.so
+	extension=pdo_pgsql.so
+
+Some package managers will automatically add these to your system.  Check `phpinfo.php` if you are unsure if the packages have installed.
+
+Installation
+------------
+
+For this example we will use '/srv/geomoose' as the target directory.  please adjust as appropriate for your local system.
+
+Install the Code
+^^^^^^^^^^^^^^^^
+
+If the Pre-req's have been met then the hard part is actually over. Extract the GeoMOOSE .tar.gz file to your target directory. ::
+
+	tar -xzvf geomoose-[version].tar.gz
+
+A Temporary Directory
+^^^^^^^^^^^^^^^^^^^^^
+
+GeoMOOSE requires a directory for caching WMS images and for writing temporary files for some of the services.  By default it uses the directory "/tmp/out".  To create this directory, and make it useful we can do the following.::
+
+	mkdir /tmp/out
+	chown www-data:www-data /tmp/out
+
+This example assumes the "Apache user" is `www-data` other systems will use `www`, `httpd`, or `apache`.  Consult your systems httpd.conf for the exact answer.
+
+Many recent Linux distributions clear the `/tmp` directory at startup so you may need to create a startup script to re-create the `/tmp/out` directory.  Also, keep in mind that the `/tmp/out` directory can accumulate a large amount of files/disk space over time, so it is recommended that the directory is periodically cleaned. As an example, the following when run regularly via cron (e.g. every 5 minutes), could achieve both goals.::
+
+	#!/bin/bash
+	# WARNING: This script is provided as an example only.
+	#          Make sure you understand what this script does before you 
+	#          use it. It is likely it will need to be tweaked for your 
+	#          server's configuration.
+
+	#
+	# Create directories if they don't exist
+	#	
+
+	# Temp space for MapServer (should match temp_directory.map)
+	mkdir -p /tmp/www
+	chmod 1777 /tmp/www
+
+	# Temp space for PHP (should match local_settings.ini)
+	mkdir -p /tmp/out
+	chmod 1777 /tmp/out
+
+	#
+	# Remove files that were last changed more than 60 minutes ago.
+	#
+
+	find /tmp/www -type f -mmin +60 -exec rm '{}' ';'
+	find /tmp/out -type f -mmin +60 -exec rm '{}' ';'
+
+"local_settings.ini"
+^^^^^^^^^^^^^^^^^^^^
+
+GeoMOOSE uses a small ".ini" file for configuring local paths.  There is an example for MS4W and for this installation guide.  Either copy `unix_local_settings.ini` to `local_settings.ini` or create a new `local_settings.ini` and add the following. ::
+
+	[paths]
+	root=/srv/geomoose/maps/
+	mapserver_url=/cgi-bin/mapserv
+	temp=/tmp/out/
+
+An Apache Configuration File
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Assuming Apache has been configured properly to run PHP the Apache configuration to run GeoMOOSE is very simple. ::
+
+	Alias /geomoose/ /srv/geomoose/htdocs/
+
+	<Location /geomoose/>
+	  AllowOverride None
+	  Options Indexes FollowSymLinks Multiviews
+	  Order allow,deny
+	  Allow from all
+	</Location>
+
+Create a file called `geomoose.conf` in your appropriate Apache directory. Common places this are:
+ * `/etc/apache2/conf.d/` - Debian/Ubuntu based systems.
+ * `/etc/httpd/conf.d/` - RedHat Variants.
+ * `/etc/apache2/other/` - Mac OS/X 
+
+Restart Apache and Test
+^^^^^^^^^^^^^^^^^^^^^^^
+
+At this point the GeoMOOSE demo should be installed.  Restart Apache and navigate a web browser to `http://[servername]/geomoose/geomoose.html`. 

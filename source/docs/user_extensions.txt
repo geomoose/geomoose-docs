@@ -1,0 +1,80 @@
+GeoMOOSE User Extensions
+========================
+
+GeoMOOSE User Extensions are the latest way to customize a GeoMOOSE installation.  While it has been common practice to modify the root of the code to create various custom tools, that has left some installations stagnant and unable to smoothly upgrade or integrate with new GeoMOOSE releases when they have become available.  To address these concerns, we have developed GeoMOOSE User Extensions.   These extensions will never be clobbered by a GeoMOOSE upgrade.  However, extensions written that access core library functions may break as the underlying library API's may change over time.
+
+What is the purpose of User Extensions?
+---------------------------------------
+
+The purpose of user extensions is for the customizer of a site to, "go crazy."  It allows for users to add any functionality they wish to the user interface without forcing their code to break away from the main code base.
+
+
+But Duck, how do I make one?
+----------------------------
+
+Good Question.  Here is a brief tutorial...
+
+Step 1: Come up with an idea for a user extension.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Say you want a disclaimer to show at the beginning of the application.  Let's just say that disclaimer is, "Hello, World!"
+
+
+Step 2: Write the User Extension
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+User extensions are stored in the "extensions/" folder under "htdocs/".  For this example we'll create a file called, "Disclaimer.js".  In "Disclaimer.js" we need to add the basic outline of the class by inhereting from the base user extension class.  The file should look like this::
+
+	DisclaimerExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+		CLASS_NAME : "DisclaimerExtension"
+	});
+
+This sets up a blank extension that does nothing.  Let's break down the code as to what's happening:
+ * `DisclaimerExtension` - This defines the Javascript name for your extension.  You'll want to give your classes long descriptive names so they do not clobber other potential global variables.  Those who are more advanced are probably asking "Why didn't you name space them?" and the answer is: "To make it easier on people who don't necessarily understand what 'namespacing' is."
+ * `new OpenLayers.Class` - This is the OpenLayers class constructor.
+ * `GeoMOOSE.UX.Extension` - The base GeoMOOSE User Extension class.  By putting this class as the first parameter we're going to "inheret" all of the methods from the base class.
+ * `CLASS_NAME : 'DisclaimerExtension'` - This configures the class so it knows its own name.
+
+Now we need to have the class actually do something.  The initial function that is called when an extension is loaded is called "load."  So, now we define the load method andh have it display our disclaimer using "alert." ::
+
+	DisclaimerExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+		load: function() {
+			alert("Hello, World!");
+		},
+
+		CLASS_NAME: "DisclaimerExtension"
+	});
+
+Finally, we need to tell GeoMOOSE to load the extension at startup by adding this at the end of the file::
+
+	GeoMOOSE.UX.register('DisclaimerExtension');
+
+The completed "Disclaimer.js" should look like this::
+
+	DisclaimerExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+		load: function() {
+			alert("Hello, World!");
+		},
+
+		CLASS_NAME: "DisclaimerExtension"
+	});
+
+	GeoMOOSE.UX.register('DisclaimerExtension');
+
+Step 3: Add the Extension to geomoose.html
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Open "geomoose.html" in a text editor.
+* Find "</head>"
+* On the directly above "</head>" add::
+
+	<script type="text/javascript" src="extensions/Disclaimer.js"></script>
+
+Step 4: Enjoy!
+^^^^^^^^^^^^^^
+Now you should see "Hello, World!" when the application starts.
+
+Other Examples
+--------------
+An example of an User Extension which updates the interface on a periodic basis can be found in the "extensions/" directory with GeoMOOSE 2.2, the file is called "ColorChanger.js".
+

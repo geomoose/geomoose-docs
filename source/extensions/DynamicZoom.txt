@@ -1,0 +1,85 @@
+Dynamic Select
+==============
+
+Description
+-----------
+
+The default "Zoom To"s with GeoMOOSE are static and predefined in the Mapbook.  They do not change based on updates of a layer, and can be tedious to type out even for layers with relatively few features.  To address this, DynamicZoom provides an Ajax-capable feature look up that allows the user to select a dataset, then a feature from that dataset.  After selecting the feature, the map zooms to the extent of that feature.
+
+
+Adding to Application
+---------------------
+
+To add Dynamic Select to your application add::
+
+	<script type="text/javascript" src="extensions/DynamicZoom.js"></script>
+
+Configuration
+-------------
+
+Configuring Dynamic Select consists of three steps:
+ 1. Create a template file.
+ 2. Edit the layer's metadata.
+ 3. Add the layer to DynamicZoomConfiguration
+
+1. Create the template file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To create the template file, goto the direct where the mapfile exists.  For this example, we'll be using the "counties_border" layer inside of the "basemap.map" mapfile.  This mapfile can be found in the `maps/demo/statedata` directory that comes with the GeoMOOSE demo.  The template is very simple, and creates the needed to create "<option>" tags in HTML::
+
+	<!-- MapServer Template -->
+	<option value="[shpext]">[COUNTYNAME]</option>
+
+The first line is the MapServer "magic string" that is required for template files starting in version 5.4.  The second line, has a few important prts.  The first is the "[shpext]" directive, this tells mapserver to place the feature's extent into this part of the string.  "[COUNTYNAME]" tells MapServer to place the feature's title, in this case 'COUNTYNAME,' into the template.  When working with a different layer, substitute "COUNTYNAME" for whatever the layer's title column name happens to be.  For this example, we'll name the file, "county_dynamic_zoom.html"
+
+
+2. Edit the layer's metadata.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now we need to tell GeoMOOSE about this template file.  The method for doing that is to add a METADATA entry to the mapfile.  First, it is neccessary to find the LAYER entry in the mapfile, that will look something like this::
+
+	LAYER
+		NAME county_borders
+		...
+	END
+
+Then, check to see if there is already a METADATA section, if there is not then add one::
+
+	LAYER
+		NAME county_borders
+		...
+		METADATA
+		END
+	END
+
+Finally, the metadata entry needs to be made::
+
+	LAYER
+		NAME county_borders
+		...
+		METADATA
+			'dynamic_zoom' 'county_dynamic_zoom.html'
+		END
+	END
+
+
+3. Add the layer to DynamicZoomConfiguration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Edit `htdocs/extensions/DynamicZoom.js`, at the very top is a Javascript Object named "DynamicZoomConfiguration." In DynamicZoomConfiguration there is an entry called layers, it is an object that contains the information for the various layers.  If the file is from a default-GeoMOOSE installation then the entry for "Counties" is already there.  If it is missing then adding the following lines would create it::
+
+	...
+	layers: {
+		'Counties' : {
+			mapbook_src: 'borders/county_borders', /* this is the src of the layer in the mapbook */
+			qitem: '', /* leave blank */
+			string: '' /* leave blank */
+		}
+	}
+	...
+
+Other Options
+-------------
+
+In the above instructions "qitem" and "qstring" were intentionally left blank.  However, if they are set, they will act as a filter on the dataset.  This is useful if you have multiple feature types stored in a single table.  By default, the filtering is case-insensitive.
+

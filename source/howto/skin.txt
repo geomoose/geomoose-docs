@@ -1,0 +1,71 @@
+How To Create Your Own Skin
+===========================
+
+GeoMOOSE 2 has greatly simplified the skinning and CSS required to change elements of the interface.
+
+Step 1: Make a Copy of a Previous Existing Skin
+-----------------------------------------------
+
+In the current distribution the easiest to modify skin is the "blue" skin.  The directory has sub-directories so it will be necessary to do a recursive copy (the default on windows)::
+
+	cd htdocs/skins
+	cp -r blue myskin
+
+Step 2: Rename the Skin and Edit It!
+------------------------------------
+
+This is just a small step to keep things clean::
+
+	cp blue.css myskin.css
+
+Open myskin.css in a text editor and change the code! After following step 3 you'll see the changes in the interface.
+
+Step 3: Set GeoMOOSE to use your Skin
+-------------------------------------
+
+Open "geomoose.html" in a text editor.  In the ``<head>`` section there should be a tag starting ``<link...`` which mentions the skin.  Comment out all of the skins you will not be using and add a ``<link>`` tag including your skin.  
+
+This is the default geomoose.html with the *myskin* skin selected::
+
+        <!--
+                This is where your skin is defined.
+                For an example, comment out the line containing "green.css" and 
+                uncomment "blue.css".
+        -->
+        <!--<link type="text/css" rel="stylesheet" href="skins/green/green.css"/> -->
+	<!--<link type="text/css" rel="stylesheet" href="skins/blue/blue.css"/> -->
+        <link type="text/css" rel="stylesheet" href="skins/myskin/myskin.css"/>
+
+Tips and Advice
+---------------
+
+Changing just the Header Image
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+While some folks may want to change the entire look of the site you may only wish to change the header image to match your website.  Follow all three steps above.  This creates a unique skin for your site.  Then change to the skin's image directory::
+
+	cd htdocs/skins/myskin/images
+
+In that directory is the "logo_top.png" image.  This is the image that is used in the header, it is 670 pixels by 59 pixels.  Making a replacement image of similar size (the height is especially important) will change the logo atop the website! If your logo does not match the dimensions of the GeoMoose logo just edit the myskin.css file and change the padding-left and padding-right style properties for the logo to more closely match your images dimensions.  If you change the background color of your logo and want the padding to match this color then change the color of the "menubar.png" image to match your logo's background color. 
+
+Changing the Background Color of Menus 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The background color of both the toolbar and menubar (links menu) is controlled by editing the background color property style for each. For example, go to ``#toolbar`` and add ``background: red;`` or ``background rgb(255,0,0);`` to change the background property for the toolbar style to red.  
+
+
+Changing the contents of the Menubar 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Menubar is the first menu under the logo above the toolbar.  The links in this menu  can be changed by editing the mapbook.xml file in the conf directory. Change the ``links_bar_html`` parameters  as needed.  See also, :ref:`links_bar_html` and :ref:`menubar`
+
+Moving the Links from Left to Right 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The layout in the header can also be changed by editing styles. For example, the menubar of links can be moved to be right justified by 
+
+#. removing the ``display:block ;`` property  from the ``#logo`` and ``#menubar`` styles, 
+#. adding a ``float: right;`` property to ``#menubar``, and 
+#. adding  ``display: block;`` and ``clear: both;`` properties to the ``#toolbar`` style. 
+
+

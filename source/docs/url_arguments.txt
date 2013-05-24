@@ -1,0 +1,40 @@
+URL Startup Arguments
+=====================
+
+GeoMOOSE has a number of parameters that can change its startup behavior.
+
+debug
+-----
+
+Sets whether GeoMOOSE is in debug mode.  Set this parameter to any non-zero value in order to see additional logging information.  This is really only useful for development and should probably only be used in conjunction with a "_dev.html" file.
+
+extent
+------
+
+Sets a different startup extent.  The extent should be formatted as `min-x,min-y,max-x,max-y` in the ground units of the map.  Example::
+
+	geomoose.html?extent=-180,-90,180,90
+
+mapbook
+-------
+
+Bypass `php/getmapbook.php`.  By default GeoMOOSE will read the mapbook from the file system using `getmapbook.php`, other installations, especially those needing to serve multiple mapbooks can do so by setting the `mapbook` parameter. Example::
+
+	geomoose.html?mapbook=../mapbooks/wms_only.xml
+
+off
+---
+
+Turns off default layers.  Uses GeoMOOSE's path convention. Example::
+
+	geomoose.html?off=parcels/parcels;county/all
+
+on
+--
+
+Turns on layers.  This follows the same form as the off parameter but turns layers on.
+
+
+
+
+
