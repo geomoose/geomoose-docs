@@ -1,0 +1,6 @@
+MN GIS/LIS Spring 2013/FOSS4G NA 2013 Workshop Materials
+========================================================
+
+* `Exercises PDF <http://www.geomoose.org/downloads/workshops/foss4gna-2013/Exercises.pdf>`_
+* `Exercises ODT <http://www.geomoose.org/downloads/workshops/foss4gna-2013/Exercises.odt>`_
+* `Exercises ZIP <http://www.geomoose.org/downloads/workshops/foss4gna-2013/Exercises.zip>`_

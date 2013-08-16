@@ -13,7 +13,7 @@ Proj4js does **not** include the full list of definitions by default, though it 
 Step 1: Determine your projection.
 ----------------------------------
 
-First check to see if your projection already exists as an EPSG definition.  Having a predetermined projection makes this step quick and easy.  Note that the same basic projection may have multiple variants with differing EPSG codes.  For example, UTM 15N is defined as `EPSG:26915 <http://spatialreference.org/ref/epsg/26915>`_ when based on the NAD83 datum, but as `EPSG:32615 <http://spatialreference.org/ref/epsg/32615>`_ when based on the WGS 84 datum.  Most commercial map layers use a projection commonly known as Web or `Spherical Mercator <http://docs.openlayers.org/library/spherical_mercator.html>`_, which now has the standard code `EPSG:3857 <http://spatialreference.org/ref/sr-org/6864>`_. The GeoMoose demo is configured to use EPSG:3857 by default.
+First check to see if your projection already exists as an EPSG definition.  Having a predetermined projection makes this step quick and easy.  Note that the same basic projection may have multiple variants with differing EPSG codes.  For example, UTM 15N is defined as `EPSG:26915 <http://spatialreference.org/ref/epsg/26915/>`_ when based on the NAD83 datum, but as `EPSG:32615 <http://spatialreference.org/ref/epsg/32615/>`_ when based on the WGS 84 datum.  Most commercial map layers use a projection commonly known as Web or `Spherical Mercator <http://docs.openlayers.org/library/spherical_mercator.html>`_, which now has the standard code `EPSG:3857 <http://spatialreference.org/ref/sr-org/6864/>`_. The GeoMoose demo is configured to use EPSG:3857 by default.
 
 If your projection is not found in the standard list, you will need to define your own. For example, an arbitrary projection might be defined as::
 
@@ -64,7 +64,7 @@ In the ``<configuration>`` section of the mapbook you will need to change the fo
 
 If you are changing the projection for an existing map (such as the demo), you will almost certainly need to change the ``max_extent`` and ``initial_extent`` parameters or the entire map may be shifted far off-screen.  Essentially you will need to reproject the extent coordinates from the old projection into the new.  One way to do approximate this from within GeoMOOSE is by panning and zooming until your data is back in view, then recording the X,Y coordinates at the bottom left and top right of the region.  This task will be much simpler if you are able to use a worldwide map layer that supports your target projection.  The ArcGIS REST example in the demo supports a wide range of projections and can be useful for this purpose.
 
-For example, after changing the demo to Minnesota state plane South (`EPSG:26993 <http://www.spatialreference.org/ref/epsg/26993>`_) you would want to change the ``initial_extent`` to something like::
+For example, after changing the demo to Minnesota state plane South (`EPSG:26993 <http://www.spatialreference.org/ref/epsg/26993/>`_) you would want to change the ``initial_extent`` to something like::
 
 	<param name="initial_extent">2169678,512220,2268587,618926</param>
 

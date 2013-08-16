@@ -11,7 +11,7 @@ Step 1: Make Your Template PDF
 The first step is to create a PDF that you wish to use as a printing template.  This can be done with any software that can output to a PDF. If none of your software has an "Export PD
 F" option then a PDF printer may be an option on your operating system:
 
-* Mac OS/X - A PDF Printer is built-in. See Apple's Documentation. http://docs.info.apple.com/article.html?path=Mac/10.4/en/mh1035.html
+* Mac OS/X - A PDF Printer is built-in. See Apple's Documentation. 
 * Windows - I've had good luck with CutePDF. http://www.cutepdf.com/
 * Linux - Use CUPS. http://www.linux.com/articles/61826
 

@@ -70,7 +70,7 @@ Technically, almost nothing; a webserver and javascript supporting client webbro
 
 How do I figure out how to use GeoMOOSE and get help?
 ----------------------------------------------------------------------
-Read the website, tutorials, and documentation, install the demo and look at how it works, try using it, read the source code, `search the email list <http://osgeo-org.1560.n6.nabble.com/GeoMOOSE-f4585800.html>`_., post to the email list, `take a training class <http://www.otg-nc.com/mapserver-geomoose-training/>`_, attend a conference with GeoMOOSE presentations, talk to an existing GeoMOOSE user, hire :ref:`commercial_support`, etc.  There are many options, probably most GeoMOOSE users become familiar with the software by installing MS4W and the MS4W GeoMOOSE add-on.  
+Read the website, tutorials, and documentation, install the demo and look at how it works, try using it, read the source code, `search the email list <http://osgeo-org.1560.x6.nabble.com/GeoMOOSE-f5002154.html>`_., post to the email list, `take a training class <http://www.otg-nc.com/mapserver-geomoose-training/>`_, attend a conference with GeoMOOSE presentations, talk to an existing GeoMOOSE user, hire :ref:`commercial_support`, etc.  There are many options, probably most GeoMOOSE users become familiar with the software by installing MS4W and the MS4W GeoMOOSE add-on.  
 
 How do I sign up for the email list?
 --------------------------------------------------------------

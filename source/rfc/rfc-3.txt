@@ -5,8 +5,8 @@ RFC 3: GeoMOOSE Release Process
 
 :Author: Eli Adam,  (inspiration also from `MapServer RFC 34 <http://mapserver.org/development/rfc/ms-rfc-34.html>`_)
 :Contact: eadam at ...
-:Status: development
-:Last Updated: 06/29/2012
+:Status: Adopted
+:Last Updated: 06/25/2013
 
 
 Summary
@@ -37,10 +37,9 @@ The public API of GeoMOOSE consists of:
 	* The GeoMOOSE JavaScript namespace
 	* The Services interface
 	* The Configuration files such as the mapbook format
-	* Others???  (Please fill in!)
 
 
 Voting History
 ---------------
-
+Adopted on 6/25/2013 with PSC +1 votes from Jim, Brian, Brent, Bob, and Eli.
 

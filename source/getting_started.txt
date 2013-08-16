@@ -34,6 +34,7 @@ Instructional Materials
 	:maxdepth: 1
 	
 	../docs/foss4g2011
+	../docs/foss4gna-2013
 
 Contact the Mailing Lists
 -------------------------
