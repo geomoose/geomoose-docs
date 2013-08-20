@@ -401,6 +401,10 @@ Group example (with sub group)::
 
 	* *unfade* – Allows the layer to be incrementally made less transparent.  Unfades the layer (makes it opaque again).
 
+	* *minscale* - Below this scale the layer will be greyed out in the catalog.  This should ideally be whatever MINSCALE is in the layer's mapfile.
+
+	* *maxscale* - Above this scale the layer will be greyed out in the catalog.  This should ideally be whatever MAXSCALE is in the layer's mapfile.
+
 	* *metadata* – When set to 'true', the <metadata> tag will be included as described below.  This defaults to 'false'.
 
 		* *<metadata>* - URL that refers to the location of the metadata for this catalog item.
