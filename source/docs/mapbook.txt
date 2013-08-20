@@ -305,6 +305,7 @@ Services each have `<step>` children.  There are two types of steps:
 		* `=delim` - Use a text delimited format.
 	* `jump-start` - When true then the service will attempt to start after the shape has been finished.
 	* `reproject` - This can be used to specify a shape projection other than the default map projection.
+	* `show-tools` - If set to false this attribute will not display the list of tools.  It is useful when only one drawing tool is defined.
 	
 * `type=input` - This step only allows for the standard inputs.
 
@@ -399,6 +400,10 @@ Group example (with sub group)::
 	* *fade* – Allows the layer to be incrementally made more transparent.  Fades the layer out.
 
 	* *unfade* – Allows the layer to be incrementally made less transparent.  Unfades the layer (makes it opaque again).
+
+	* *minscale* - Below this scale the layer will be greyed out in the catalog.  This should ideally be whatever MINSCALE is in the layer's mapfile.
+
+	* *maxscale* - Above this scale the layer will be greyed out in the catalog.  This should ideally be whatever MAXSCALE is in the layer's mapfile.
 
 	* *metadata* – When set to 'true', the <metadata> tag will be included as described below.  This defaults to 'false'.
 
