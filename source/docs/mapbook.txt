@@ -305,6 +305,7 @@ Services each have `<step>` children.  There are two types of steps:
 		* `=delim` - Use a text delimited format.
 	* `jump-start` - When true then the service will attempt to start after the shape has been finished.
 	* `reproject` - This can be used to specify a shape projection other than the default map projection.
+	* `show-tools` - If set to false this attribute will not display the list of tools.  It is useful when only one drawing tool is defined.
 	
 * `type=input` - This step only allows for the standard inputs.
 
