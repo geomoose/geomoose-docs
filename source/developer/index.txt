@@ -24,7 +24,7 @@ Our Trac ticket management system is graciously hosted by OSgeo.  `<http://trac.
 API Docs
 --------
 
-API Docs are avilable `here <http://www.geomoose.org/trunk/api/>`_. 
+API Docs are avilable `here <../apidocs/>`_. 
 
 RFCs
 -----
