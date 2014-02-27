@@ -36,7 +36,7 @@ If you're having problems with the download links above or are looking for an ol
 
 Documentation
 ^^^^^^^^^^^^^^^^^
-A PDF of the documentation can be found `for download <http://www.geomoose.org/trunk/GeoMOOSE.pdf>`_
+A PDF of the documentation can be found `for download <http://docs.geomoose.org/2.6/GeoMOOSE.pdf>`_
 
 MS4W Installation Note
 ^^^^^^^^^^^^^^^^^^^^^^
