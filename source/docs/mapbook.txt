@@ -285,10 +285,12 @@ Example::
 There is a lot of service documentation.  See also, :ref:`services_understanding`, :ref:`services_protocol`, and :ref:`Standard Services <services_general>`.
 
 The service element is the key to GeoMOOSE's interoperability.  All functions are a type of service (identify, select, Birdseye view, etc.). Services have attributes to define some of it's behaviour:
+
 * `name` - This is the internal name of the service.
 * `display` - Sets whether the the service will be displayed while "launching." It is useful to set this to false if there is no text-entry required for the service.
 * `title` - This title will be displayed automatically in the input tab.
 * `target` - If set then this attribute will display the results in a different window.
+* `display-submit` - If set to `false` will not display the "Go!" button.
 
 Service have one `<url>` child.  The `<url>` child specifys the URL for of the service for GeoMOOSE to call::
 
