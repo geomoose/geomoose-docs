@@ -12,7 +12,7 @@ In the ``conf`` directory open the ``local_settings.ini`` file and add the follo
 	input-encoding=UTF-8
 	output-encoding=UTF-8
 
-Known Problems 
----------------
+What Has Been Tested
+--------------------
 
-Currently, the GeoMOOSE test suite (found in ``/services/tests/query_php.py``), tests for various international characters in German, Portuguese, French, and Spanish. And while searching appears to work, as of the Mapserver 6.X series, templates are not returning the language encoded characaters.  For example searching for 'Mädchen' will return 'Mdchen'. When an appropriate work-around exists the tests will start to pass.
+This has been only really tested with UTF-8 and Latin1 encodings.  None of the core team speaks a non-Romanitic-influenced language.
