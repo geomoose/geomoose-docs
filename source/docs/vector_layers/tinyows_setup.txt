@@ -1,0 +1,141 @@
+.. _wfst_feature_editor_tinyows:
+
+Using TinyOWS with GeoMOOSE
+=============================
+
+This is a basic walk-through on how to use GeoMOOSE with TinyOWS and PostGIS.  
+
+More Information on TinyOWS
+---------------------------
+
+From the TinyOWS Main Page,
+
+	| TinyOWS is a lightweight and fast implementation of the OGC WFS-T specification. Web Feature Service (WFS) allows to query and to retrieve features. The transactional profile (WFS-T) allows then to insert, update or delete such features.
+	|
+	| From a technical point of view WFS-T is a Web Service API in front of a spatial database. TinyOWS is so deeply tighed to PostgreSQL/PostGIS.
+
+More `here! <http://mapserver.org/tinyows/index.html#tinyows>`_
+
+Windows Users can find TinyOWS for MS4W `here <http://www.maptools.org/ms4w/?page=downloads.html>`_.
+
+Assumptions of this How To 
+--------------------------
+
+1. This document assumes you have been able to install GeoMOOSE, PostgreSQL, and TinyOWS.
+2. For purposes of this example, we'll be using the database ``gis``, username ``gis`` and the password ``super_gis``. 
+3. For our example here, the url for TinyOWS is: ``http://localhost/mapserver/cgi-bin/tinyows``
+
+Download the Places Layer from the Census Bureau
+------------------------------------------------
+
+Download the file `here <ftp://anonymous@ftp2.census.gov/geo/tiger/TIGER2010/PLACE/2010/tl_2010_27_place10.zip>`_.  This is the "place" file for the state of Minnesota.  "Places" are a Census terminology for incorporated cities, townships, and equivalents.
+
+Install the Places Shapefile into PostGIS
+-----------------------------------------
+
+There are a few good methods for doing this, `ogr2ogr` and `shp2pgsql`.   Whichever method is used, the layer should be named `census_places` for the purposes of this exmaple.
+
+A typical ``ogr2ogr`` string will look similar to this::
+
+	ogr2ogr -f PostgreSQL 'PG:dbname=gis user=gis password=super_gis' tl_2010_27_place10.shp tl_2010_27_place10 -nln census_places -nlt GEOMETRY -lco DIM=2
+
+
+Configure TinyOWS 
+-----------------
+
+TinyOWS is configured using a small XML file.
+
+The file we used for this example is::
+
+	<tinyows online_resource="http://localhost/mapserver/cgi-bin/tinyows"
+		 schema_dir="/usr/local/tinyows/schema/"
+		 check_schema="0"
+		 log="/tmp/tinyows.log"
+		 log_level="15"
+		 check_valid_geom="0">
+
+		 <metadata name="TinyOWS Server"
+			   title="TinyOWS Server - Demo Service" />
+
+		 <pg host="localhost" user="gis" password="super_gis" dbname="gis" port="5432" />
+
+		 <layer retrievable="1"
+			writable="1"
+			server="http://localhost/"
+			ns_prefix="census"
+			ns_uri="http://localhost/geomoose/census"
+			name="census_places"
+			title="Census Places" />
+	</tinyows>
+
+
+Mapbook Setup
+-------------
+
+The Mapbook currently features a fragment which supports the above configuration of GeoServer. 
+
+That ``<map-source>`` entry can be removed and replaced with this fragment::
+
+	<map-source name="census_cities" type="wfs" status="on">
+		<style type="stylemap"><![CDATA[
+		{
+			"strokeColor" : "#00ff00",
+			"label" : "${namelsad}"
+		}
+		]]></style>
+
+		<url>/mapserver/cgi-bin/tinyows</url>
+
+		<attribute name="geoid10" type="text" label="ID:" default-value="27999"/>
+		<attribute name="namelsad10" type="text" label="Name:"/>
+
+
+		<feature-namespace>http://localhost/geomoose/census_places</feature-namespace>
+		<feature-type>census_places</feature-type>
+		<geometry-name>wkb_geometry</geometry-name>
+		<schema><![CDATA[http://localhost/mapserver/cgi-bin/tinyows?service=WFS&version=1.1.0&request=DescribeFeatureType&typename=census:census_places]]></schema>
+
+                <popup-template><![CDATA[
+                <div style="font-size: 1.5em">${namelsad}</div>
+                Area of Land: ${aland}<br>
+                Area of Water: ${awater}<br>
+                <br>
+                <a href="https://www.census.gov/2010census/popmap/ipmtext.php?fl=${statefp}:${geoid}" target="_blank">Census Info Page</a>
+                ]]></popup-template>
+	</map-source>
+
+Example Installation
+--------------------
+
+This is the exact input Duck used to get the demo working on his Macbook.  Where necessary comments have been included to describe actions not done directly in the terminal. 
+
+::
+
+	# create the demo database
+	createdb gis -T postgis_template -O gis
+
+	psql "dbname=gis"
+	gis=# alter table geometry_columns owner to gis;
+	ALTER TABLE
+	gis=# alter table spatial_ref_sys owner to gis;
+	ALTER TABLE
+	gis=# alter table geography_columns owner to gis;
+	ALTER TABLE
+
+	mkdir /tmp/tinyows
+	cd /tmp/tinyows
+
+	wget ftp://anonymous@ftp2.census.gov/geo/tiger/TIGER2010/PLACE/2010/tl_2010_27_place10.zip
+
+	unzip tl_2010_27_place10.zip
+
+	ogr2ogr -f PostgreSQL 'PG:dbname=gis user=gis password=super_gis' tl_2010_27_place10.shp tl_2010_27_place10 -nln census_places -nlt GEOMETRY -lco DIM=2
+
+	vim /srv/mapserver/cgi-bin/tinyows.xml
+	# then copy-and-paste tutorial contents.
+
+
+	# I then edited my local geomoose mapbook and added the Mapbook fragment 
+	#  from above
+
+
