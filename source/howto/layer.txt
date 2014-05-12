@@ -137,7 +137,6 @@ The functionality of your map layers can be increased to support queries, identi
 
 			'select_record'	'templates/select_result.html'
 			'select_header' 'templates/select_header.html'
-			'popups' 'parcels_popup.html'
 
 		END
 	...
