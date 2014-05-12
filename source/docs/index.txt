@@ -64,6 +64,7 @@ Getting Started Customizing Your App
 .. toctree::
 	:maxdepth: 1
 
+	../howto/popups
 	../docs/projections
 	../howto/layer
 	../howto/identify

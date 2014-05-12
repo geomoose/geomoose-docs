@@ -1,0 +1,98 @@
+Adding Hover-Over Popups to A Layer
+===================================
+
+GeoMOOSE supports hover-over popups on both Vector (WFS) and Raster Layers (WMS/MapServer). 
+
+Adding Popups To WFS Layers
+---------------------------
+
+Adding popups to Vector layers requires adding the HTML template to the ``map-source`` configuration and the ``popups=true`` attribute to its catalog entry.
+
+The HTML Template
+^^^^^^^^^^^^^^^^^
+
+
+The HTML templates are Dojo-type string templates.  They are slighty different than MapServer templates and us ``${attribute]`` formatting::
+
+	<map-source ...>
+		...
+                <popup-template><![CDATA[
+                <div style="font-size: 1.5em">${namelsad}</div>
+                Area of Land: ${aland}<br>
+                Area of Water: ${awater}<br>
+                <br>
+                <a href="https://www.census.gov/2010census/popmap/ipmtext.php?fl=${statefp}:${geoid}" target="_blank">Census Info Page</a>	
+		]]></popup-template>
+	</map-source>
+
+And in the catalog, ``popups="true"`` is added to the ``<layer>`` entry::
+
+	<layer title="Census Cities - WFS" src="census_cities" activate="true" fade="false" unfade="false" metadata="false" legend="false" popups="true"></layer>
+
+
+Adding Popups to WMS Layers
+---------------------------
+
+The demo includes functionality for WMS popups for both points and polygon representations of the Parcels layer.
+
+The steps required:
+
+1. Create a HTML template.
+2. Enable WMS Queries in the Mapfile.
+3. Enable Popups for the Layer in the Mapbook.
+
+Create a HTML Template
+^^^^^^^^^^^^^^^^^^^^^^
+
+The HTML templates are standard MapServer templates.  The reference for them can be found on the MapServer website.  This is the example included in the GeoMOOSE Demo::
+
+	<!-- MapServer Template -->
+	<b>PIN:</b> [PIN]<br/>
+	<b>Owner:</b> [OWNER_NAME]<br/>
+	<br/>
+
+	<a href="javascript:GeoMOOSE.startService('feature_report', {'src' : 'parcels/parcels', 'PIN' : '[PIN]'});">View Parcel Report</a>
+
+Attributes are substituted using ``[`` and ``]``.  GeoMOOSE can also startup other services from links provided in popups as seen above.
+
+Enable WMS Queries in the Mapfile
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+MapServer requires a few key elements to be included in order to WMS queries to work.
+
+1. ``WEB``'s ``METADATA`` must include ``wms_feature_info_mime_type`` set to ``text/html``. ::
+	
+	WEB
+		...
+		METADATA
+			...
+			'wms_feature_info_mime_type' 'text/html'
+		END
+	END
+
+2. The ``LAYER`` must have a ``CLASS`` with a ``NAME``.
+3. The ``LAYER`` must also have a template ending in ``.html``::
+
+	LAYER
+		NAME 'parcel_points'
+		CLASS
+			NAME 'Parcels!'
+			...
+		END
+		# this references the html file above
+		TEMPLATE 'parcels_popup.html'
+	END
+
+Enable Popups in the Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``popups="true"`` is added to the ``<layer...>`` entry in the catalog::
+
+	<layer title="Parcel Points" src="parcel_points/parcel_points" popups="true"/>
+
+
+
+
+
+
+
