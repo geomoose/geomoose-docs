@@ -1,0 +1,219 @@
+config.js Configuration Options
+===============================
+
+ * ``links_bar_html``
+
+   HTML to be contained in the bar after the header and before the toolbar.
+
+ * ``waiting_html``
+
+   Message to use when a user is waiting for something to load.
+
+ * ``mapserver_url``
+
+   The URL to use for MapServer-type map sources.
+
+ * ``control_panel_side``
+
+   Change which side on which the control panel resides.
+
+ * ``mapfile_root``
+
+   The filesystem path on which all mapfiles reside. Used for Mapserver-type map sources.
+
+ * ``mapbook``
+
+   The URL to the mapbook. Defaults to php/getmapbook.php.
+
+ * ``fractional_zoom``
+
+   Toggles whether 'in between' zooms or strict steps should be supported.
+
+ * ``scales``
+
+   List of scales to be used in the zoom-ladder.
+
+ * ``max_extent``
+
+   The maximum bounding box of the map.
+
+ * ``initial_extent``
+
+   The initial bounding box view of the map.
+
+ * ``projection``
+
+   The projection to be used for the map.
+
+ * ``ground_units``
+
+   Set the ground units of the map. Defaults to 'm'.
+
+ * ``catalog_name``
+
+   Set the catalog's label. Defaults to 'Catalog'
+
+ * ``group_checkboxes``
+
+   Allow entire groups to be toggled on or off with a global checkbox. Defaults to true.
+
+ * ``flashy_bits``
+
+   Toggles Animations on or off. Defaults to true
+
+ * ``zoomto``
+
+   Object representing the zoom to drop downs.
+
+ * ``jumpto_scales``
+
+   Object containing the label:scale values for the scale jumper.
+
+ * ``startup_service``
+
+   Service to call at startup. Defaults to false
+
+ * ``layer_control_order``
+
+   Changes the display order of the layer controls.  Stored as an array.
+
+ * ``layer_controls``
+
+   object containing objects describing the layer controls.
+
+ * ``layer_options.transitionEffect``
+
+   OpenLayers defined transition effect for all layers. Defaults to null.
+
+ * ``layer_options.buffer``
+
+   OpenLayers vector layer buffer radius. Defaults to 0.
+
+ * ``layer_options.ratio``
+
+   OpenLayers "ratio" for vector layers. Defaults to 1.
+
+ * ``catalog.toggle_controls``
+
+   Turn on or off the ability to hide the layer controls in the catalog. Defaults to true.
+
+ * ``catalog.show_controls``
+
+   Turn on or off the controls in the catalog. Defaults to true.
+
+ * ``reference_map``
+
+   Not yet implemented.
+
+ * ``cursor``
+
+   Object of CSS cursor definitions
+
+ * ``cursor.pan``
+
+   CSS for pan tool.
+
+ * ``cursor.zoomout``
+
+   CSS for zoomout tool.
+
+ * ``cursor.zoomin``
+
+   CSS for zoomin tool.
+
+ * ``cursor.measure``
+
+   CSS for measure tool.
+
+ * ``cursor.measurearea``
+
+   CSS for measurearea tool.
+
+ * ``scale_line.enabled``
+
+   Toggle whether the scale lien should be displayed on the map. Defaults to true.
+
+ * ``scale_line.top_units``
+
+   What units to display on the top of the scale line.
+
+ * ``scale_line.bottom_units``
+
+   What units to display on the bottom of the scale line.
+
+ * ``scale_line.width``
+
+   The width, in pixels, of the scale line.
+
+ * ``measure_tool``
+
+   options for the measure tools.
+
+ * ``measure_tool.precision``
+
+   Number of digits to display in the readings.
+
+ * ``measure_tool.style``
+
+   OpenLayers style object.
+
+ * ``measure_tool.line_units``
+
+   Default units to use for Line measurements.
+
+ * ``measure_tool.area_units``
+
+   Default units to use for Area measurements.
+
+ * ``default_tool``
+
+   Tool to default to when GeoMOOSE.activateDefaultTool is called.
+
+ * ``popups``
+
+   options for controlling the behavior of popups.
+
+ * ``popups.left_offset``
+
+   This is used in conjunction with popup CSS styling to properly position the mouse after a popup has been dragged.
+
+ * ``services``
+
+   Options for controlling the behaviour of services.
+
+ * ``services.disable_hidden_tabs``
+
+   Toggle whether to disable tables when they have been hidden. Defaults to false.
+
+ * ``messages``
+
+   Object of error messages.
+
+ * ``messages.requirement_failure``
+
+   Shown when the user does not fill in a required feild.
+
+ * ``messages.invalid_tool``
+
+   Shown when a user tries to start a tool which is not properly configured.
+
+ * ``messages.service_config_error``
+
+   Shown when an admin does not properly configure the tools for a service.
+
+ * ``messages.mapbook_invalid``
+
+   Shown when the server does not return a valid mapbook contents.
+
+ * ``message.mapbook_version``
+
+   Shown when a user tries to load a 1.X version of the mapbook.
+
+ * ``mapbook_param_error``
+
+   Shown when the mapbook contains an invalid <param> tag.
+
+ * ``messages.service_return_error``
+
+   Shown when a service failes to return valid XML.
+
