@@ -291,6 +291,7 @@ The service element is the key to GeoMOOSE's interoperability.  All functions ar
 * `title` - This title will be displayed automatically in the input tab.
 * `target` - If set then this attribute will display the results in a different window.
 * `display-submit` - If set to `false` will not display the "Go!" button.
+* `clear-highlight` - Boolean. Defaults to `false`. Controls whether the highlight layer should be cleared when closing the service's tab.
 
 Service have one `<url>` child.  The `<url>` child specifys the URL for of the service for GeoMOOSE to call::
 
