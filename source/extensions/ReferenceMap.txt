@@ -1,0 +1,52 @@
+Reference Map
+=============
+
+Description
+-----------
+
+An extension providing extension map functionality is included with GeoMOOSE 2.7 and above.  It provides a static reference with a dynamic context box.  It can be minified using a toggle button which displays "+" or "-" depending on the state of the reference map widget.
+
+Adding to Application
+---------------------
+
+To enable this extension, add the folowing line to the ``<head>`` section of ``geomoose.html``::
+
+	<script type="text/javascript" src="extensions/ReferenceMap.js"></script>
+
+
+Configuring the Reference Map
+-----------------------------
+
+The reference map in the demo is configured to work with the state of Minnesota in web mercator.
+
+1. Create an image with a known size and bounding box.  How Duck Does this::
+
+	I just sniff images with Firebug and modify the WMS request for the right image size and with the bounding bbox taken from BBOX.
+
+
+  Example Image name: ``dakota_county.png`` with the size of 100x100 pixels.
+
+2. Override the CSS with that image.
+
+   In either the site's CSS or in a ``<style>`` tag in the ``<head>`` of the .html file, add the following::
+
+     .ReferenceMap {
+     	background-image: url(dakota_county.png) !important;
+	padding-left: 100px !important;
+	padding-right: 100px !important;
+     }
+
+3. Configure the extent for the image
+
+   In the mapbook, add a param to configure the extent::
+
+     <param name="reference_extent">minx,miny,maxx,maxy</param>
+
+Other Options
+-------------
+
+The reference map can be started as open or closed using the "reference_open" boolean.  To start as open, add the following to the mapbook::
+
+    <param name="reference_open">true</param>
+
+
