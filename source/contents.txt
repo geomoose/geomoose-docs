@@ -9,11 +9,7 @@ GeoMOOSE
 ********
 .. toctree::
 	
-	welcome 
 	getting_started
-	docs/index
 	developer/index
 	info/license
-	support
-	news
 	

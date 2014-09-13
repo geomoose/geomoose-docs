@@ -14,9 +14,9 @@ From the TinyOWS Main Page,
 	|
 	| From a technical point of view WFS-T is a Web Service API in front of a spatial database. TinyOWS is so deeply tighed to PostgreSQL/PostGIS.
 
-More `here! <http://mapserver.org/tinyows/index.html#tinyows>`_
+More `here! <http://mapserver.org/tinyows/index.html#tinyows>`__
 
-Windows Users can find TinyOWS for MS4W `here <http://www.maptools.org/ms4w/?page=downloads.html>`_.
+Windows Users can find TinyOWS for MS4W `here <http://www.maptools.org/ms4w/?page=downloads.html>`__.
 
 Assumptions of this How To 
 --------------------------

@@ -1,8 +1,10 @@
 Developer Documentation
 =======================
 
-The purpose of this section is to document how to modify and/or extend GeoMOOSE beyond what can be done via configuration.
+The purpose of this section is to document how to modify and/or extend a specific version of GeoMOOSE beyond what can be done via configuration.
 The intended audience is people who are familiar with JavaScript and potentially server side programming.
+
+Also, see our `project wide documentation <http://www.geomoose.org/developer>` page for information about contributing to the project.
 
 .. toctree::
 	:maxdepth: 1
@@ -11,15 +13,7 @@ The intended audience is people who are familiar with JavaScript and potentially
 	services
 	extensions
 	sprite
-	standards
-	contribute
 	build
-	release
-
-Trac / Ticket Management System
--------------------------------
-
-Our Trac ticket management system is graciously hosted by OSgeo.  `<http://trac.osgeo.org/geomoose/>`_
 
 
 API Docs
@@ -27,23 +21,3 @@ API Docs
 
 API Docs are avilable `here <../apidocs/>`_. 
 
-RFCs
------
-
-.. toctree::
-	:maxdepth: 1
-
-	RFC 1: Project Steering Committee Guidelines - Adopted <../rfc/rfc-1>
-	RFC 2: GeoMOOSE Project Mission (What is GeoMOOSE) - Adopted <../rfc/rfc-2>
-	RFC 3: GeoMOOSE Release Process - Adopted <../rfc/rfc-3>
-	RFC 4: GeoMOOSE Commit Management <../rfc/rfc-4>
-	RFC 5: Modularize Core GeoMOOSE Services - Adopted <../rfc/rfc-5>
-
-*RFC Status values*
-^^^^^^^^^^^^^^^^^^^
- 
- * Development: RFC is being written/revised/discussed.
- * Proposed: RFC is complete, and open for voting.
- * Withdrawn: RFC is unapproved, and not being pursued further. 
- * Adopted: RFC is approved (and presumably implemented).
- 

@@ -1,6 +1,0 @@
-.. _mailing_lists:
-
-Mailing Lists
-=============
-
-.. include:: mailing_list_info.txt

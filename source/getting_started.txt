@@ -12,7 +12,7 @@ Getting Started with GeoMOOSE
 Try the online Demo
 -------------------
 
-If you have not already, looking through the :doc:`GeoMOOSE Demo <info/demo>` can give you a good idea of how GeoMOOSE looks.
+If you have not already, looking through the `GeoMOOSE Demo <http://demo.geomoose.org>`_ can give you a good idea of how GeoMOOSE looks.
 
 
 Install It!
@@ -36,26 +36,8 @@ Instructional Materials
 	../docs/foss4g2011
 	../docs/foss4gna-2013
 
-Contact the Mailing Lists
--------------------------
-
-.. include:: info/mailing_list_info.txt
-
-Documentation
--------------
-
-We have detailed customization documentation.  Please visit the :doc:`/docs/index` to see more of GeoMOOSE's capabilities.
-
-
 Developer Specific Documentation
 --------------------------------
 
 Those really hungry for customization can visit our :doc:`Developer Documentation </developer/index>`.  You can also find links to our RFC's, API documentation, and release notes.
-
-FAQ
--------
-.. toctree::
-        :maxdepth: 1
-
-        ../docs/faq
 

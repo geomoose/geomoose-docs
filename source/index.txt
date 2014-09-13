@@ -1,28 +1,97 @@
-.. Note: This file only controls the HTML index page the real TOC is contents.txt
+Implementer Documentation
+=========================
 
-GeoMOOSE
-********
+This section contains reference information that you would need to install and configure GeoMOOSE for your site.  It is assumed that you have read the :ref:`getting_started` section and that you are generally familiar with GIS principles and running a web server on your platform.
 
-.. include:: welcome.txt
+Configuration References
+------------------------
 
-GeoMOOSE Documentation
-======================
 .. toctree::
 	:maxdepth: 1
 
-	getting_started
-	docs/index
-	developer/index
-	info/license	
+	../docs/mapbook
+	../docs/configuration
+	../docs/url_arguments
 
-.. include:: support.txt
+	../docs/settings
+	../docs/internationalization
+	../docs/services
 
-.. include:: news.txt
+	../docs/menubar
+	../docs/reference_map
+	../docs/user_extensions
+	../docs/directory_structure
 
-Indices and tables
-==================
+Vector Layer Editing
+--------------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+	:maxdepth: 1
 
+	../docs/vector_layers/using_vector_layers
+	../docs/vector_layers/geoserver_setup
+	../docs/vector_layers/tinyows_setup
+
+Service Documentation
+---------------------
+
+.. toctree::
+	:maxdepth: 1
+	
+	../services/query.php
+
+Extensions Documentation
+------------------------
+.. toctree::
+	:maxdepth: 1
+
+	../howto/popups
+	../extensions/BookmarkToTab
+	../extensions/Disclaimer
+	../extensions/DynamicZoom
+
+
+Helpful How To's
+----------------
+
+Getting Started Customizing Your App
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. toctree::
+	:maxdepth: 1
+
+	../docs/projections
+	../howto/layer
+	../howto/identify
+	../howto/select
+	../howto/search
+	../howto/jump_to
+	../howto/print_template
+	../howto/tool_text	
+	../howto/menubar
+	../howto/skin
+	../howto/sketch_colors
+	../howto/measure_tool
+
+Going Further Customizing Your App
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. toctree::
+	:maxdepth: 1
+
+	../howto/wms_project
+	../howto/waiting
+	../howto/commercial_layers
+	../howto/tabs
+	../howto/startup
+	../howto/getmapbook	
+	../howto/add_input_types
+
+Other How To
+^^^^^^^^^^^^
+
+.. toctree::
+	:maxdepth: 1
+
+	../howto/testing_reporting_ticketing
+	../howto/run_trunk
