@@ -34,7 +34,7 @@ source_suffix = '.txt'
 #source_encoding = 'utf-8'
 
 # The master toctree document.
-master_doc = 'contents'
+master_doc = 'index'
 
 # General information about the project.
 project = u'GeoMOOSE'
@@ -173,7 +173,7 @@ htmlhelp_basename = 'GeoMOOSEdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('contents', 'GeoMOOSE.tex', u'GeoMOOSE Documentation',
+  ('index', 'GeoMOOSE.tex', u'GeoMOOSE Documentation',
    u'Dan "Ducky" Little', 'manual'),
 ]
 
