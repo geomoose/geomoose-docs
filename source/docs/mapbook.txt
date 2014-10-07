@@ -101,6 +101,7 @@ All map-source types support two children:
 	* *value* – This is the value the name will be set to in the URL. 
 * <layer> (required) – At least one layer child is required for each map-source.  Even if a mapserver-type layer is used where all the layers are set to 'default' in the mapfile, it is necessary to create a layer child representing all of the layers.  All Layer children (elements) have one required attribute, name.  
 	* *name*  – For a WMS map-source, this refers to a layer as specified in the GetCapabilities document.  For a Mapserver map-source, this refers to the name of a layer in the Mapfile.  If a Mapfile has all of the layers set to default or all of the layers should be on or off as a whole, then the 'name' should be set to 'all.' <layer>'s also have a "visible" attribute which defaults to false.  To set a layer to default visibility, set "visible" to true.
+	* *status* - Boolean. Toggles whether the ``<layer>`` should be on by default. **WARNING!** It is possible for conflicts to arise from setting the status attributes of <layer> elements and mixing that improperly with the settings in the catalog. 
 
 AGS
 ^^^^^^^^^^^^
