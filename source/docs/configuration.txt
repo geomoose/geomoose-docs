@@ -81,6 +81,12 @@ Array of Floating Point Numbers.  This sets the intial view for the map::
 
 	<param name="max_extent">-20037508.3,-20037508.3,20037508.3,20037508.3</param>
 
+always_scroll_zoom
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Boolean. Default is false.  Enables the scroll wheel for zoom all the time::
+
+	<param name="always_scroll_zoom">true</param>
+
 .. _jumpto_scales:
 
 jumpto_scales
