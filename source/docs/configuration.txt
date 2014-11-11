@@ -23,6 +23,12 @@ Every Mapbook has a <configuration> section.  In the <configuration> section the
 The Parameters
 -----------------
 
+always_scroll_zoom
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Boolean. Default is false.  Enables the scroll wheel for zoom all the time::
+
+	<param name="always_scroll_zoom">true</param>
+
 catalog_name
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 String. Defaults to 'Catalog'.  Reference the title of the tab that should be populated with the layers list::

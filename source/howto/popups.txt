@@ -12,7 +12,7 @@ The HTML Template
 ^^^^^^^^^^^^^^^^^
 
 
-The HTML templates are Dojo-type string templates.  They are slighty different than MapServer templates and us ``${attribute]`` formatting::
+The HTML templates are Dojo-type string templates.  They are slighty different than MapServer templates and use ``${attribute}`` formatting::
 
 	<map-source ...>
 		...
