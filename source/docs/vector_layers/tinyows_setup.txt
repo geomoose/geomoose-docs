@@ -76,19 +76,18 @@ The Mapbook currently features a fragment which supports the above configuration
 
 That ``<map-source>`` entry can be removed and replaced with this fragment::
 
-	<map-source name="census_cities" type="wfs" status="on">
+	<map-source name="census_cities" type="wfs">
 		<style type="stylemap"><![CDATA[
 		{
 			"strokeColor" : "#00ff00",
-			"label" : "${namelsad}"
+			"label" : "${namelsad10}"
 		}
 		]]></style>
 
 		<url>/mapserver/cgi-bin/tinyows</url>
 
-		<attribute name="geoid10" type="text" label="ID:" default-value="27999"/>
-		<attribute name="namelsad10" type="text" label="Name:"/>
-
+		<attribute name="geoid10" type="user" label="ID:" default-value="27999"/>
+		<attribute name="namelsad10" type="user" label="Name:"/>
 
 		<feature-namespace>http://localhost/geomoose/census_places</feature-namespace>
 		<feature-type>census_places</feature-type>
