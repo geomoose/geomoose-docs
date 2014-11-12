@@ -63,7 +63,7 @@ The file we used for this example is::
 			writable="1"
 			server="http://localhost/"
 			ns_prefix="census"
-			ns_uri="http://localhost/geomoose/census"
+			ns_uri="http://localhost/geomoose/census_places"
 			name="census_places"
 			title="Census Places" />
 	</tinyows>
