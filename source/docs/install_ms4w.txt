@@ -98,7 +98,7 @@ Step 3b: Configuring Microsoft IIS 6.0 web server
 
 	* At the bottom of this page is a list of applications installed which use MS4W.  Click on the GeoMOOSE 2.6 link to test the installation.
 
-**NOTE**  On some Windows-based computers, you will need to set an environment variable for the location of the prog4 library.  This step is needed if you recieve the error "msProcessProjection(): Projection library error. No such file or directory".  Instructions for adding the envronment variable can be found at ``http://mapserver.org/errors.html``.
+**NOTE**  On some Windows-based computers, you will need to set an environment variable for the location of the proj4 library.  This step is needed if you recieve the error "msProcessProjection(): Projection library error. No such file or directory".  Instructions for adding the envronment variable can be found at ``http://mapserver.org/errors.html``.
 
 Common Issues
 -------------

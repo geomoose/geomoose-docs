@@ -2,31 +2,34 @@
 
 Local_settings.ini Reference Guide
 ======================================
-The ``settings.ini`` file found in the conf folder is a text document used as the general configuration file for a GeoMOOSE application.  It configures things such as projection, paths, mailing labels. For an example of a settings.ini file, please refer to the GeoMOOSE demo and the file in the conf folder.  This reference guide explains the optional settings.
+The ``settings.ini`` file found in the conf folder is a text document used as the general configuration file for a GeoMOOSE application.  It configures things such as projection, paths, mailing labels. For an example of a ``settings.ini`` file, please refer to the GeoMOOSE demo and the file in the conf folder.  This reference guide explains the optional settings.
 
 You should never, ever modify ``settings.ini``
 ----------------------------------------------
 
-*This is very important.* ``settings.ini`` is managed by GeoMOOSE.  If you upgrade the application in the same tree as your current application you will lose all of your changes.  This can get annoying because replacing the new ``setttings.ini`` with your old one could substantially break the application because some of its defaults will be missing.  GeoMOOSE is configured to override ``settings.ini`` with ``local_settings.ini``.  There are two example files that you might want to use for `local_settings.ini``; either ``ms4w_local_settings.ini`` or ``unix_local_settings.ini``.  If you want to change these settings, leave ``settings.ini`` alone and change them in ``local_settings.ini``.  Think of localsettings.ini as an override to the defaults in settings.ini.  Anything that is in settings.ini can go into localsettings.ini.
+*This is very important.* ``settings.ini`` is managed by GeoMOOSE.  If you upgrade the application in the same tree as your current application you will lose all of your changes.  This can get annoying because replacing the new ``setttings.ini`` with your old one could substantially break the application because some of its defaults will be missing.  GeoMOOSE is configured to override ``settings.ini`` with ``local_settings.ini``.  There are two example files that you might want to use for `local_settings.ini``; either ``ms4w_local_settings.ini`` or ``unix_local_settings.ini``.  If you want to change these settings, leave ``settings.ini`` alone and change them in ``local_settings.ini``.  Think of ``local_settings.ini`` as an override to the defaults in settings.ini.  Anything that is in ``settings.ini`` can go into ``local_settings.ini``.
+
+The configurations
+----------------------
 
 [defaults]
-----------
+^^^^^^^^^^^
 * mapbook – location of default mapbook
 
 [map]
------
+^^^^^^^^^^^
 
 * projection – EPSG code of coordinate system for the map
 
 [paths]
--------
+^^^^^^^^^^^
 
 * server_name - name of your web server.  For development purposes this can be left set as "localhost".  However, for a public webserver, the server_name parameter should be changed to the name of that server.
 * root – root for the map (only configured through local_settings.ini)
 * temp – web accessible location of the temp files relative to the root of the domain (only configured through local_settings.ini)
 
 [identify]
-----------
+^^^^^^^^^^^
 
 This setting specifies which metadata parameters in the mapfiles are used for the identify service output templates.
 
@@ -37,12 +40,12 @@ This setting specifies which metadata parameters in the mapfiles are used for th
 * wms_footer=identify/wms_footer.html
 
 [select]
---------
+^^^^^^^^^^^
 
 * highlight_map – this setting specifies which mapfile should be used to symbolize the selected or highlight feature on the map
 
 [itemquery]
------------
+^^^^^^^^^^^
 
 This setting specifies which metadata parameters in the mapfiles are used for the itemquery service output templates.
 
@@ -51,14 +54,14 @@ This setting specifies which metadata parameters in the mapfiles are used for th
 * itemquery_miss=itemquery/miss.html
 
 [query]
---------------
+^^^^^^^^^^^
 
 This setting specifies the output of a query with no results returned.
 
 * query_miss=itemquery/miss.html
 
 [mailing_labels]
-----------------
+^^^^^^^^^^^^^^^^^
 
 These setting specify formatting options for the labels generated from the mailing labels service.
 Specifies how many rows/columns to print per page:
@@ -90,7 +93,7 @@ If this is set to "true" then any blank lines in the labels will be "collapsed" 
 * label_lines_collapse=true
 
 [print_formats]
--------------------------------
+^^^^^^^^^^^^^^^^
 
 Sets if print format will appear in the print formats tab. The format will appear if "1" and will not appear if "0"
 
@@ -99,10 +102,14 @@ Sets if print format will appear in the print formats tab. The format will appea
 * print_pdf=1
 
 [html_printing]
--------------------------
+^^^^^^^^^^^^^^^^^
 
 Sets the template to use, image width and height for map when selecting the html format for printing output.
 
 * html_template=./print/default_template.html
 * html_image_width=800
 * html_image_height=700
+
+Apache environment variable to override ``local_settings.ini`` location
+------------------------------------------------------------------------------------
+The default location of ``local_settings.ini`` is '../../conf/local_settings.ini'.  The location of ``local_settings.ini`` can be changed with Apache environment variables.  For instance, in Apache httpd.conf like: ``SetEnv GEOMOOSE_LOCAL_SETTINGS '/new/path/to/local_settings.ini'`` 
