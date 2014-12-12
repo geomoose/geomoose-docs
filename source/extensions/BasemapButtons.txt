@@ -1,0 +1,48 @@
+Basemap Buttons
+===============
+
+Description
+-----------
+
+Provide a quick way of changing the basemap using a collection of buttons on the map.
+
+Adding to Application
+---------------------
+
+To add the Disclaimer to your application add the following lines::
+
+	<script type="text/javascript" src="extensions/BasemapButtons.js"></script>
+
+
+
+Configuring
+-----------
+
+The configuration for BasemapButtons.js can get very complex.  The default example is given below::
+
+	// Default configuration (works with demo layers)
+	CONFIGURATION['BasemapButtonsExtension'] = {
+		'baseLayers': null,
+		'autoBaseLayers': true,
+		'buttons': [
+			{
+				'label':'Basemap',
+				'title':'County and City Boundaries',
+				'layers': [
+					'blank/blank',
+					'borders/city_labels',
+					'borders/county_labels',
+					'borders/county_borders',
+					'borders/city_poly'
+				],
+				'checked': true
+			},
+			{
+				'label':'Aerial',
+				'title':'2010 Photos',
+				'layers': 'lmic/met10'
+			}
+		]
+	};
+
+This is in BasemapButtons.js.  An application specific configuration should be stored in a separate javascript file.  That can then be included *after* BasemapButtons.js.
