@@ -320,6 +320,8 @@ Steps can have many `<input>` children.  `<input>` s are very similar to the one
 	</options>
 * `type=precision` - Sends the precision of the map to the service.
 
+* Both types of steps may have `<help-text>` children which contain HTML information to assist the user.  It is rendered in a `<div>` with the `help-text` helper class.
+
 
 <layer-controls>
 ----------------
