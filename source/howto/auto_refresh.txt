@@ -1,0 +1,25 @@
+Creating an Auto-Refreshing Layer
+=================================
+
+Making layers automatically refresh is a new feature as of GeoMOOSE 2.8.  This is built-in,
+no need for extensions or additional libraries.
+
+How to do it
+------------
+
+Find the ``<map-source>`` which should auto-refresh.  Add the ``auto-refresh`` attribute to it.
+
+For example:
+::
+
+	<map-source name="vehicle-locations" auto-refresh="15000">
+		<layer name="buses"/>
+		<layer name="trucks"/>
+		<layer name="tractors"/>
+	</map-source>
+
+
+
+The ``auto-refresh`` is specified in milliseconds.  The example above will refresh the layer every 15 seconds.	
+
+

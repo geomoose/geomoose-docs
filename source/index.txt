@@ -70,6 +70,7 @@ Getting Started Customizing Your App
 	:maxdepth: 1
 
 	../docs/projections
+	../howto/auto_refresh
 	../howto/layer
 	../howto/identify
 	../howto/select
