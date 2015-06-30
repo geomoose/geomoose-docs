@@ -94,6 +94,8 @@ The map-source tag is used to specify a single or collection of layers in GeoMOO
 
 * ``buffer`` attribute.  Boolean, defaults to true, also optional.  When set to "false" the image does not "buffer" around the map, it is trimmed to the exact size of the map display.  Useful for MapServer scalebars.
 
+* ``auto-refresh`` attribute.  If set and non-zero, specifies the interval (in milliseconds) at which the layers in this ``<map-source>`` will automatically refresh.  This allows layers where the underlying data is regularly changing to be kept current on the map.
+
 All map-source types support two children:
 
 * <param> – The 'param' child will add or change parameters sent over the URL to a <map-source>. This can be necessary to change mime-types for WMS services or pass various miscellaneous settings to a mapserver mapfile.  All 'param' children have two required attributes:
