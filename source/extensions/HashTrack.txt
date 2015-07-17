@@ -1,0 +1,14 @@
+HashTrack
+=========
+
+HashTrack adds the ability to store, recall, and change the current visible extent using parameters stored in the URL's "hash."
+
+Installing
+----------
+
+In your HTML file, before the </head> tag add::
+
+	<script type="text/javascript" src="extensions/HashTrack.js"></script>
+
+
+

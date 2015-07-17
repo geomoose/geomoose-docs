@@ -58,6 +58,9 @@ Extensions Documentation
 	../extensions/BookmarkToTab
 	../extensions/Disclaimer
 	../extensions/DynamicZoom
+	../extensions/HashTrack
+	../extensions/ReferenceMap
+
 
 
 Helpful How To's
