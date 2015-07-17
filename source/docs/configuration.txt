@@ -1,4 +1,3 @@
-..  role:: strikethrough
 
 .. _configuration:
 
@@ -7,319 +6,285 @@ GeoMOOSE Configuration Options
 
 Introduction
 -------------
-GeoMOOSE has a plethora of configuration options.  All of them can be changed in the mapbook and it is possible to highly customize the interface without writing a single line of code.  This document attempts to keep up with the various settings options in order to give the user more control over their GeoMOOSE installation.  Organization is arbitrarily alphabetisized (mostly).  
+GeoMOOSE has a plethora of configuration options.  All of them can be changed in the mapbook and it is possible to highly customize the interface without writing a single line of code.  This document attempts to keep up with the various settings options in order to give the user more control over their GeoMOOSE installation.  Organization is arbitrarily alphabetisized (mostly).
 
 How to Change a Setting
 -----------------------
 Every Mapbook has a <configuration> section.  In the <configuration> section there are multiple <param> fields.  The <param> fields are how settings are changed from their defaults.  For example, to add some HTML to the Links bar::
 
-	<configuration>
-		...
-		<param name="links_bar_html"><![CDATA[This is some html, with a <a href="http://www.google.com">link to Google!</a>]]></param>
-		...
-	</configuration>
+        <configuration>
+                ...
+                <param name="links_bar_html"><![CDATA[This is some html, with a <a href="http://www.google.com">link to Google!</a>]]></param>
+                ...
+        </configuration>
 
 
 The Parameters
 -----------------
 
-always_scroll_zoom
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Default is false.  Enables the scroll wheel for zoom all the time::
 
-	<param name="always_scroll_zoom">true</param>
 
-catalog_name
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String. Defaults to 'Catalog'.  Reference the title of the tab that should be populated with the layers list::
 
-	<param name="catalog_name">MyCatalogTabName</param>
+ * ``links_bar_html``
 
-catalog.show_controls
-^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true.  Sets whether or not the controls below the layer names should be visible.
+   HTML to be contained in the bar after the header and before the toolbar.
 
-catalog.toggle_controls
-^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true.  When set to true, clicking on the layer name allows the controls below the layer to be turned on or off.  When set to false the visibility of the controls is set by catalog.show_controls.
+ * ``waiting_html``
 
-coordinate_display.latlon
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean.  Default is true. Toggles the display of the latitude and longitude in the footer of the map::
+   Message to use when a user is waiting for something to load.
 
-	<param name="coordinate_display.latlon">false</param>
+ * ``mapserver_url``
 
-coordinate_display.usng
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Default is true. Toggles the display of the United States National Grid Coordinates in the footer of the map::
+   The URL to use for MapServer-type map sources.
 
-	<param name="coordinate_display.usng">true</param>
+ * ``control_panel_side``
 
-coordinate_display.xy
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean.  Default is true. Toggles the display of the ground unit X,Y in the footer of the map::
+   Change which side on which the control panel resides.
 
-	<param name="coordinate_display.xy">false</param>
+ * ``mapfile_root``
 
-.. _fractional_zoom:
+   The filesystem path on which all mapfiles reside. Used for Mapserver-type map sources.
 
-fractional_zoom
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Default is false. This allows the Map to use fractional scales like GeoMOOSE 1.X.  This functionality, however, breaks tiled layers.  See rounding impacts on :ref:`jumpto_scales`::
+ * ``mapbook``
 
-	<param name="fractional_zoom">true</param>
+   The URL to the mapbook. Defaults to php/getmapbook.php.
 
-group_checkboxes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true.  Toggles whether group checkboxes are displayed::
+ * ``fractional_zoom``
 
-	<param name="group_checkboxes">false</param>
+   Toggles whether 'in between' zooms or strict steps should be supported.
 
-ground_units
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String.  Default is 'm'. Set to 'm', 'in', 'mi', 'dd', to reflect the projection being used::
+ * ``scales``
 
-	<param name="ground_units">m</param>
+   List of scales to be used in the zoom-ladder.
 
-initial_extent
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Array of Floating Point Numbers.  This sets the intial view for the map::
+ * ``max_extent``
 
-	<param name="max_extent">-20037508.3,-20037508.3,20037508.3,20037508.3</param>
+   The maximum bounding box of the map.
 
-.. _jumpto_scales:
+ * ``initial_extent``
 
-jumpto_scales
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Associative Array.  This associative array features keys that are shown in the "scale drop down" and the scale itself is the value.  Application will jump to nearest fixed scale unless you set :ref:`fractional_zoom` to true (which makes tiled layers not work)::  
+   The initial bounding box view of the map.
 
-	<param name="jumpto_scales"><![CDATA[
-	{
-	"1:100000" : 100000,
-	"1:50000" : 50000,
-	"1:24000" : 24000,
-	"1:10000" : 10000,
-	"1:5000" : 5000
-	}
-	]]></param>
+ * ``projection``
 
+   The projection to be used for the map.
 
-layer_controls.fade.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true. Toggles the layer control to fade the layer out::
+ * ``ground_units``
 
-	<param name="layer_controls.fade.on">false</param>
+   Set the ground units of the map. Defaults to 'm'.
 
-layer_controls.unfade.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true. Toggles the layer control to unfade the layer out::
+ * ``catalog_name``
 
-	<param name="layer_controls.unfade.on">false</param>
+   Set the catalog's label. Defaults to 'Catalog'
 
-.. _layer_controls_legend_on:
+ * ``group_checkboxes``
 
-layer_controls.legend.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true.  Toggles whether to show the `legend` control (a small '+' icon to expand and collapse the legend) by default.  See also, :ref:`mapbook catalog section <legend>` ::
+   Allow entire groups to be toggled on or off with a global checkbox. Defaults to true.
 
-	<param name="layer_controls.legend.on">true</param>
+ * ``flashy_bits``
 
-layer_controls.metadata.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean.  Defaults to false.  Toggles whether or not to show the link to a layer's metadata::
+   Toggles Animations on or off. Defaults to true
 
-	<param name="layer_controls.metadata.on">false</param>
+ * ``zoomto``
 
-.. _links_bar_html:
+   Object representing the zoom to drop downs.
 
-links_bar_html
-^^^^^^^^^^^^^^
-HTML Text. Default displays the GeoMOOSE Stack. Changes the HTML of the "links bar" formally the "menu bar" in the interface::
+ * ``jumpto_scales``
 
-	<param name="links_bar_html"><![CDATA[
-		<b>Our Stack:</b>
-		<a target="_blank" ef="http://www.geomoose.org">GeoMOOSE.org</a> |
-		<a target="_blank" href="http://www.mapserver.org">MapServer</a> |
-		<a target="_blank" href="http://www.openlayers.org">OpenLayers</a> |
-		<a target="_blank" href="http://www.dojotoolkit.org">Dojo</a> 
-	]]></param>
+   Object containing the label:scale values for the scale jumper.
 
-mapbook
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String. Default is 'php/getmapbook.php'. The URL to the mapbook, this is the only configuration setting that cannot be changed by the mapbook.
+ * ``startup_service``
 
-max_extent
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Array of Floating Point Numbers.  An array, in the format of [MinX, MinY, MaxX, MaxY] that sets the maximum extents of the map.  You can set this in the mapfile without using the brackets but using commas to delineate the members of the array::
+   Service to call at startup. Defaults to false
 
-	<param name="max_extent">[-180,-90,180,90]</param>
+ * ``layer_control_order``
 
-(or in a different projection)::
+   Changes the display order of the layer controls.  Stored as an array.
 
-	<param name="max_extent">-20037508.22-0037508.32,20037508.44,20037508.32</param>
+ * ``layer_controls``
 
-messages.invalid_tool
-^^^^^^^^^^^^^^^^^^^^^
-String. Displayed when a drawing tool that is not defined is called.  The string `%TOOL%` will be replaced with the name of the offending tool.  Alterted to the user when the mapbook features the enablement of a tool that doesn't exist (like "polysquare").
+   object containing objects describing the layer controls.
 
-messages.mapbook_param_error
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String. When a param cannot be properly set due to any sort of error, this error message will be displayed.  `%FIELD%` will be replaced with the "name" attribute from the param.  Alterted to the user when something did not go well with the parsing the parameters.
+ * ``layer_options.transitionEffect``
 
-messages.mapbook_version
-^^^^^^^^^^^^^^^^^^^^^^^^^
-String.  Error presented to the user if they try to load a mapbook that is not compliant with the current GeoMOOSE version.  The string `%VERSION%` will be replaced with the mapbook's version.
+   OpenLayers defined transition effect for all layers. Defaults to null.
 
-messages.requirement_failure
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String. Message displayed when a service requirement was not met.  The users is prompted with this message when they fail to fill in all of the required fields for a service.
+ * ``layer_options.buffer``
 
-messages.service_config_error
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String.  Is displayed when there is an error with the service being called.
+   OpenLayers vector layer buffer radius. Defaults to 0.
 
-popups.autosize
-^^^^^^^^^^^^^^^
-Boolean. Sets whether or not popups are autosized when added to the map.
+ * ``layer_options.ratio``
 
-projection
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String.  The projection of the map, defaults to UTM-15N (EPSG: 26915).  GeoMOOSE is primarily developed in the state of Minnesota, USA, so many of our test datasets are in UTM-15N.  The default Projection is this way for no other reason than that.  Display is in the so-called 'web mercator'::
+   OpenLayers "ratio" for vector layers. Defaults to 1.
 
-	<param name="projection">EPSG:3857</param>
+ * ``catalog.toggle_controls``
 
-reference_map.enabled
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true. Toggle whether the refrence map should be added to the map.
+   Turn on or off the ability to hide the layer controls in the catalog. Defaults to true.
 
-reference_map.height
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Integer. Height of the reference map.
+ * ``catalog.show_controls``
 
-reference_map.width
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Integer.  Width of the reference map.
+   Turn on or off the controls in the catalog. Defaults to true.
 
-reference_map.maximized
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Boolean. Defaults to true. Toggle whether the reference map is expanded by default.
+ * ``reference_map``
 
-reference_map.minimum_ratio
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Integer.  Minimum ratio of display between the main map and the reference map.
+   Not yet implemented.
 
-reference_map.maximum_ratio
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Integer.  Maximum ratio of display between the main map and the reference map.
+ * ``cursor``
 
-scales
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Array of Floating Point Numbers.  The scales are actually ground units per pixel resolution settings and not true scales.  This array is what sets the "scales" shown on the map.
+   Object of CSS cursor definitions
 
-startup_service
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-String.  When set, the named service will be called on startup.
+ * ``cursor.pan``
 
+   CSS for pan tool.
 
-waiting_html
-^^^^^^^^^^^^
-HTML Text. Default is 'Loading...'. Used to populate the HTML of a service tab while waiting for a reload.
+ * ``cursor.zoomout``
 
-zoomto
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Associative Array of Associative Arrays.  This is the settings that populate the "jump to" drop downs.  Best to explain this by example.  If you have difficulties please email the mailing list::
+   CSS for zoomout tool.
 
-	<param name="zoomto['Jump To:']"><![CDATA[
-		{
-			'Dakota County' : [521238.614537864,4924218.86673578,473921.947801381,4974430.36885032],
-			'Parcel Data' : [497205.409367,4923984.423582,477595.805945,4941970.52988],
-			'Full State of MN' : [189783.560000,4816309.330000,761653.524114,5472346.500000]
-		}
-	]]></param>
+ * ``cursor.zoomin``
 
-Depreciated Parameters
---------------------------------------------
+   CSS for zoomin tool.
 
-default_tab
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String.  Defaults to 'Catalog'. References the title of the tab that should be shown by default::`
+ * ``cursor.measure``
 
-	<param name="default_tab">Catalog</param>
+   CSS for measure tool.
 
-drawing_tools.default_fill
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Color. Defaults to 'green'.  Sets the default fill for all sketches.`
+ * ``cursor.measurearea``
 
-drawing_tools.default_opacity
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Floating Point Number between 0 and 1.  Defaults to .8. Sets the opacity of the sketches.`
+   CSS for measurearea tool.
 
-drawing_tools.default_stroke
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Color. Defaults to 'red'. Sets the default stroke for all sketches.`
+ * ``scale_line.enabled``
 
-layer_controls.cycle.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Boolean. Defaults to false. Toggles whether the layer control to refresh the layer every layer_controls.cycle.seconds seconds.`
+   Toggle whether the scale lien should be displayed on the map. Defaults to true.
 
-layer_controls.cycle.seconds
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Floating Point Number. Defaults to 10. The number of seconds between layer refreshes when used with the cycle tool.`
+ * ``scale_line.top_units``
 
-layer_controls.down.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Boolean. Defaults to true.  Toggles the layer control to move the layer down on the image stack::`
+   What units to display on the top of the scale line.
 
-layer_controls.up.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Boolean. Defaults to true.  Toggles the layer control to move the layer up on the image stack::`
+ * ``scale_line.bottom_units``
 
-layer_controls.refresh.on
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Boolean. Defaults to false. Toggles the layer control to allow the user to manually refresh the layer.`
+   What units to display on the bottom of the scale line.
 
-mapserver_url
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String. MapServer URL used when calling type="mapserver" map-source's.` mapserver_url is now configured through conf/local_settings.ini.
+ * ``scale_line.width``
 
-messages.invalid_response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String. Messaged displayed when a service does not return a valid answer from the server.`  Depreciated, removed from config.js
+   The width, in pixels, of the scale line.
 
-messages.mapbook_required
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String.  The error shown when a required <param> setting is missing in the mapbook.  The string `%FIELD%` will be replaced with the required field's name.`  Depreciated, removed from config.js
+ * ``measure_tool``
 
-messages.service_not_found
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String. Message displayed when a service is called but is not defined in the mapbook. The string `%SERVICE%` will be replaced with the name of the invalid service.`  Deprecieated, removed from config.js
+   options for the measure tools.
 
-scale_line.enabled
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Boolean. Defaults to true. Toggle whether the scale line is shown on the may.`  Scale_Line.* are now configured in a ScaleLine.js extension.
+ * ``measure_tool.precision``
 
-scale_line.bottom_units
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String. Defaults to 'mi'.  Possible unit values are 'm', 'in', 'km', 'ft', 'mi'.`  Scale_Line.* are now configured in a ScaleLine.js extension.
+   Number of digits to display in the readings.
 
-scale_line.top_units
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String. Defaults to 'ft'.  Possible unit values are 'm', 'in', 'km', 'ft', 'mi'.`  Scale_Line.* are now configured in a ScaleLine.js extension.
+ * ``measure_tool.style``
 
-scale_line.width
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Integer. Defaults to 200. Defines the width of the scale line on the map.`  Scale_Line.* are now configured in a ScaleLine.js extension.
+   OpenLayers style object.
 
-show_service_settings_in
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`String. Defaults to 'Services'.  Reference the title of the tab that should display the prompts for a service when it is called.`  Depreciated, removed from config.js
+ * ``measure_tool.line_units``
 
-tabs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:strikethrough:`Associative Array.  The keys of the associative array are the titles of the tabs and the values is the DIV that represent the tab. This would be an example setting that is different than the default`::
+   Default units to use for Line measurements.
 
-	<param name="tabs"><![CDATA[
-	{
-		'Layers' : 'layers-tab',
-		'Information' : info-tab'
-	}]]></param>
+ * ``measure_tool.area_units``
+
+   Default units to use for Area measurements.
+
+ * ``default_tool``
+
+   Tool to default to when GeoMOOSE.activateDefaultTool is called.
+
+ * ``popups``
+
+   options for controlling the behavior of popups.
+
+ * ``popups.left_offset``
+
+   This is used in conjunction with popup CSS styling to properly position the mouse after a popup has been dragged.
+
+ * ``popups.clearOnMove``
+
+   Toggle whether popups should clear themselves when the user moves from the focus.
+
+ * ``services``
+
+   Options for controlling the behaviour of services.
+
+ * ``services.disable_hidden_tabs``
+
+   Toggle whether to disable tables when they have been hidden. Defaults to false.
+
+ * ``services.disable_others``
+
+   Toggle whether tools and other tabs should be disabled when starting a service.
+
+ * ``services.cancel_label``
+
+   The label for the cancel button in the service tab.
+
+ * ``services.tools``
+
+   default tools for spatial steps.
+
+ * ``services.tools.pan``
+
+   Show the pan tool for spatial steps.
+
+ * ``services.tools.edit-polygon``
+
+   Show the edit polygon tool for spatial steps.
+
+ * ``services.tools.point``
+
+   Show the edit draw point for spatial steps.
+
+ * ``services.tools.line``
+
+   Show the edit draw line for spatial steps.
+
+ * ``services.tools.polgon``
+
+   Show the edit draw polgon for spatial steps.
+
+ * ``services.tools.box``
+
+   Show the edit draw box for spatial steps.
+
+ * ``services.tools.choose_shape``
+
+   Select a shape from a vector layer.
+
+ * ``messages``
+
+   Object of error messages.
+
+ * ``messages.requirement_failure``
+
+   Shown when the user does not fill in a required feild.
+
+ * ``messages.invalid_tool``
+
+   Shown when a user tries to start a tool which is not properly configured.
+
+ * ``messages.service_config_error``
+
+   Shown when an admin does not properly configure the tools for a service.
+
+ * ``messages.mapbook_invalid``
+
+   Shown when the server does not return a valid mapbook contents.
+
+ * ``message.mapbook_version``
+
+   Shown when a user tries to load a 1.X version of the mapbook.
+
+ * ``mapbook_param_error``
+
+   Shown when the mapbook contains an invalid <param> tag.
+
+ * ``messages.service_return_error``
+
+   Shown when a service failes to return valid XML.
+
+Autogenerated
+^^^^^^^^^^^^^
+Generated from: docs/doc_config_js.py
