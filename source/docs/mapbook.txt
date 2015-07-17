@@ -86,13 +86,15 @@ Here is an example from the GeoMOOSE Demo::
 
 The map-source tag is used to specify a single or collection of layers in GeoMOOSE.  These are all in the ``<map-source> .... </map-source>`` section and later referenced in the ``<catalog> .... </catalog>`` section.  All map-sources have two required attributes:
 
-* name – The name that GeoMOOSE will use to reference this mapsource.
+* ``name`` – The name that GeoMOOSE will use to reference this mapsource.
 	
-* type – The type of layer.  This attribute determines what other children are required (or available) and tells GeoMOOSE what type of mapping service with which to communicate.  Valid types include: Mapserver, WMS, WFS, and others (described below).
+* ``type`` – The type of layer.  This attribute determines what other children are required (or available) and tells GeoMOOSE what type of mapping service with which to communicate.  Valid types include: Mapserver, WMS, WFS, and others (described below).
 
 * ``map-source``'s also support an optional ``opacity`` attribute that is a number between 0 and 1 specifying how transparent the image will be displayed.  For example ``opacity=".5"`` will display the image from the map-source as half-transparent.
 
 * ``buffer`` attribute.  Boolean, defaults to true, also optional.  When set to "false" the image does not "buffer" around the map, it is trimmed to the exact size of the map display.  Useful for MapServer scalebars.
+
+* ``auto-refresh`` attribute.  If set and non-zero, specifies the interval (in milliseconds) at which the layers in this ``<map-source>`` will automatically refresh.  This allows layers where the underlying data is regularly changing to be kept current on the map.
 
 All map-source types support two children:
 
