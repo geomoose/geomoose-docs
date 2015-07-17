@@ -1,0 +1,47 @@
+Fido Search - Quick and Dirty Client Side Searching Tool
+========================================================
+
+Abstract
+--------
+
+In previous versions of GeoMOOSE there was a DynamicZoom extension which would
+allow the administrator to setup a PHP that would read a data source with lists
+containing items that would have a label and an extent.  This would allow users
+to choose areas from a wide range of different administrative defined types and
+zoom to that area.
+
+There were a few problems with this method:
+
+	* These select lists can be rather long.  This makes them substantially
+	  less useful for users.  There was no consistent internal support in
+	* GeoMOOSE for generating those lists. That left the generation of the
+	  script as an exercise to the installer. 
+
+To address these shortcomings, Fido is a new extension and service that provides
+the user with a partial-string matching quick-pick list.  That quick-pick list
+is defined using similar GeoMOOSE semantics to other services.
+
+Installing
+----------
+
+Edit ``site/includes.js`` and add::
+
+	dojo.require('extensions.FidoSearch');
+
+Configuring
+-----------
+
+1. Add ``fido-search="true"`` to the ``<map-source>``. From the demo mapbook::
+
+	<map-source name="borders" ... fido-search="true">
+		...
+	</map-source>
+	
+2. In the mapfile ensure the following:
+	a. All searchable layers have a PROJECTION element set.
+	b. All searchable layers have a "fido_record" template.  basemap.map has an example of a. and b.
+	c.  The "fido_record" template will look like this (example is for counties from the demo)::
+
+		<!-- MapServer Template -->
+		{"label" : "[COUNTYNAME] County", "extent" : [[shpext format="$minx,$miny,$maxx,$maxy" proj="epsg:4326"]]}
+
