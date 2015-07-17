@@ -249,7 +249,7 @@ The Parameters
 
    Show the edit draw box for spatial steps.
 
- * ``services.tools.choose_shape``
+ * ``services.tools.select_feature``
 
    Select a shape from a vector layer.
 
