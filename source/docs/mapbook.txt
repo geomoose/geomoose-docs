@@ -322,6 +322,19 @@ Steps can have many `<input>` children.  `<input>` s are very similar to the one
 
 * Both types of steps may have `<help-text>` children which contain HTML information to assist the user.  It is rendered in a `<div>` with the `help-text` helper class.
 
+<help-text>
+^^^^^^^^^^^
+
+``<help-text>`` elements can be added to ``<step>``s to aid the user in completing their task.  ``<help-text>`` elements have a standardized styling and can contain HTML.  Here is an example of text from the demo's *Search Parcels* service::
+	
+	<step ...>
+			<help-text><![CDATA[
+			The options below can be used to find parcels with different attributes. Enjoy!
+			]]></help-text>
+			...snip...
+	</step>
+
+
 
 <layer-controls>
 ----------------
