@@ -1,0 +1,18 @@
+Visible Layers (a.k.a Active Layers)
+====================================
+
+VisibleLayers.js adds an "Active Layers" tab to GeoMoose that shows layers that have been activated in a user session.  This is reminiscent of the Visible Layers tab from GeoMoose 1.x. The tab allows users to work with a (smaller) set of layers after activating them in the Catalog (or potentially from other extensions).  The layers in the tab are presented in the current draw order as the map.
+
+Installing
+----------
+
+This extension is installed by adding VisibleLayers to your site `includes.js` file.  This is done so the extension will be compiled in with the main `dojo.js` file instead of requiring the browser to fetch the many small files that make up this extension.
+
+* If it doesn't already exist, create a `site` directory next to your `geomoose.html` file.
+* If it doesn't already exist, create an `includes.js` file in the 'site' directory.
+* Add the following line to `includes.js`::
+    
+    dojo.require('extensions.VisibleLayers');
+
+* (Optional) Test your change by loading `geomoose_dev.html` in your browser.
+* Rebuild GeoMoose using the `build_js.sh` script in the `libs` directory (so that your change will be picked up with the optimized `geomoose.html`).
