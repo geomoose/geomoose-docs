@@ -131,7 +131,7 @@ config.js Configuration Options
 
  * ``scale_line.enabled``
 
-   Toggle whether the scale lien should be displayed on the map. Defaults to true.
+   Toggle whether the scale line should be displayed on the map. Defaults to false.
 
  * ``scale_line.top_units``
 
