@@ -4,7 +4,7 @@ Developer Documentation
 The purpose of this section is to document how to modify and/or extend a specific version of GeoMOOSE beyond what can be done via configuration.
 The intended audience is people who are familiar with JavaScript and potentially server side programming.
 
-Also, see our `project wide documentation <http://www.geomoose.org/developer>` page for information about contributing to the project.
+Also, see our `project wide documentation <http://www.geomoose.org/developer>`_ page for information about contributing to the project.
 
 .. toctree::
 	:maxdepth: 1
