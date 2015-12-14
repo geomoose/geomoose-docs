@@ -1,0 +1,21 @@
+Tutorial
+=======================
+
+Web Mapping in 15 Minutes with GeoMoose
+
+What is it?
+-------------
+	* More of a customizable "application" you can tweak than a toolbox.
+	* Have a look at http://www.geomoose.org/
+
+What do I need?
+-------------------
+	* A Windows computer (Geomoose will work with others too)
+	* Some Open Source Web Mapping packages:
+		* GeoMoose (mostly JavaScript and PHP scripts, and includes OpenLayers)
+		* MS4W (includes mapserver, and the Apache web server)
+
+15 minutes to install? Go!
+--------------------------------
+	* :ref:`ms4w_install`
+	* Ok, now that you've got your web mapping site with GeoMoose and the demo data, let's take a closer look.

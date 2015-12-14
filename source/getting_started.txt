@@ -35,6 +35,7 @@ Instructional Materials
 	
 	../docs/foss4g2011
 	../docs/foss4gna-2013
+	../docs/web_mapping_cookbook
 
 Developer Specific Documentation
 --------------------------------
