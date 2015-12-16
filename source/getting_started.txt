@@ -28,6 +28,13 @@ GeoMOOSE is very easy to install on just about any platform.  Just follow any of
 
 GeoMOOSE is proud to be free software.  Our :ref:`license <license>` reflects that.
 
+Tutorial
+----------
+.. toctree::
+	:maxdepth: 1
+
+	../docs/tutorial
+
 Instructional Materials
 -----------------------
 .. toctree::
@@ -35,7 +42,6 @@ Instructional Materials
 	
 	../docs/foss4g2011
 	../docs/foss4gna-2013
-	../docs/tutorial
 
 Developer Specific Documentation
 --------------------------------

@@ -1,21 +1,337 @@
-Tutorial
-=======================
+Making your Own GeoMOOSE site
+=================================
 
 Web Mapping in 15 Minutes with GeoMoose
+-------------------------------------------------
 
 What is it?
--------------
+^^^^^^^^^^^
 	* More of a customizable "application" you can tweak than a toolbox.
 	* Have a look at http://www.geomoose.org/
 
 What do I need?
--------------------
+^^^^^^^^^^^^^^^^^^^^^^
 	* A Windows computer (Geomoose will work with others too)
 	* Some Open Source Web Mapping packages:
 		* GeoMoose (mostly JavaScript and PHP scripts, and includes OpenLayers)
 		* MS4W (includes mapserver, and the Apache web server)
 
 15 minutes to install? Go!
---------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	* :ref:`ms4w_install`
 	* Ok, now that you've got your web mapping site with GeoMoose and the demo data, let's take a closer look.
+	
+Exploring the Web Mapping Interface
+--------------------------------------------
+Exploring the Demo Data Site
+
+	.. image:: ../img/interface.png
+	
+Using Your Data
+---------------------
+
+Adding a Shapefile Layer from Your Server
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+How GeoMoose Initializes
+"""""""""""""""""""""""""""""""""""""
+
+First a little background.  Here's the list of events showing how GeoMoose initializes (using the delivered demo):
+
+#. The user's browser loads http://localhost/geomoose2/geomoose.html.  On your server the "geomoose2" part of the above URL is aliased to C:/ms4w/apps/geomoose2/htdocs by the alias entry in the C:/ms4w/httpd.d/httpd_geomoose2_ms4w.conf file.
+#. The geomoose.html page contains lots of include statements to load other files into the browser.  An important file included is geomoose.js, a JavaScript file containing the client-side (browser) functionality of GeoMoose.  Another important file config.js.
+#. One of the first things the GeoMoose JavaScript does is ask the server for the mapbook XML file by requesting http://localhost/geomoose2/php/getmapbook.php
+#. The getmapbook.php script is executed on the server and returns the content of C:/ms4w/apps/geomoose2/conf/mapbook.xml.  
+#. The client-side GeoMoose JavaScript interprets the mapbook.xml, sets up the user-interface (buttons, legend, etc) inside the browser, then requests (and displays) the map data specified in the mapbook.xml.
+
+Rendering Your Data
+""""""""""""""""""""""""""""""
+
+To render your own spatial data with in the demo, you need to:
+
+#. Edit the mapbook.xml to add a GeoMoose Layer definition for your spatial data
+#. Create a mapserver map file to specify how to render your data.
+
+Edit the Mapbook.XML to Show Your Spatial Data
+
+Add a GeoMoose Layer to the Catalog Section in the mapbook.xml::
+
+	<group title="My Layers" expand="true">
+		<layer title="Townships" src="Survey/Townships" status="off" legend="false" show-legend="false" expand="true" fade="false" unfade="false" popups="false"/>
+	</group>
+
+The src="Survey/Townships" points to a GeoMoose "map source" entry (in this case named "Survey") and the Map-source Layer within that definition ("Townships"), so we'll add that next.
+    
+Add an entry to the Map-source list (this is where the map display priority is set by position in the list; those first in the list are rendered on top).  Put your entry just above the parcel_points entry::
+
+	<map-source name="Survey" type="mapserver">
+		<file>./mydata/survey/survey.map</file>
+		<layer name="Townships" reference="false"/>
+	</map-source>
+
+Create a Mapserver Map file
+The <file> tag you added in the previous step above specifies the path to your new Mapserver "map" file.  Create a folder: C:/ms4w/apps/geomoose2/maps/mydata/survey and in it create a text file named survey.map.  Here's the (minimal) Map file::
+
+	MAP
+		SIZE 600 600
+		INCLUDE "../../geomoose_globals.map"
+		
+		PROJECTION # Web Merc Output:
+			'init=epsg:3857'
+		END # of PROJECTION
+
+		WEB
+			METADATA
+				'ows_enable_request' '*'
+			END # of METADATA
+		END # of WEB
+
+		LAYER NAME "Townships"
+			DATA "./V4-1_TWP.shp" #the path to your shapefile relative to this map file
+			TYPE POLYGON
+			PROJECTION
+				AUTO  #the shapefile has a .prj file defining it's coordinate system
+			END # of PROJECTION
+			CLASS
+				STYLE
+					OUTLINECOLOR 0 0 0
+				END # of STYLE
+			END # of CLASS
+		END # of LAYER
+	END # of MAP
+
+After you've save the mapbook.xml and the above survey.map file, reload the GeoMoose demo web page http://localhost/geomoose2/geomoose.html.  There is now a "My Layers" group in the legend with a Township layer.  You can check the box to turn the layer on and off in the map window.
+
+You can experiment with colors and line styles.  Read the Mapserver documentation on STYLE (http://mapserver.org/mapfile/style.html#style) for more information.
+
+
+Setting the Initial Extent of Your Map
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is possible to use any Coordinate System for your map display, but if you stick with Web Mercator (also known as Spherical Mercator) you will be able to Google Maps, Bing, Yahoo map tiles as a backdrop.
+
+If you do use Web Mercator, set the EXTENT in your map files to::
+
+	EXTENT -20037508.34 -20037508.34 20037508.34 20037508.34
+	
+which, for Web Mercator, covers the entire world.
+
+While the above extent is overridden by the GeoMOOSE initial extent (see the next paragraph), setting the map file extent to cover the entire world removes the spatial restriction on Mapserver attribute queries used in the Popup and Info functions.
+
+You can change the initial extent of your GeoMOOSE web mapping site by editing your mapbook.xml file.  In the Configuration section, change the values in the "initial_extent" tag (the format is min_x, min_y, max_x, max_y).  For example::
+
+	<param name="initial_extent"> -13869345, 5716878, -11575011, 9094783</param>
+
+
+Adding Popups and Info
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Note: Remove the other original map-sources of type="mapserver" (they have a SRS definition of EPSG:26915 and will confuse identify.php.**
+
+Enable "Info" function on the layer.  Add TOLERANCE to map file (set to 0 for polygon layers).
+(Note the MAP's EXTENT object will be a spatial filter on the query/info request's coordinates)::
+
+	LAYER NAME 'Townships'        
+		TYPE POLYGON
+		TOLERANCE 0  # use >0 for TYPE LINE, POINT
+		TOLERANCEUNITS PIXELS
+
+Add a METADATA object of the LAYER in the mapfile specifying the location of the html template path::
+
+	METADATA
+		'identify_record' 'townships_identify.html'
+		'popups'          'townships_popups.html'
+		# Feature reports are stored in the conf/feature_report directory.
+		'feature_report'  'townships_report.xml'
+	END
+
+The path to the html files is relative to map file (except for the feature_report templates), so in the above example, the templates are in the same folder as the map file.
+Create an Identify html template (don't forget the "Mapserver Template" line shown below).  Attribute names are lowercase for PostGIS and upper case for shapefiles.  Here's my townships_identify.html::
+
+	<!-- MapServer Template -->
+	<tr>
+		<td>[descriptor]</td>
+		<td>[trm]</td>
+	</tr>
+	<tr>
+		<td colspan="2"><hr/></td>
+	</tr>
+
+Create a Popup html template. Note for positioning the popup the LAYER projection must be the same as the MAP projection.  Here's my 'townships_popups.html::
+
+	<!-- MapServer Template -->
+	<popup x="[shpmidx]" y="[shpmidy]" width="500" height="500">
+	<![CDATA[
+	<table>
+	<tr>    
+		<td>Date:</td><td>[descriptor]</td>
+	</tr>
+	<tr>
+		<td colspan="2">[trm]</td>
+	</tr>
+	</table>
+	]]>
+	</popup>
+
+Confirm the popup service is in the mapbook.xml::
+
+	<service name="popups"  display="false">
+		<url>php/popups.php</url>
+		<step type="spatial" name="shape" line="false" polygon="false" jump-start="true" default="point">
+			<header><![CDATA[
+			Click on the map to show a popup about the features.
+			]]></header>
+			<input type="hidden" name="layer"/>
+		</step>
+	</service>
+
+Adding Search
+^^^^^^^^^^^^^
+
+If you want to be able search a data source on attribute values, you will need to:
+
+#. Add input tags to a search service in the mapbook
+#. Add METADATA objects for the LAYER in the Mapserver .map file
+#. Create a Mapserver template file to display the results
+
+1. Add input tags to mapbook.  
+
+The easiest way is just to edit the demo mapbook search_parcels service::
+
+	<service name="search_parcels" title="Search" clear-highlight="true">
+	<url>php/query.php</url>
+	<step type="input">
+		<input type="hidden" name="layer0"     value="my_source/my_layer"/>
+		<input type="hidden" name="template0"  value="itemquery"/>
+		
+		<input type="select" name="fieldname0" title="Search By:">
+			<option value="ID">Parcel ID</option>
+			<option value="STATUS">Status</option>
+		</input>
+		<input type="hidden" name="comparitor0" value="eq-str"/>
+		<input type="user"   name="value0" title=""/>
+	</step>
+	</service>
+
+Note the "0" at the end of the name values; it groups them together for processing.  The option value tags are the column name in your shapefile. 
+
+2. Add METADATA objects
+
+In the map file for the map-source, add objects to the LAYER's METADATA object to indicate the name of the template to use for displaying the output of the search. You will create the::
+
+	METADATA
+		'itemquery'             'templates/search_result.html'
+		'itemquery-filter'      '/.*[qstring].*/i'
+	END # of METADATA
+	
+The entry in the itemquery object is a path relative to the location of the Mapserver .map file.
+
+3. Create A Mapserver Template
+
+The templates can be simple or complicated depending on what you want to do with the search results.  Here's an example of one that will zoom to the parcel when the link is clicked::
+
+	<!-- MapServer Template -->
+	<b>Parcel ID:</b> <a data-pin="[ID]" id="gm-parcel-[ID]" class='sprite-control sprite-control-find-selected' style="padding-left: 22px" parcel-shape="[shpxy precision=5]" href="javascript:GeoMOOSE.zoomToPointsList(dojo.byId('gm-parcel-[ID]').getAttribute('parcel-shape'), 'EPSG:4326');">[ID]</a><br/>
+	<b>Status:</b> [STATUS]<br/>
+	<hr/>
+
+Note the "EPSG:4326:" is used because my data is in a Geographic coordinate system.  If your data is projected, use the same EPSG definition you used in your Mapserver .map file.
+
+Customizing the GUI
+--------------------------
+
+Inside the Box - Tweaking the GUI with Mapbook Settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adding a Tab to the Tab Panel
+"""""""""""""""""""""""""""""""""""""""
+
+Outside the Box - Writing HTML, CSS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Changing the Banner
+"""""""""""""""""""""""""""""""
+
+GeoMoose uses the concept of "skins" to easily switch the look of the user interface shown in the user's browser.  The skin is referenced in the Geomoose.html::
+
+	<link type="text/css" rel="stylesheet" href="skins/grey/grey.css"/>
+
+Grey.css references 'images/logo.png' as the banner graphic file (the top one with the GeoMoose logo).  The easiest way to change the banner is to replace the file: C:/ms4w/apps/geomoose2/htdocs/skins/grey/images/logo.png
+
+Adding a Help button
+"""""""""""""""""""""""""""""
+
+* Add a Tool to mapbook (the name will be used to ref the icon)::
+
+	<tool name="help" title="Help" type="javascript" selectable="false">
+		helpwin();
+	</tool>
+	
+*  You'll need to add the above helpwin() function to your geomoose.html::
+
+	<script type="text/javascript">
+		function helpwin(){
+			window.open("./help.html","Help","toolbar=0, scrollbars=1, menubar=0, location=0, resizable=1, status=0, left=100, top=100, width=975, height=700");
+		}
+	</script>
+
+* Choose an icon to appear on the toolbar for your new tool:
+	* look in htdocs/images/all.gif
+	* find upper Y coordinate using Paint (each is 30 pixels high, with a 10 pixel initial offset)
+	* the help icon is at Y=670
+
+* Add a line (check the existing entries!) to htdocs\css\sprite.css::
+
+	.sprite-control-/**toolname** ...  X-coord Y-coord ...
+	
+	.sprite-control-help { background-position: 0 -670; }  
+	.sprite-control-help-selected { background-position: -20 -670 !important; }
+
+* refresh the page in your browser to update the cached .css
+* more control (showing text etc) is done by editing user_tools.css
+
+Debugging GeoMoose
+------------------------------
+
+Debugging the Mapserver Map File
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Using your browser to look at the returned values:
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+`http://localhost/cgi-bin/mapserv.exe?map=C:/ms4w/apps/geomoose2/maps/mydata/survey/survey.map&mode=query&mapxy=-12839585.278219 7561914.9145256   <http://localhost/cgi-bin/mapserv.exe?map=C:/ms4w/apps/geomoose2/maps/mydata/survey/survey.map&mode=query&mapxy=-12839585.278219%207561914.9145256>`_
+
+
+Using Mapserver Error Logging
+"""""""""""""""""""""""""""""""""""""""""""""
+::
+
+	#    DEBUG 5
+		CONFIG "MS_ERRORFILE" "/ms4w/tmp/ms_error.txt"
+		CONFIG "PROJ_LIB" "\ms4w\proj\nad"
+	#  for format or coord sys problems:
+		CONFIG "CPL_DEBUG" "ON"
+		CONFIG "PROJ_DEBUG" "ON"
+
+
+DATA 'wkb_geometry from (select gid, image_id, length, width, wkb_geometry from temp_bbox) as my_polygons using unique gid'
+
+Debugging the GeoMoose PHP
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+php.ini:
+error_log = php_errors.log ; (created in htdocs/php)
+
+
+# Debug flag.
+$DEBUG = true; #false;
+
+Debugging the GeoMoose JavaScript
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Troubleshooting
+----------------------
+
+
+
+
+
