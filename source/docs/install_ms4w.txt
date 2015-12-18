@@ -1,3 +1,6 @@
+
+.. _ms4w_install:
+
 Installation MS4W 
 =======================
 
