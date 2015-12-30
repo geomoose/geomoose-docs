@@ -3,7 +3,7 @@ Bookmark To Tab
 
 Description
 -----------
-This extension extends the built-in bookmarking functionality by placing the generated bookmark in a tab instead of updating the URL in the address bar.  It does this by overriding `GeoMOOSE.bookmark() <http://www.geomoose.org/trunk/api/files/geomoose-js.html#GeoMOOSE.bookmark>`_ with a custom function.
+This extension extends the built-in bookmarking functionality by placing the generated bookmark in a tab instead of updating the URL in the address bar.  It does this by overriding `GeoMOOSE.bookmark() <http://docs.geomoose.org/master/apidocs/files/geomoose-js.html#GeoMOOSE.bookmark>`_ with a custom function.
 
 Adding to Application
 ---------------------
