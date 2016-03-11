@@ -61,6 +61,7 @@ Extensions Documentation
 	../extensions/Fido
 	../extensions/HashTrack
 	../extensions/ReferenceMap
+	../extensions/ResultsAsGrid
 	../extensions/VisibleLayers
 
 
