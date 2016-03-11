@@ -1,0 +1,33 @@
+ResultsAsGrid
+=============
+
+Adds the ability to see highlighted feature attributes in a Grid.
+
+Pre-amble
+---------
+
+``ResultsAsGrid`` is actually a base class.  The intention is to create a class the inherits from it and allows customizations based on a local installation.
+
+
+Create Your Own Grid Class
+--------------------------
+
+The demo contains an example of how to create a custom grid in ``extensions/ResultsAsGrid/DemoResultsAsGrid.js``.  This includes a demo of working with a subset of all selected features.  
+
+To create a bare-minimum grid class, create a new file in the ``site/`` directory named ``MyGrid.js``.  This code will create and register a minimal MyGrid class::
+
+	dojo.provide('site.MyGrid');
+
+	dojo.require('extensions.ResultsAsGrid');
+
+	dojo.declare('site.MyGrid', extension
+	});
+
+	GeoMOOSE.UX.register('site.MyGrid');
+
+
+
+Adding Custom Tools
+-------------------
+
+This is where ``DemoResultsAsGrid`` really shines.  It contains an example of adding a toolbar, adding a button to that toolbar, and working with the data once that button has been clicked.
