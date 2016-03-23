@@ -37,7 +37,7 @@ There are a few good methods for doing this, `ogr2ogr` and `shp2pgsql`.   Whiche
 
 A typical ``ogr2ogr`` string will look similar to this::
 
-	ogr2ogr -f PostgreSQL 'PG:dbname=gis user=gis password=super_gis' tl_2010_27_place10.shp tl_2010_27_place10 -nln census_places -nlt GEOMETRY -lco DIM=2
+	ogr2ogr -f PostgreSQL 'PG:dbname=gis user=gis password=super_gis' tl_2010_27_place10.shp tl_2010_27_place10 -nln census_places -nlt POLYGON -lco DIM=2
 
 
 Configure TinyOWS 
@@ -76,7 +76,7 @@ The Mapbook currently features a fragment which supports the above configuration
 
 That ``<map-source>`` entry can be removed and replaced with this fragment::
 
-	<map-source name="census_cities" type="wfs">
+	<map-source name="census_cities" type="wfs" active="true" srs="EPSG:4269">
 		<style type="stylemap"><![CDATA[
 		{
 			"strokeColor" : "#00ff00",
