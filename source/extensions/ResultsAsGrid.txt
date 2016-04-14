@@ -20,14 +20,24 @@ To create a bare-minimum grid class, create a new file in the ``site/`` director
 
 	dojo.require('extensions.ResultsAsGrid');
 
-	dojo.declare('site.MyGrid', extension
+	dojo.declare('site.MyGrid', extensions.ResultsAsGrid, {
 	});
 
 	GeoMOOSE.UX.register('site.MyGrid');
 
+Adding the grid to your site
+----------------------------
+
+Edit ``site/includes.js`` and add::
+
+	dojo.require('site.MyGrid');
 
 
 Adding Custom Tools
 -------------------
 
 This is where ``DemoResultsAsGrid`` really shines.  It contains an example of adding a toolbar, adding a button to that toolbar, and working with the data once that button has been clicked.
+
+To add DemoResultsAsGrid to the application add the following to ``site/includes.js``::
+
+	dojo.require('extensions.ResultsAsGrid.DemoResultsAsGrid');
