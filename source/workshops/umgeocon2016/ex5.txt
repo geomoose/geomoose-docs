@@ -2,20 +2,45 @@
 
 Exercise 5: Adding a Layer
 ==========================
-Adding a MapServer layer is similar to adding a WMS layer. In GeoMOOSE 2.9 MapServer layers are implemented as WMS call to MapServer.
 
-This exercise will add the countries layer from the Natural Earth dataset that is included on OSGeo Live. We will need to create a Mapfile to tell MapServer how to render the layer. Then we will add that layer to the catalog. Later, we will intentionally break the layer to demonstrate how to troubleshoot typical problems.
+GeoMoose treats layers for MapServer the same as it does OGC WMS layers. This requires some special treatment of the MapServer Mapfile.
 
-Creating the Mapfile:
+This exercise will add the countries layer from the Natural Earth dataset. We will need to create a Mapfile to tell MapServer how to render the layer. Then we will add that layer to the catalog. Later, we will intentionally break the layer to demonstrate how to troubleshoot typical problems.
+
+Getting The New Data
+--------------------
+
+1. Go to the ``/srv/geomoose/maps`` directory: ::
+
+	cd /srv/geomoose/maps
+
+2. Create a new directory for the workshop: ::
+
+	mkdir workshop
+	cd workshop
+
+2. Download our new data: ::
+
+	wget https://github.com/geomoose/geomoose-docs/raw/umgeocon/source/workshops/umgeocon2016/ex5-data.zip
+
+``wget`` is a program for downloading files from web servers.  Its name comes from "WWW" and "get".  This will download the ``ex5-data.zip`` file to the current directory.
+
+3. Unzip it! There is no need for a graphical unzip program! We can use the command line: ::
+
+	unzip ex5-data.zip
+
+4. Oh, no! That didn't work! Not all utilities will be installed on cloud servers. Ubuntu is helpful in letting us know what to install.  To unzip the file we will first need to do this: ::
+
+	sudo apt-get install unzip
+
+5. Now it should work fine.: ::
+
+	unzip ex5-data.zip
+
+Working with the Data
 ---------------------
 
-1. Under ``/srv/geomoose/maps`` create a directory called ``workshop`` and in ``workshop`` create a directory called ``natural_earth2``. 
-
-2. Copy the ``ne_10m_admin_0_countries`` natural earth data (make sure to get all of the files) into the ``countries`` directory.
-   
-3. Create a MapServer Mapfile (``natrual_earth.map``) in the ``countries`` folder. The contents is provided below.  If you are familiar with MapServer, this is just a standard Mapfile. If you are not familiar with MapServer, this is just a text file.
-
-natural_earth.map::
+The ZIP file contained a new ``ex5-data`` directory.  In that directory, there is a full set of files for the natural earth country Shapefile.  But there is an additional MapServer MapFile as well ``natural_earth.map``.  The contents are included here for reference.: ::
 
   MAP
 	NAME 'all'
@@ -85,21 +110,23 @@ natural_earth.map::
   END ## end Map
      
 
-Adding the layer to the Mapbook:
---------------------------------
+Adding the layer to the Mapbook
+-------------------------------
 
-1. Open the mapbook in a text editor (``/srv/geomoose/conf/mapbook.xml``) 
+1. Open the mapbook in a ``nano``: ::
 
-2. Add the natural-earth map-source above the ``parcels`` map-source. A map-source tells GeoMOOSE how to connect to a data layer.  Note: the order of the map-sources controls the default draw order of the layers.::
+	nano /srv/geomoose/conf/mapbook.xml
+
+2. Add the natural-earth map-source above the ``parcels`` map-source. A map-source tells GeoMOOSE how to connect to a data layer.  Note: the order of the map-sources controls the default draw order of the layers.: ::
 
     <map-source name="natural_earth" type="mapserver" queryable="true"> 
-         <file>./workshop/natural_earth2/natural_earth.map</file> 
+         <file>./workshop/ex5-data/natural_earth.map</file> 
          <layer name="countries"/> 
          <param name="TRANSPARENT" value="true"/> 
     </map-source> 
 
 
-3. Add the layer to the catalog section.::
+3. Add the layer to the catalog section.: ::
 
    <layer title="Countries" src="natural_earth/countries" status="on"/>
    
