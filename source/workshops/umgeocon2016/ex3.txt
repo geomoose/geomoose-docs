@@ -1,0 +1,16 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 3: Customizing the Interface
+=====================================
+In this exercise we will customize the new interface. We will start by changing the title and skin. This is done in the 
+``geomoose.html`` file. 
+
+1. Open the ``geomoose.html`` file in the ``js`` folder inside where you installed GeoMoose with a text editor. 
+
+2. Navigate to the ``<title>GeoMOOSE</title>`` line and change it to read ``<title>GeoMOOSE 2.9 – Workshop</title>``
+
+3. Now navigate to around line 45 where the skins are defined. Comment out the gray skin and uncomment the blue skin. If you are familiar with CSS, take a look at the skin’s CSS file. 
+
+4. Reload the geomoose page in the browser to see the changes 
+
+.. image:: ex3-finished.png

@@ -1,0 +1,16 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 0: Connecting to the Server
+====================================
+
+We need certain tools to connect to our new virtual Linux server.  In the Linux world, the tool nearly universally used for remote administration is SSH (Secure Shell).  While SSH includes many features, the two are are interesting in are remote shell access and secure file transfer.  On Linux systems command line tools such as ssh and sftp and their graphical equivalents are often pre-installed. On Windows, `Putty`_ is often used for shell access and `WinSCP`_) is often used for file transfer.
+
+Install Putty
+-------------
+
+
+Install WinSCP
+--------------
+
+.. _putty: http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+.. _winscp: https://winscp.net/eng/download.php

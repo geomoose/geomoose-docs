@@ -1,0 +1,104 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 5: Adding a Layer
+==========================
+Adding a MapServer layer is similar to adding a WMS layer. In GeoMOOSE 2.9 MapServer layers are implemented as WMS call to MapServer.
+
+This exercise will add the countries layer from the Natural Earth dataset that is included on OSGeo Live. We will need to create a Mapfile to tell MapServer how to render the layer. Then we will add that layer to the catalog. Finally, we will intentionally break the layer to demonstrate how to troubleshoot typical problems. 
+
+Creating the Mapfile:
+---------------------
+
+1. Under ``/srv/geomoose/maps`` create a directory called ``natural_earth`` and in natural_earth create a directory called countries. 
+
+2. Create a MapServer Mapfile (``natural_earth.map``) in the ``countries`` folder. The contents is provided below.  If you are familiar with MapServer, this is just a standard Mapfile. If you are not familiar with MapServer, this is just a text file.
+
+natural_earth.map::
+
+  MAP
+	NAME 'natural_earth'
+	SIZE 800 650
+	STATUS ON
+	EXTENT -20037508.34 -20037508.34 20037508.34 20037508.34
+	UNITS METERS
+
+	INCLUDE "../../geomoose_globals.map"
+
+	WEB
+		METADATA
+			'ows_title' 'Countries'
+			'ows_srs' 'EPSG:26915 EPSG:4326 EPSG:3857'
+			'wms_enable_request' '*'
+		END
+	END
+
+	PROJECTION
+		'init=epsg:3857'
+	END
+
+	LEGEND
+		STATUS ON
+		LABEL
+			TYPE TRUETYPE
+			FONT vera_sans
+			SIZE 8
+			COLOR 0 0 0
+		END
+	END
+
+	LAYER
+		NAME 'countries'
+		DATA '/home/user/data/natural_earth2/ne_10m_admin_0_countries'
+		STATUS ON
+		TYPE POLYGON
+		MINSCALE 1000
+		PROJECTION
+			"init=epsg:4326"
+		END
+		LABELITEM 'NAME'
+		CLASS
+			NAME "Country Boundary"
+			STYLE
+				SYMBOL 'circle'
+				SIZE 1
+				OUTLINECOLOR 50 50 50
+			END
+			STYLE
+				SYMBOL 'circle'
+				SIZE 3
+				OUTLINECOLOR 210 210 210
+			END
+			LABEL
+				TYPE TRUETYPE
+				FONT vera_sans-bold
+				MINSIZE 8
+				SIZE 10
+				MAXSIZE 12
+				COLOR 0 0 0
+				OUTLINECOLOR 232 232 232
+				BUFFER 4
+			END
+		END
+	END 
+  END ## end Map
+     
+
+Adding the layer to the Mapbook:
+--------------------------------
+
+1. Open the mapbook in a text editor (``/srv/geomoose/conf/mapbook.xml``) 
+
+2. Add the natural-earth map-source above the ``parcels`` map-source. Note: the order of the map-sources controls the default draw order of the layers.::
+
+  <map-source name="natural_earth" type="mapserver" queryable="true"> 
+       <file>./workshop/natural_earth/natural_earth.map</file> 
+       <layer name="countries"/> 
+       <param name="TRANSPARENT" value="true"/> 
+  </map-source> 
+
+
+3. Add the layer to the catalog.::
+
+   <layer title="Countries" src="natural_earth/countries" status="on"/>
+   
+.. image:: ex5-finished.png

@@ -1,0 +1,25 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 4: Customizing the "Zoom To" List
+==========================================
+In this exercise we will customize the “zoom to” list.  Like most GeoMOOSE configuration, this is set in the mapbook.  The mapbook in a XML file (a form of structured text file) that defines various configuration parameters, what map layers are available, how to connect to map data, and what tools are available.  More information about the configuration options available in the mapbook is available in the GeoMOOSE `documentation <http://docs.geomoose.org/2.9/docs/configuration.html>`_.  By default, the mapbook is the ``mapbook.xml`` file in the ``conf`` folder under where ever you installed GeoMOOSE.
+
+1. Changing the Jump To list:
+
+   Open the mapbook, find the lines that define the Jump To list. Change it to include entries for the world and New York City.::
+  
+
+     <param name="zoomto"><![CDATA[
+     {
+         "Jump To:" : {
+             "World" : [-20037508.34,-20037508.34,20037508.34,20037508.34], 
+             "New York City" : [-8242894,4965204,-8227290,4994963]
+         }
+     }
+     ]]></param>
+
+2. Wrap up: Look at the other parameters available in the <configuration/> section of the mapbook. 
+
+3. Test it: Reload the geomoose page.
+
+.. image:: ex4-finished.png

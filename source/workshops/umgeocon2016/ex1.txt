@@ -1,0 +1,118 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 1: Installing GeoMOOSE
+===============================
+
+Pull in the packages we need
+----------------------------
+::
+
+  # GeoMoose Runtime Deps
+  apt-get install \
+      apache2 libapache2-mod-php5 \
+      mapserver-bin cgi-mapserver gdal-bin \
+      php5-mapscript php5-sqlite php5-gd php5-curl
+    
+  # GeoMoose Build Deps
+  apt-get install \
+      git-core gitk git-gui git-email gitweb git-svn git-doc \
+      default-jre \
+      python-sphinx make texlive texlive-latex-extra \
+      naturaldocs
+
+Get the GeoMoose source
+-----------------------
+::
+
+  git clone --recursive https://github.com/geomoose/geomoose.git /srv/geomoose
+
+Note: by default this installs the latest development version of GeoMoose which may be unstable, to install a released version switch to appropriate branch or tag and update the submodules.  Released branches are named rx.y where x and y are the major and minor version numbers.  Released branches always point to the latest bugfix release for that branch.  Tags point to a specific release and are formatted as rx.y.z where x and y are as with branches and z is the patch level. e.g: ::
+
+    cd /srv/geomoose
+    git checkout r2.9.0
+    git submodule update --init --recursive
+
+Build the JavaScript code
+-------------------------
+::
+   
+    cd /srv/geomoose/js/libs
+    ./build_js.sh
+
+Note: you need to rebuild the JavaScript code any time the code changes so that the optimized build (geomoose.html) contains the current code.  This could occur if you make changes yourself, or if you switch to a different branch or tag.
+
+Setup some symbolic links
+-------------------------
+::
+   
+    cd /srv/geomoose/js
+    ln -s ../services/php .
+    ln -s geomoose.html index.html
+
+Setup local config files
+------------------------
+::
+   
+    cat > /srv/geomoose/conf/local_settings.ini <<EOF
+    [paths]
+    root=/srv/geomoose/maps/
+    mapserver_url=/cgi-bin/mapserv
+    temp=/tmp/
+    EOF
+
+    cat > /srv/geomoose/maps/temp_directory.map <<EOF
+    # This file is used to configure temporary directories for Mapserver Mapfile
+    IMAGEPATH "/tmp/"
+    EOF
+
+Build the HTML Docs (optional)
+------------------------------
+::
+   
+    cd /srv/geomoose/docs
+    make html
+
+Build the PDF Docs (optional)
+-----------------------------
+::
+   
+    cd /srv/geomoose/docs
+    make latex
+    cd build/latex
+    make
+    cp GeoMOOSE.pdf /srv/geomoose/docs/build/html
+
+Build the API Reference Docs
+----------------------------
+::
+   
+    cd /srv/geomoose/js
+    mkdir -p ../docs/build/html/apidocs
+    naturaldocs -i geomoose -o html ../docs/build/html/apidocs -p ntdocs
+
+Make things available in the apache document root
+-------------------------------------------------
+::
+   
+    ln -s /srv/geomoose/js /var/www/html/geomoose
+    ln -s /srv/geomoose/docs/build/html /var/www/html/geomoose-docs
+
+Enable CGI apache module (for MapServer)
+----------------------------------------
+::
+   
+    a2enmod cgi
+
+Restart apache
+--------------
+::
+   
+    apachectl restart
+
+
+Testing the install
+-------------------
+
+In a web browser go to your GeoMoose site.  It will be at ``http://<your VMs IP>/geomoose/geomoose.html``  You should see something like this:
+
+.. image:: ex1-finished.png 
