@@ -6,18 +6,40 @@ In this exercise we will customize the “zoom to” list.  Like most GeoMOOSE c
 
 1. Changing the Jump To list:
 
-   Open the mapbook, find the lines that define the Jump To list. Change it to include entries for the world and New York City.::
+   Open ``mapbook.xml`` in ``nano``::
+
+     nano /srv/geomoose/conf/mapbook.xml
+
+   Find the this section::
+
+                <param name="zoomto"><![CDATA[
+                {
+                        "Jump To:" : {
+                                "World" : [-20614760.777156,1751325.1919492,-1927436.1053437,7915207.1517617],
+                                "Parcel Data" : [-10384069.859924,5538318.529767,-10356632.423788,5563580.927174],
+                                "Full State of MN" : [-10742765,5398288,-9920914,6310641]
+                        }
+                }
+                ]]></param>
+
+   The list here is a Javascript object.  This is how the "Jump to" list is defined.  We are going to add "New York City" to the top of the list.  On the line before ``"World" ..."``::
+
+	"New York City" : [-8242894,4965204,-8227290,4994963],
+
+   **The "," at the end of the line is very important do not forget it!** When you are done the list should look like this::
+
+                <param name="zoomto"><![CDATA[
+                {
+                        "Jump To:" : {
+                                "New York City" : [-8242894,4965204,-8227290,4994963], 
+                                "World" : [-20614760.777156,1751325.1919492,-1927436.1053437,7915207.1517617],
+                                "Parcel Data" : [-10384069.859924,5538318.529767,-10356632.423788,5563580.927174],
+                                "Full State of MN" : [-10742765,5398288,-9920914,6310641]
+                        }
+                }
+                ]]></param>
+
   
-
-     <param name="zoomto"><![CDATA[
-     {
-         "Jump To:" : {
-             "World" : [-20037508.34,-20037508.34,20037508.34,20037508.34], 
-             "New York City" : [-8242894,4965204,-8227290,4994963]
-         }
-     }
-     ]]></param>
-
 2. Wrap up: Look at the other parameters available in the <configuration/> section of the mapbook. 
 
 3. Test it: Reload the geomoose page.
