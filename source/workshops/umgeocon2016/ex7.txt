@@ -33,7 +33,7 @@ A pink map is a common error in GeoMOOSE and means that GeoMOOSE was unable to g
 
 .. image:: ex7-pink-1.png
 
-4. To see what went wrong, activate Firebug and reload the page.
+4. To see what went wrong, activate Firebug by clicking on the "bug" tool in the browser toolbar and reload the page.
 
 .. image:: ex7-pink-2.png
 
@@ -59,16 +59,26 @@ Troubleshooting failure to load
 -------------------------------
 If GeoMOOSE fails to load completely, it is usually because of an error in the mapbook.
 
-1. Introduce an error into the mapbook. Change ``<?xml version="1.0"?>`` into ``<?xxml version="1.0"?>.``  Then reload the interface and see what it does. 
+1. Introduce a structrual error into the mapbook. Change ``<mapbook version="2.8.0">`` into ``<mmapbook version="2.8.0">.``  Then reload the interface and see what it does. 
 
-2. Restore the mapbook and reload the interface to make sure it works again. 
+.. image:: ex7-mapbook-1.png
+   
+2. Look at the errors in Firebug.
 
-3. Introduce a different error the mapbook. Change the name for the natural_earth map-source so it doesn’t match the path for that layer in the catalog. I.E. change::
+.. image:: ex7-mapbook-2.png
+
+3. Restore the mapbook and reload the interface to make sure it works again. 
+   
+4. Introduce a different error the mapbook. Change the name for the natural_earth map-source so it doesn’t match the path for that layer in the catalog. I.E. change::
 
     <map-source name="natural_earth" type="mapserver" queryable="true"> 
 
-to::
+  to::
 
     <map-source name="natural_earth_" type="mapserver" queryable="true"> 
+    
+5. Reload the interface and see what it does. 
 
-4. Reload the interface and see what it does. 
+.. image:: ex7-mapbook-3.png
+
+.. image:: ex7-mapbook-4.png
