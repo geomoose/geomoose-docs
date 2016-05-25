@@ -4,19 +4,21 @@ Exercise 5: Adding a Layer
 ==========================
 Adding a MapServer layer is similar to adding a WMS layer. In GeoMOOSE 2.9 MapServer layers are implemented as WMS call to MapServer.
 
-This exercise will add the countries layer from the Natural Earth dataset that is included on OSGeo Live. We will need to create a Mapfile to tell MapServer how to render the layer. Then we will add that layer to the catalog. Finally, we will intentionally break the layer to demonstrate how to troubleshoot typical problems. 
+This exercise will add the countries layer from the Natural Earth dataset that is included on OSGeo Live. We will need to create a Mapfile to tell MapServer how to render the layer. Then we will add that layer to the catalog. Later, we will intentionally break the layer to demonstrate how to troubleshoot typical problems.
 
 Creating the Mapfile:
 ---------------------
 
-1. Under ``/srv/geomoose/maps`` create a directory called ``natural_earth`` and in natural_earth create a directory called countries. 
+1. Under ``/srv/geomoose/maps`` create a directory called ``workshop`` and in ``workshop`` create a directory called ``natural_earth2``. 
 
-2. Create a MapServer Mapfile (``natural_earth.map``) in the ``countries`` folder. The contents is provided below.  If you are familiar with MapServer, this is just a standard Mapfile. If you are not familiar with MapServer, this is just a text file.
+2. Copy the ``ne_10m_admin_0_countries`` natural earth data (make sure to get all of the files) into the ``countries`` directory.
+   
+3. Create a MapServer Mapfile (``natrual_earth.map``) in the ``countries`` folder. The contents is provided below.  If you are familiar with MapServer, this is just a standard Mapfile. If you are not familiar with MapServer, this is just a text file.
 
 natural_earth.map::
 
   MAP
-	NAME 'natural_earth'
+	NAME 'all'
 	SIZE 800 650
 	STATUS ON
 	EXTENT -20037508.34 -20037508.34 20037508.34 20037508.34
@@ -48,7 +50,7 @@ natural_earth.map::
 
 	LAYER
 		NAME 'countries'
-		DATA '/home/user/data/natural_earth2/ne_10m_admin_0_countries'
+		DATA 'ne_10m_admin_0_countries'
 		STATUS ON
 		TYPE POLYGON
 		MINSCALE 1000
@@ -88,16 +90,16 @@ Adding the layer to the Mapbook:
 
 1. Open the mapbook in a text editor (``/srv/geomoose/conf/mapbook.xml``) 
 
-2. Add the natural-earth map-source above the ``parcels`` map-source. Note: the order of the map-sources controls the default draw order of the layers.::
+2. Add the natural-earth map-source above the ``parcels`` map-source. A map-source tells GeoMOOSE how to connect to a data layer.  Note: the order of the map-sources controls the default draw order of the layers.::
 
-  <map-source name="natural_earth" type="mapserver" queryable="true"> 
-       <file>./workshop/natural_earth/natural_earth.map</file> 
-       <layer name="countries"/> 
-       <param name="TRANSPARENT" value="true"/> 
-  </map-source> 
+    <map-source name="natural_earth" type="mapserver" queryable="true"> 
+         <file>./workshop/natural_earth2/natural_earth.map</file> 
+         <layer name="countries"/> 
+         <param name="TRANSPARENT" value="true"/> 
+    </map-source> 
 
 
-3. Add the layer to the catalog.::
+3. Add the layer to the catalog section.::
 
    <layer title="Countries" src="natural_earth/countries" status="on"/>
    

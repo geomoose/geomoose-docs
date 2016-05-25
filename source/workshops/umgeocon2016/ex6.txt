@@ -1,0 +1,43 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 6: Changing Map Projections
+====================================
+The GeoMOOSE demo by default displays using a projection called the Web Mercator projection which has been popularized by the tiled map services such as Google Maps and Open Street Map.  This allows layers from these services to be displayed along with your own data.  However, sometimes using a different coordinate system such as UTM or a local (county) coordinate system is more appropriate.
+
+This exercise walks through changing the display projection for GeoMOOSE.
+
+The projection is set as a configuration parameter in the mapbook.  Look for the following line::
+
+  <param name="projection">EPSG:3857</param> 
+
+EPSG:3857 is the code for the Web Mercator projection.  For this exercise, we want to change to display in UTM Zone 15.  The code for UTM Zone 15 is EPSG:26915, so we change the projection parameter to look like::
+
+  <param name="projection">EPSG:26915</param> 
+
+Because all of the coordinates in the mapbook are given in the projection of the map, we will need to adjust them to be valid in our new projection.
+  
+Changing the Jump To list: Continuing in the mapbook look for “zoomto” parameter and change it to look like: ::
+
+ 	<param name="zoomto"><![CDATA[
+ 	{
+ 		"Jump To:" : {			
+			'Dakota County' : [521238.614537864,4924218.86673578,473921.947801381,4974430.36885032],
+			'Parcel Data' : [497205.409367,4923984.423582,477595.805945,4941970.52988],
+			'Full State of MN' : [189783.560000,4816309.330000,761653.524114,5472346.500000]
+ 		}
+ 	}
+ 	]]></param>
+
+Changing the extents: Continuing in the mapbook, find the lines that configure the max_extent and initial_extent. Change the values for each of the settings so that they look like: ::
+
+  <param name="max_extent">189783.560000,4816309.330000,761653.524114,5472346.500000</param>
+  <param name="initial_extent">497205.409367,4923984.423582,477595.805945,4941970.52988</param>
+
+Changing the Scale steps: Continuing in the mapbook look for “maxResolution” and “numZoomLevels”.  These lines need to be removed.
+
+And in their place add a new “scales” parameter which should look like: ::
+
+  <param name="scales">.5,1,4,8,16,24,32,64,128,270,550,1000,2000,4000</param>
+
+
+.. image:: ex6-finished.png
