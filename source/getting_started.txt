@@ -6,8 +6,8 @@ Getting Started with GeoMOOSE
 .. toctree::
 	:maxdepth: 1
 
-	../docs/geomoose_overview
-	../docs/geomoose_quickstart
+	docs/geomoose_overview
+	docs/geomoose_quickstart
 
 Try the online Demo
 -------------------
@@ -23,8 +23,8 @@ GeoMOOSE is very easy to install on just about any platform.  Just follow any of
 .. toctree::
 	:maxdepth: 1
 
-	../docs/install_unix
-	../docs/install_ms4w
+	docs/install_unix
+	docs/install_ms4w
 
 GeoMOOSE is proud to be free software.  Our :ref:`license <license>` reflects that.
 
@@ -33,15 +33,16 @@ Making your Own GeoMOOSE site
 .. toctree::
 	:maxdepth: 1
 
-	../docs/tutorial
+	docs/tutorial
 
 Instructional Materials
 -----------------------
 .. toctree::
 	:maxdepth: 1
 	
-	../docs/foss4g2011
-	../docs/foss4gna-2013
+	docs/foss4g2011
+	docs/foss4gna-2013
+	workshops/umgeocon2016/index
 
 Developer Specific Documentation
 --------------------------------
