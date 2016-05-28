@@ -1,0 +1,133 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 5: Adding a Layer
+==========================
+
+GeoMoose treats layers for MapServer the same as it does OGC WMS layers. This requires some special treatment of the MapServer Mapfile.
+
+This exercise will add the countries layer from the Natural Earth dataset. We will need to create a Mapfile to tell MapServer how to render the layer. Then we will add that layer to the catalog. Later, we will intentionally break the layer to demonstrate how to troubleshoot typical problems.
+
+Getting The New Data
+--------------------
+
+1. Go to the ``/srv/geomoose/maps`` directory: ::
+
+	cd /srv/geomoose/maps
+
+2. Create a new directory for the workshop: ::
+
+	mkdir workshop
+	cd workshop
+
+2. Download our new data: ::
+
+	wget https://github.com/geomoose/geomoose-docs/raw/umgeocon/source/workshops/umgeocon2016/ex5-data.zip
+
+``wget`` is a program for downloading files from web servers.  Its name comes from "WWW" and "get".  This will download the ``ex5-data.zip`` file to the current directory.
+
+3. Unzip it! There is no need for a graphical unzip program! We can use the command line: ::
+
+	unzip ex5-data.zip
+
+4. Oh, no! That didn't work! Not all utilities will be installed on cloud servers. Ubuntu is helpful in letting us know what to install.  To unzip the file we will first need to do this: ::
+
+	sudo apt-get install unzip
+
+5. Now it should work fine.: ::
+
+	unzip ex5-data.zip
+
+Working with the Data
+---------------------
+
+The ZIP file contained a new ``ex5-data`` directory.  In that directory, there is a full set of files for the natural earth country Shapefile.  But there is an additional MapServer MapFile as well ``natural_earth.map``.  The contents are included here for reference.: ::
+
+  MAP
+	NAME 'all'
+	SIZE 800 650
+	STATUS ON
+	EXTENT -20037508.34 -20037508.34 20037508.34 20037508.34
+	UNITS METERS
+
+	INCLUDE "../../geomoose_globals.map"
+
+	WEB
+		METADATA
+			'ows_title' 'Countries'
+			'ows_srs' 'EPSG:26915 EPSG:4326 EPSG:3857'
+			'wms_enable_request' '*'
+		END
+	END
+
+	PROJECTION
+		'init=epsg:3857'
+	END
+
+	LEGEND
+		STATUS ON
+		LABEL
+			TYPE TRUETYPE
+			FONT vera_sans
+			SIZE 8
+			COLOR 0 0 0
+		END
+	END
+
+	LAYER
+		NAME 'countries'
+		DATA 'ne_10m_admin_0_countries'
+		STATUS ON
+		TYPE POLYGON
+		MINSCALE 1000
+		PROJECTION
+			"init=epsg:4326"
+		END
+		LABELITEM 'NAME'
+		CLASS
+			NAME "Country Boundary"
+			STYLE
+				SYMBOL 'circle'
+				SIZE 1
+				OUTLINECOLOR 50 50 50
+			END
+			STYLE
+				SYMBOL 'circle'
+				SIZE 3
+				OUTLINECOLOR 210 210 210
+			END
+			LABEL
+				TYPE TRUETYPE
+				FONT vera_sans-bold
+				MINSIZE 8
+				SIZE 10
+				MAXSIZE 12
+				COLOR 0 0 0
+				OUTLINECOLOR 232 232 232
+				BUFFER 4
+			END
+		END
+	END 
+  END ## end Map
+     
+
+Adding the layer to the Mapbook
+-------------------------------
+
+1. Open the mapbook in a ``nano``: ::
+
+	nano /srv/geomoose/conf/mapbook.xml
+
+2. Add the natural-earth map-source above the ``parcels`` map-source. A map-source tells GeoMOOSE how to connect to a data layer.  Note: the order of the map-sources controls the default draw order of the layers.: ::
+
+    <map-source name="natural_earth" type="mapserver" queryable="true"> 
+         <file>./workshop/ex5-data/natural_earth.map</file> 
+         <layer name="countries"/> 
+         <param name="TRANSPARENT" value="true"/> 
+    </map-source> 
+
+
+3. Add the layer to the catalog section.: ::
+
+   <layer title="Countries" src="natural_earth/countries" status="on"/>
+   
+.. image:: ex5-finished.png
