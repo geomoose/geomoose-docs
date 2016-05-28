@@ -1,0 +1,84 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 7: Troubleshooting
+===========================
+How to find out what broke when you get the dreaded pink map or even worse, the GeoMOOSE doesn't load.
+
+Preparation
+-----------
+We need a tool that lets us see behind the scenes of what is going on in the web browser.  The development team uses the Firebug add-on to the Firefox browser for troubleshooting GeoMOOSE.  While most browsers now have similar tools built in, this exercise will focus on using Firebug.
+
+1. Open the Firefox Add-ons page:
+
+.. image:: ex7-install-1.png
+
+2. Search for the Firebug Add-on:
+
+.. image:: ex7-install-2.png
+
+3. Install the Firebug Add-on:
+
+.. image:: ex7-install-3.png
+	      
+	      
+Troubleshooting the Pink Map
+----------------------------
+A pink map is a common error in GeoMOOSE and means that GeoMOOSE was unable to get an image from a WMS server to draw a layer.  To see this, we are going to intentionally break a layer.
+
+1. Go to ``/srv/geomoose/maps/demo/parcels`` and edit ``parcels.map``.
+
+2. Add an extra ``M`` to the word ``MAP`` on line 21 and save.
+
+3. Reload GeoMOOSE and you should see the pink screen.
+
+.. image:: ex7-pink-1.png
+
+4. To see what went wrong, activate Firebug by clicking on the "bug" tool in the browser toolbar and reload the page.
+
+.. image:: ex7-pink-2.png
+
+5. Click on the "Net" tab and then click "Enable".
+
+.. image:: ex7-pink-3.png
+
+6. Reload GeoMOOSE and you should see the list of resources GeoMOOSE requests from the web server.
+
+.. image:: ex7-pink-4.png	      
+
+7. Scroll and hover over the ``mapserv?`` until you find the one that doesn't show an image.  Then right click and "Open Response in New Tab.
+
+.. image:: ex7-pink-5.png	      
+
+8. Read the error message from MapServer.
+
+.. image:: ex7-pink-6.png
+
+9. Fix the Mapfile (by deleting the extra M added in the beginning)
+
+Troubleshooting failure to load
+-------------------------------
+If GeoMOOSE fails to load completely, it is usually because of an error in the mapbook.
+
+1. Introduce a structrual error into the mapbook. Change ``<mapbook version="2.8.0">`` into ``<mmapbook version="2.8.0">.``  Then reload the interface and see what it does. 
+
+.. image:: ex7-mapbook-1.png
+   
+2. Look at the errors in Firebug.
+
+.. image:: ex7-mapbook-2.png
+
+3. Restore the mapbook and reload the interface to make sure it works again. 
+   
+4. Introduce a different error the mapbook. Change the name for the natural_earth map-source so it doesn’t match the path for that layer in the catalog. I.E. change::
+
+    <map-source name="natural_earth" type="mapserver" queryable="true"> 
+
+  to::
+
+    <map-source name="natural_earth_" type="mapserver" queryable="true"> 
+    
+5. Reload the interface and see what it does. 
+
+.. image:: ex7-mapbook-3.png
+
+.. image:: ex7-mapbook-4.png

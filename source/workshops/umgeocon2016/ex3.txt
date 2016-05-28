@@ -1,0 +1,25 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 3: Customizing the Interface
+=====================================
+In this exercise we will customize the new interface. We will start by changing the title and skin. This is done in the 
+``geomoose.html`` file. 
+
+We are returning to ``nano``! GeoMoose comes with a number of 'skins'.  These 'skins' are themes that, later, can be even more cusotmized based on the taste of the administrator.
+
+1. Open ``geomoose.html`` in ``nano``:: 
+  
+    nano /srv/geomoose/js/geomoose.html
+
+2. Navigate to the ``<title>GeoMOOSE</title>`` line and change it to read ``<title>GeoMOOSE 2.9 – Workshop</title>``. This is on line four and hte arrow keys can be used to move about the file.
+
+3. Now navigate to around line 45 where the skins are defined. Comment out the gray skin and uncomment the blue skin. If you are familiar with CSS, take a look at the skin’s CSS file. When you're done that section of the file should look like this::
+
+	        <link type="text/css" rel="stylesheet" href="skins/blue/blue.css"/>
+	<!--    <link type="text/css" rel="stylesheet" href="skins/red/red.css"/> -->
+	<!--	<link type="text/css" rel="stylesheet" href="skins/grey/grey.css"/> -->
+
+
+4. Reload the geomoose page in the browser to see the changes 
+
+.. image:: ex3-finished.png

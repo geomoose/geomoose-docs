@@ -1,0 +1,21 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+Exercise 2: Exploring the interface
+===================================
+
+Basic Tools
+-----------
+Note the tools in the toolbar above the map. If you hover over the tool you will see the tool’s name. Try the various tools. There are two types of tools in GeoMOOSE. Some tools like “pan” and “zoom” stay active after they are selected. Other tools such as “Print” perform an immediate action and whatever tool was selected before remains active. 
+
+Other Tools/Services
+--------------------
+Tools are also separated by if they are implemented in the client in JavaScript, or if they are implemented by querying the server. The tools that query the server are known as services.
+
+Catalog
+-------
+This is where the layers reside. Notice there are also tools available under each layer that apply to that particular 
+layer.  
+
+Final Notes
+-----------
+All of the tools, services, and layers are configured in the Mapbook. We will explore the Mapbook later.

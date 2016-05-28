@@ -1,0 +1,19 @@
+.. -*- mode: rst; mode: visual-line; mode: flyspell -*-
+
+GeoMoose in the Cloud Workshop
+******************************
+
+This workshop targets installing GeoMoose in the cloud, in the case on an Amazon EC2 instance running Ubuntu LTS 14.04 (a.k.a. Trusty).
+
+.. toctree::
+	:maxdepth: 1
+
+	ex0
+	ex1
+	ex2
+	ex3
+	ex4
+	ex5
+	ex6
+	ex7
+		
