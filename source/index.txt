@@ -87,6 +87,7 @@ Getting Started Customizing Your App
 	../howto/skin
 	../howto/sketch_colors
 	../howto/measure_tool
+	../howto/geocoder
 
 Going Further Customizing Your App
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
