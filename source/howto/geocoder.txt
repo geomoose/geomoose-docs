@@ -1,0 +1,27 @@
+How to Add Geocoder Functionality
+=================================
+
+What went wrong?
+----------------
+
+Geocoder.us was the geocoder used by GeoMOOSE by default and as of 30 June 2016 it was no longer working.
+As an alternative, GeoMOOSE has always included an example Google Maps API Geocoder but it is encumbered
+by Google useage licenses including the requirement of an API key.
+
+What happens now?
+-----------------
+
+When a user attempts a geocode, GeoMOOSE will display an error::
+
+	No Google API key has been defined. Please set in local_settings.ini.
+
+How do I fix it?
+----------------
+
+1. Get a `Google Maps API Key <https://developers.google.com/maps/documentation/javascript/get-api-key>`_.
+2. In the ``conf/local_settings.ini`` file add a line that contains the new key from Google::
+
+	google_api_key= ...
+
+
+Please read the Google Maps API Terms of Service to ensure they are appropriate for your application!
