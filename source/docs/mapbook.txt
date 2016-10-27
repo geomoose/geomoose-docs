@@ -58,8 +58,6 @@ Here is an example from the GeoMOOSE Demo::
 		<param name="layer_controls.metadata.on">false</param>		
 		<param name="layer_controls.legend.on">true</param>	
 
-		<param name="group_checkboxes">false</param>
-
 		<param name="default_tab">Catalog</param>
 	      
 		<param name="ground_units">m</param>
