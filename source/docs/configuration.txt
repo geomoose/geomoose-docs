@@ -77,7 +77,6 @@ The Parameters
 
    Set the catalog's label. Defaults to 'Catalog'
 
-
  * ``flashy_bits``
 
    Toggles Animations on or off. Defaults to true
