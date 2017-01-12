@@ -142,5 +142,7 @@ The functionality of your map layers can be increased to support queries, identi
 	...
 	END
 
+*WARNING* If you are using a database layer (PostGIS, Oracle Spatial, etc.) please ensure you LAYER defintion includes an EXTENT.  MapServer will not automatically determine the bounding box of the query unless the data source is a shapefile.
+
 
 This functionality is discussed in more detail in other sections of the documentation.
