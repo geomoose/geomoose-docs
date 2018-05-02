@@ -3,6 +3,14 @@ How to use a WMS Service in a Different Projection
 
 Not all WMS services use the projection that a GeoMOOSE application may use natively.  In this case, it is necessary to reproject the request to display properly.
 
+
+Notice
+------
+This method is obsolete. Reprojection in the client never worked particularly well and has been removed.  The recommended method is to proxy the results through MapServer, letting MapServer handle the reprojection, and have GeoMoose connect to MapServer as normal.
+
+See http://mapserver.org/ogc/wms_client.html for how to create a mapfile that will connect to a WMS service.
+
+
 Step 1: Prerequisites
 ---------------------
 
